@@ -4,16 +4,66 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 
-class Error404View extends StatelessWidget {
+class Error404View extends GetResponsiveView {
   Error404View({super.key});
   final arguments = Get.arguments;
   @override
-  Widget build(BuildContext context) {
+  Widget? desktop() {
     return Scaffold(
-        body: Center(
+        body: Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 50.w),
       child: Column(
         children: [
-          Lottie.asset("assets/lotties/404.json"),
+          Expanded(child: Lottie.asset("assets/lotties/404.json")),
+          SizedBox(
+            height: 20.h,
+          ),
+          Text(
+            arguments == null ? "Error" : "${arguments?["message"]}",
+            style: AppStyles.heading2,
+          ),
+          // SizedBox(height: 40.h),
+          // MaterialButton(onPressed: (){},child: Text("data"),)
+        ],
+      ),
+    ));
+  }
+
+  @override
+  Widget? phone() {
+    return Scaffold(
+        body: Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 50.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Lottie.asset("assets/lotties/404.json", height: 130.h),
+          SizedBox(
+            height: 20.h,
+          ),
+          Text(
+            arguments == null ? "Error" : "${arguments?["message"]}",
+            style: AppStyles.heading2,
+          ),
+          // SizedBox(height: 40.h),
+          // MaterialButton(onPressed: (){},child: Text("data"),)
+        ],
+      ),
+    ));
+  }
+
+  @override
+  Widget? tablet() {
+    return Scaffold(
+        body: Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(vertical: 50.w),
+      child: Column(
+        children: [
+          Expanded(child: Lottie.asset("assets/lotties/404.json")),
           SizedBox(
             height: 20.h,
           ),

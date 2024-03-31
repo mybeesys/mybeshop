@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mybeshop/features/main/data/models/category_model.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_categories_use_case.dart';
@@ -23,6 +24,7 @@ class MainController extends GetxController {
   void getCategories() async {
     categoriesLoading(true);
     update();
+    await getProducts();
     final response = await _getCategoriesUseCase();
     response.fold((failure) {
       categoriesLoading(false);
@@ -30,6 +32,13 @@ class MainController extends GetxController {
     }, (success) {
       categories = success;
       categoriesLoading(false);
+      categories.insert(
+          0,
+          CategoryModel(
+              id: 495739457,
+              name: "all".tr,
+              productsCount: products.length,
+              products: products));
       selectedCategory = categories.first;
 
       update();
@@ -47,25 +56,33 @@ class MainController extends GetxController {
     update();
   }
 
-  // void getProducts() async {
-  //   productsLoading(true);
-  //   update();
-  //   var response;
-  //   if (selectedCategory != null) {
-  //     response = await _getProductsUseCase(
-  //         filters: {"categories_ids[]": "${selectedCategory?.id}"});
-  //   } else {
-  //     response = await _getProductsUseCase();
-  //   }
-  //   response.fold((failure) {
-  //     productsLoading(false);
-  //     update();
-  //   }, (success) {
-  //     products = success;
-  //     productsLoading(false);
-  //     update();
-  //   });
-  // }
+  Future<void> getProducts() async {
+    productsLoading(true);
+    update();
+    var response;
+    if (selectedCategory != null) {
+      response = await _getProductsUseCase(
+          filters: {"categories_ids[]": "${selectedCategory?.id}"});
+    } else {
+      response = await _getProductsUseCase();
+    }
+    response.fold((failure) {
+      productsLoading(false);
+      update();
+    }, (success) {
+      products = success;
+      productsLoading(false);
+      update();
+    });
+  }
+
+  void setProductInCart(id) {
+    for (var c in categories) {
+      c.products.firstWhereOrNull((element) => element.id == id)?.inCart =
+          false;
+      update();
+    }
+  }
 
   @override
   void onInit() {

@@ -25,7 +25,7 @@ dependencies:
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   url_launcher: ^6.2.4
-  easy_stepper: ^0.8.3
+  dropdown_search: ^5.0.6
   input_quantity: ^2.2.0
 
 dev_dependencies:

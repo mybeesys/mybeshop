@@ -6,9 +6,11 @@ import 'package:mybeshop/features/main/data/datasources/main_remote_data_source.
 import 'package:mybeshop/features/main/domain/entities/area.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 import 'package:mybeshop/features/main/domain/entities/city.dart';
+import 'package:mybeshop/features/main/domain/entities/e_invoice.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/domain/entities/shopping_cart.dart';
 import 'package:mybeshop/features/main/domain/entities/state.dart' as state;
+import 'package:mybeshop/features/main/domain/entities/order.dart' as order;
 import 'package:mybeshop/features/main/domain/repositories/main_repository.dart';
 
 class MainRepositoryImpl implements MainRepository {
@@ -138,6 +140,37 @@ class MainRepositoryImpl implements MainRepository {
   Future<Either<Failure, String>> checkout({data}) async {
     try {
       final response = await mainRemoteDataSource.checkout(data: data);
+      return Right(response);
+    } on MyBeeException catch (e) {
+      return Left(
+          ServerFailure(message: e.message, exception: e, code: e.code));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<order.Order>>> getOrders({filters}) async {
+    try {
+      final response = await mainRemoteDataSource.getOrders(filters: filters);
+      return Right(response);
+    } on MyBeeException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, EInvoice>> getEInvoice({filters}) async {
+    try {
+      final response = await mainRemoteDataSource.getEInvoice(filters: filters);
+      return Right(response);
+    } on MyBeeException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ShoppingCart>> applyCoupon({data}) async {
+    try {
+      final response = await mainRemoteDataSource.applyCoupon(data: data);
       return Right(response);
     } on MyBeeException catch (e) {
       return Left(

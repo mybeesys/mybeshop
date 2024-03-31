@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mybeshop/core/theme/app_styles.dart';
 
 class AppLoaders {
   static Future<void> showLoading({String? message}) async {
@@ -15,7 +16,7 @@ class AppLoaders {
           child: AlertDialog(
             clipBehavior: Clip.hardEdge,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100)),
+                borderRadius: BorderRadius.circular(200.r)),
             backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
             contentPadding: EdgeInsets.zero,
             content: Column(
@@ -34,7 +35,9 @@ class AppLoaders {
                     alignment: Alignment.center,
                     child: Lottie.asset(
                       "assets/lotties/loader.json",
-                      height: 350.h,
+                      height: AppStyles.deviceWidth(Get.context!) > 430
+                          ? 350.h
+                          : 100.h,
                       repeat: true,
                     ),
                   ),

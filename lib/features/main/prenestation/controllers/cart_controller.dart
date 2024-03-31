@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:mybeshop/core/errors/exceptions.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
 import 'package:mybeshop/core/utils/helper/app_loaders_helper.dart';
+import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/cart_item.dart';
 import 'package:mybeshop/features/main/domain/entities/option.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
@@ -49,10 +49,11 @@ class CartController extends GetxController {
     response.fold((failure) {}, (success) {
       shoppingCart = success;
       shopingCartLoading(false);
-
-      Get.find<MainController>().update();
-      Get.find<MainController>().onCategorySelected(null);
-      Get.find<MainController>().onInit();
+      if (Get.isRegistered<MainController>()) {
+        Get.find<MainController>().update();
+        Get.find<MainController>().onCategorySelected(null);
+        Get.find<MainController>().onInit();
+      }
       update();
     });
   }
@@ -135,7 +136,9 @@ class CartController extends GetxController {
       shoppingCart = success;
       AppLoaders.hideLoading();
       isAddingToCart(false);
-      Get.find<MainController>().update();
+      if (Get.isRegistered<MainController>()) {
+        Get.find<MainController>().update();
+      }
       update();
       Get.back();
     });
@@ -167,9 +170,15 @@ class CartController extends GetxController {
     });
 
     response.fold((failure) {}, (success) {
+      var productId = shoppingCart!.items
+          .firstWhere((element) => element.id == id)
+          .productId;
       AppLoaders.hideLoading();
       shoppingCart = success;
-      Get.find<MainController>().update();
+      if (Get.isRegistered<MainController>()) {
+        Get.find<MainController>().setProductInCart(productId);
+        Get.find<MainController>().update();
+      }
       if (withBack) {
         Get.back();
       }
@@ -216,7 +225,9 @@ class CartController extends GetxController {
   @override
   void onInit() {
     // clearShoppingCart();
-    getShoppingCart();
+    if (GlobalController.to.baseURL!.contains("shop")) {
+      getShoppingCart();
+    }
     super.onInit();
   }
 }

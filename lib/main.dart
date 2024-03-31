@@ -4,5 +4,5 @@ import 'package:mybeshop/core/config/injector_container.dart';
 
 void main() {
   InjectorContainer.init();
-  runApp(App());
+  runApp(const App());
 }

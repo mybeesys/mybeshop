@@ -7,7 +7,7 @@ import 'package:mybeshop/core/theme/app_styles.dart';
 class AppTheme extends GetxController {
   static AppTheme get to => Get.find();
 
-  Color primaryColor = Color.fromARGB(255, 17, 29, 48);
+  Color primaryColor = const Color.fromARGB(255, 17, 29, 48);
   Color yellowColor = const Color(0xffFFCA42);
   Color blueGreyColor = const Color(0xffB4C7E7);
   Color greyColor = const Color(0xff8A8A8A);

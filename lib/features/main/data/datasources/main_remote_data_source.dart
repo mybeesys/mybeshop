@@ -1,8 +1,11 @@
 import 'package:mybeshop/features/main/data/models/area_model.dart';
 import 'package:mybeshop/features/main/data/models/category_model.dart';
 import 'package:mybeshop/features/main/data/models/city_model.dart';
+import 'package:mybeshop/features/main/data/models/e_invoice_model.dart';
+import 'package:mybeshop/features/main/data/models/order_model.dart';
 import 'package:mybeshop/features/main/data/models/product_model.dart';
 import 'package:mybeshop/features/main/data/models/state_model.dart';
+import 'package:mybeshop/features/main/domain/entities/order.dart';
 
 import '../../../../core/api/api_consumer.dart';
 import '../models/shopping_cart_model.dart';
@@ -22,6 +25,12 @@ abstract class MainRemoteDataSource {
   Future<List<CityModel>> getCities({filters});
   Future<List<AreaModel>> getAreas({filters});
   Future<String> checkout({data});
+  // Track Orders
+  Future<List<Order>> getOrders({filters});
+  // Electronic Invoice
+  Future<EInvoiceModel> getEInvoice({filters});
+  // ApplyCoupon
+  Future<ShoppingCartModel> applyCoupon({data});
 }
 
 class MainRemoteDataSourceImpl implements MainRemoteDataSource {
@@ -144,10 +153,40 @@ class MainRemoteDataSourceImpl implements MainRemoteDataSource {
   @override
   Future<String> checkout({data}) async {
     final response = await apiConsumer.post(
-      "v1/store/store/checkout",
+      "v1/store/checkout",
       body: data,
     );
 
     return response["message"];
+  }
+
+  @override
+  Future<List<Order>> getOrders({filters}) async {
+    final response = await apiConsumer.get("v1/store/track-orders",
+        queryParameters: filters);
+    List<Order> ordersList = List.from(response["data"])
+        .map((order) => OrderModel.fromJson(order))
+        .toList();
+    return ordersList;
+  }
+
+  @override
+  Future<EInvoiceModel> getEInvoice({filters}) async {
+    final response = await apiConsumer.get(
+      "v1/store/e-invoice",
+      queryParameters: filters,
+    );
+    EInvoiceModel eInvoiceModel = EInvoiceModel.fromJson(response["data"]);
+    return eInvoiceModel;
+  }
+
+  @override
+  Future<ShoppingCartModel> applyCoupon({data}) async {
+    final response = await apiConsumer.post(
+      "v1/store/apply-coupon",
+      body: data,
+    );
+    ShoppingCartModel cartModel = ShoppingCartModel.fromJson(response["data"]);
+    return cartModel;
   }
 }

@@ -2,7 +2,7 @@ import 'package:mybeshop/features/main/data/models/product_model.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 
 class CategoryModel extends Category {
-  const CategoryModel(
+  CategoryModel(
       {required super.id,
       required super.name,
       required super.productsCount,

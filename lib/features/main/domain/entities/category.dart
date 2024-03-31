@@ -5,9 +5,9 @@ class Category extends Equatable {
   final int id;
   final String name;
   final int productsCount;
-  final List<Product> products;
+  List<Product> products;
 
-  const Category(
+  Category(
       {required this.id,
       required this.name,
       required this.productsCount,

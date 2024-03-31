@@ -7,42 +7,62 @@ import 'package:mybeshop/core/errors/exceptions.dart';
 import 'package:mybeshop/features/global/domain/entities/store_info.dart';
 import 'package:mybeshop/features/global/domain/usecases/get_store_info_use_case.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
+import 'package:mybeshop/features/main/prenestation/controllers/mobile/view_contorller.dart';
 
 class GlobalController extends SuperController {
   static GlobalController get to => Get.find();
 
   Locale currentLocale = const Locale('ar', 'SA');
 
-  String? slug = "apple";
+  String? slug = "";
+  String? baseURL;
   StoreInfo? storeInfo;
   RxBool isLoading = true.obs;
 
   void getSlugFromURL() {
-    var baseURL = (js.context["location"]["href"]);
+    baseURL = "${js.context["location"]["href"]}";
     var segment = baseURL.toString().split("/");
     slug = segment.lastWhere((segment) => segment.isNotEmpty, orElse: () => '');
+    if (!(baseURL!.contains("shop") || baseURL!.contains("einvoice"))) {
+      slug = "";
+    }
+  }
+
+  void navigateAfterCheck() {
+    log("THE SLUG IS : $slug");
     if (slug == null || slug == "") {
       Get.toNamed(AppRoutes.error,
           arguments: {"message": "the_page_not_found".tr});
+    } else {
+      if (baseURL!.contains("envoice")) {
+        Get.offAllNamed(AppRoutes.einvoice);
+      }
     }
   }
 
   Future<void> getStoreInfo() async {
-    final GetStoreInfoUseCase getStoreInfoUseCase =
-        Get.find<GetStoreInfoUseCase>();
-    final response = await getStoreInfoUseCase();
+    if (baseURL!.contains("shop")) {
+      final GetStoreInfoUseCase getStoreInfoUseCase =
+          Get.find<GetStoreInfoUseCase>();
+      final response = await getStoreInfoUseCase();
 
-    response.fold((failure) {
-      if (failure.exception is NotFoundException) {
-        Get.toNamed(AppRoutes.error, arguments: {"message": failure.message});
-      }
-    }, (success) {
-      storeInfo = success;
-      log(storeInfo.toString());
-      isLoading(false);
-      update();
-      Get.find<MainController>().update();
-    });
+      response.fold((failure) {
+        if (failure.exception is NotFoundException) {
+          Get.toNamed(AppRoutes.error, arguments: {"message": failure.message});
+        }
+      }, (success) {
+        storeInfo = success;
+        log(storeInfo.toString());
+        isLoading(false);
+        update();
+        if (Get.isRegistered<MainController>()) {
+          Get.find<MainController>().update();
+        }
+        if (Get.isRegistered<ViewController>()) {
+          Get.find<ViewController>().update();
+        }
+      });
+    }
   }
 
   void changeCurrentLanguage(String code) {
@@ -57,6 +77,12 @@ class GlobalController extends SuperController {
     getSlugFromURL();
     await getStoreInfo();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    navigateAfterCheck();
+    super.onReady();
   }
 
   @override

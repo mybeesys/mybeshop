@@ -21,7 +21,7 @@ class App extends StatelessWidget {
           locale: GlobalController.to.currentLocale,
           translations: Languages(),
           getPages: AppRoutes.routes,
-          initialRoute: AppRoutes.checkout,
+          initialRoute: AppRoutes.main,
           theme: AppTheme.to.appTheme(),
         );
       },

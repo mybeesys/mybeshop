@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 
 class SettingsView extends StatelessWidget {
@@ -9,7 +11,13 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("settings".tr),
+        foregroundColor: Colors.white,
+        backgroundColor: AppTheme.to.primaryColor,
+        centerTitle: false,
+        title: Text(
+          "settings".tr,
+          style: AppStyles.bodyBoldM,
+        ),
       ),
       body: Column(
         children: [

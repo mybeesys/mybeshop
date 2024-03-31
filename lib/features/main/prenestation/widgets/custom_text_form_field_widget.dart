@@ -10,7 +10,8 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       this.maxLines = 1,
       this.iconSize = 40,
       this.textStyle,
-      this.keyboardType});
+      this.keyboardType,
+      this.validator});
   final IconData icon;
   final String label;
   final TextEditingController? controller;
@@ -18,6 +19,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
   final double iconSize;
   final TextStyle? textStyle;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       maxLines: maxLines,
       controller: controller,
       keyboardType: keyboardType,
+      validator: validator,
       decoration: InputDecoration(
         label: Text(
           label,

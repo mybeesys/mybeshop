@@ -13,18 +13,22 @@ import 'package:mybeshop/features/global/domain/usecases/get_store_info_use_case
 import 'package:mybeshop/features/main/data/datasources/main_local_data_source.dart';
 import 'package:mybeshop/features/main/data/repositories/main_repository_impl.dart';
 import 'package:mybeshop/features/main/domain/usecases/add_to_cart_use_case.dart';
+import 'package:mybeshop/features/main/domain/usecases/apply_coupon_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/checkout_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/clear_shopping_cart_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/delete_item_from_cart_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_areas_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_categories_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_cities_use_case.dart';
+import 'package:mybeshop/features/main/domain/usecases/get_e_invoice_use_case.dart';
+import 'package:mybeshop/features/main/domain/usecases/get_orders_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_products_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_shopping_cart_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_states_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_variant_product_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/update_cart_use_case.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/cart_controller.dart';
+import 'package:mybeshop/features/main/prenestation/controllers/mobile/view_contorller.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,6 +87,7 @@ class GlobalInjector {
     // Contorllers
     // Get.put(AppStartController(Get.find()));
     Get.put(GlobalController());
+    Get.put(ViewController());
   }
 }
 
@@ -114,6 +119,12 @@ class MainFeatureInjector {
     Get.lazyPut(() => GetCitiesUseCase(Get.find()), fenix: true);
     Get.lazyPut(() => GetAreasUseCase(Get.find()), fenix: true);
     Get.lazyPut(() => CheckoutUseCase(Get.find()), fenix: true);
+    // Track Orders
+    Get.lazyPut(() => GetOrdersUseCase(Get.find()), fenix: true);
+    // EInvoices
+    Get.lazyPut(() => GetEInvoiceUseCase(Get.find()), fenix: true);
+    // ApplyCoupon
+    Get.lazyPut(() => ApplyCouponUseCase(Get.find()), fenix: true);
 
     // Controllers
     Get.put(CartController());

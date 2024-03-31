@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
 import 'package:mybeshop/features/main/prenestation/views/desktop/desktop_widget.dart';
+import 'package:mybeshop/features/main/prenestation/views/mobile/mobile_view.dart';
 
 // import 'dart:js' as js;
 
@@ -16,19 +17,11 @@ class MainView extends GetResponsiveView<MainController> {
 
   @override
   Widget? phone() {
-    return Scaffold(
-      body: Center(
-        child: Text("Phone"),
-      ),
-    );
+    return const MobileView();
   }
 
   @override
   Widget? tablet() {
-    return Scaffold(
-      body: Center(
-        child: Text("Tablet"),
-      ),
-    );
+    return const MobileView();
   }
 }
