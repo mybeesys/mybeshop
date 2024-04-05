@@ -84,16 +84,10 @@ class ShoppingCartView extends StatelessWidget {
                                       item.name,
                                       style: AppStyles.bodyMediumM,
                                     ),
-                                    SizedBox(height: 10.h),
-                                    Text(
-                                      "${"type".tr} : ${item.type}",
-                                      style: AppStyles.bodyMediumS.copyWith(
-                                          color: AppTheme.to.greyColor),
-                                    ),
                                     if (item.extras.isNotEmpty) ...[
                                       SizedBox(height: 10.h),
                                       SizedBox(
-                                        height: 20.h,
+                                        height: 34.h,
                                         child: ScrollConfiguration(
                                           behavior:
                                               const MaterialScrollBehavior()
@@ -145,21 +139,42 @@ class ShoppingCartView extends StatelessWidget {
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
                                                         color: AppTheme
-                                                            .to.yellowColor,
+                                                            .to.primaryColor,
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(
-                                                                    10.r)),
-                                                    child: Text(
-                                                      extra.name,
-                                                      style: AppStyles
-                                                          .bodyRegularS
-                                                          .copyWith(
-                                                              fontSize: 8.sp,
-                                                              color:
-                                                                  Colors.white),
-                                                      textAlign:
-                                                          TextAlign.center,
+                                                                .circular(5.r)),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          extra.name,
+                                                          style: AppStyles
+                                                              .bodyRegularS
+                                                              .copyWith(
+                                                                  fontSize:
+                                                                      8.sp,
+                                                                  color: Colors
+                                                                      .white),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        Directionality(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          child: Text(
+                                                            extra
+                                                                .priceFormatted,
+                                                            style: AppStyles
+                                                                .bodyRegularS
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        8.sp,
+                                                                    color: Colors
+                                                                        .white),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),

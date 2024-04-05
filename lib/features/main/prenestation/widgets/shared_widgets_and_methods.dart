@@ -7,6 +7,7 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
+import 'package:mybeshop/core/utils/helper/extenstions.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/domain/entities/product_extra.dart';
 import 'package:mybeshop/features/main/domain/entities/variant_option.dart';
@@ -185,7 +186,7 @@ addToCartAction(Product product) async {
                           if (product.description != null) ...[
                             SizedBox(height: 10.h),
                             Text(
-                              product.description!,
+                              product.description!.removeHtmlTags(),
                               style: AppStyles.bodyRegularS,
                             ),
                           ],
@@ -296,13 +297,39 @@ addToCartAction(Product product) async {
                                                 style: AppStyles.bodyMediumM,
                                               ),
                                               SizedBox(height: 10.h),
-                                              Text(
-                                                extra.originalPriceFormatted,
-                                                style: AppStyles.bodyMediumS
-                                                    .copyWith(
-                                                  color:
-                                                      AppTheme.to.primaryColor,
-                                                ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Directionality(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    child: Text(
+                                                      extra.priceFormatted,
+                                                      style:
+                                                          AppStyles.bodyMediumS,
+                                                    ),
+                                                  ),
+                                                  if (extra.hasDiscount) ...[
+                                                    SizedBox(width: 10.w),
+                                                    Directionality(
+                                                      textDirection:
+                                                          TextDirection.ltr,
+                                                      child: Text(
+                                                        extra
+                                                            .originalPriceFormatted,
+                                                        style: AppStyles
+                                                            .bodyMediumS
+                                                            .copyWith(
+                                                                color:
+                                                                    Colors.red,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .lineThrough),
+                                                      ),
+                                                    ),
+                                                  ]
+                                                ],
                                               ),
                                             ],
                                           ),
@@ -509,7 +536,7 @@ addToCartMobileAction(Product product) async {
                           if (product.description != null) ...[
                             SizedBox(height: 10.h),
                             Text(
-                              product.description!,
+                              product.description!.removeHtmlTags(),
                               style: AppStyles.bodyRegularS,
                             ),
                           ],

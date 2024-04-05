@@ -7,6 +7,7 @@ import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/core/utils/helper/app_shimmer_loader.dart';
+import 'package:mybeshop/core/utils/helper/extenstions.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
@@ -46,401 +47,405 @@ class DesktopWidget extends StatelessWidget {
                             child: Column(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 280.w, vertical: 47.5.h),
                                   decoration: BoxDecoration(
                                       color: AppTheme.to.primaryColor),
-                                  child: Column(
+                                  child: Row(
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          Row(
+                                          NavBarSocialMediaButtonWidget(
+                                            icon: LineAwesomeIcons.facebook_f,
+                                            onPressed: () {
+                                              if (GlobalController.to.storeInfo
+                                                      ?.social["facebook"] !=
+                                                  null) {
+                                                launchUrlString(GlobalController
+                                                    .to
+                                                    .storeInfo!
+                                                    .social["facebook"]!);
+                                              }
+                                            },
+                                          ),
+                                          NavBarSocialMediaButtonWidget(
+                                            icon: LineAwesomeIcons.twitter,
+                                            onPressed: () {
+                                              if (GlobalController.to.storeInfo
+                                                      ?.social["twitter"] !=
+                                                  null) {
+                                                launchUrlString(GlobalController
+                                                    .to
+                                                    .storeInfo!
+                                                    .social["twitter"]!);
+                                              }
+                                            },
+                                          ),
+                                          NavBarSocialMediaButtonWidget(
+                                            icon: LineAwesomeIcons.instagram,
+                                            onPressed: () {
+                                              if (GlobalController.to.storeInfo
+                                                      ?.social["instagram"] !=
+                                                  null) {
+                                                launchUrlString(GlobalController
+                                                    .to
+                                                    .storeInfo!
+                                                    .social["instagram"]!);
+                                              }
+                                            },
+                                          ),
+                                          NavBarSocialMediaButtonWidget(
+                                            icon: LineAwesomeIcons.snapchat,
+                                            onPressed: () {
+                                              if (GlobalController.to.storeInfo
+                                                      ?.social["snapchat"] !=
+                                                  null) {
+                                                launchUrlString(GlobalController
+                                                    .to
+                                                    .storeInfo!
+                                                    .social["snapchat"]!);
+                                              }
+                                            },
+                                          ),
+                                          NavBarSocialMediaButtonWidget(
+                                            icon: LineAwesomeIcons.what_s_app,
+                                            onPressed: () {
+                                              if (GlobalController.to.storeInfo
+                                                      ?.social["whatsapp"] !=
+                                                  null) {
+                                                launchUrlString(GlobalController
+                                                    .to
+                                                    .storeInfo!
+                                                    .social["whatsapp"]!);
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(width: 95.w),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 180.w,
+                                              vertical: 47.5.h),
+                                          child: Column(
                                             children: [
-                                              MaterialButton(
-                                                minWidth: 180.w,
-                                                elevation: 0,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.zero),
-                                                onPressed: () {
-                                                  Get.toNamed(
-                                                      AppRoutes.trackOrders);
-                                                },
-                                                color: AppTheme.to.yellowColor,
-                                                child: Text(
-                                                  "track_orders".tr,
-                                                  style: AppStyles.bodyBoldL
-                                                      .copyWith(
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      if (GlobalController.to
+                                                                  .storeInfo !=
+                                                              null &&
+                                                          GlobalController
+                                                              .to
+                                                              .storeInfo!
+                                                              .ordersTrackingEnabled)
+                                                        MaterialButton(
+                                                          minWidth: 180.w,
+                                                          elevation: 0,
+                                                          shape: const RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .zero),
+                                                          onPressed: () {
+                                                            Get.toNamed(AppRoutes
+                                                                .trackOrders);
+                                                          },
                                                           color: AppTheme
-                                                              .to.primaryColor,
-                                                          height: 5.h),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  // Get.toNamed(AppRoutes.settings);
-                                                  GlobalController.to
-                                                      .changeCurrentLanguage(
+                                                              .to.yellowColor,
+                                                          child: Text(
+                                                            "track_orders".tr,
+                                                            style: AppStyles
+                                                                .bodyBoldL
+                                                                .copyWith(
+                                                                    color: AppTheme
+                                                                        .to
+                                                                        .primaryColor,
+                                                                    height:
+                                                                        5.h),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          // Get.toNamed(AppRoutes.settings);
+                                                          GlobalController.to
+                                                              .changeCurrentLanguage(
+                                                                  GlobalController
+                                                                              .to
+                                                                              .currentLocale
+                                                                              .languageCode ==
+                                                                          "ar"
+                                                                      ? "en"
+                                                                      : "ar");
+                                                        },
+                                                        child: Text(
                                                           GlobalController
                                                                       .to
                                                                       .currentLocale
                                                                       .languageCode ==
                                                                   "ar"
-                                                              ? "en"
-                                                              : "ar");
-                                                },
-                                                child: Text(
-                                                  GlobalController
-                                                              .to
-                                                              .currentLocale
-                                                              .languageCode ==
-                                                          "ar"
-                                                      ? "english".tr
-                                                      : "arabic".tr,
-                                                  style: AppStyles.bodyMediumL
-                                                      .copyWith(
-                                                          color: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      SelectionArea(
-                                        child: Row(
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                NavBarSocialMediaButtonWidget(
-                                                  icon: LineAwesomeIcons
-                                                      .facebook_f,
-                                                  onPressed: () {
-                                                    if (GlobalController
-                                                                .to
-                                                                .storeInfo
-                                                                ?.social[
-                                                            "facebook"] !=
-                                                        null) {
-                                                      launchUrlString(
-                                                          GlobalController
-                                                                  .to
-                                                                  .storeInfo!
-                                                                  .social[
-                                                              "facebook"]!);
-                                                    }
-                                                  },
-                                                ),
-                                                NavBarSocialMediaButtonWidget(
-                                                  icon:
-                                                      LineAwesomeIcons.twitter,
-                                                  onPressed: () {
-                                                    if (GlobalController
-                                                                .to
-                                                                .storeInfo
-                                                                ?.social[
-                                                            "twitter"] !=
-                                                        null) {
-                                                      launchUrlString(
-                                                          GlobalController
-                                                                  .to
-                                                                  .storeInfo!
-                                                                  .social[
-                                                              "twitter"]!);
-                                                    }
-                                                  },
-                                                ),
-                                                NavBarSocialMediaButtonWidget(
-                                                  icon: LineAwesomeIcons
-                                                      .instagram,
-                                                  onPressed: () {
-                                                    if (GlobalController
-                                                                .to
-                                                                .storeInfo
-                                                                ?.social[
-                                                            "instagram"] !=
-                                                        null) {
-                                                      launchUrlString(
-                                                          GlobalController
-                                                                  .to
-                                                                  .storeInfo!
-                                                                  .social[
-                                                              "instagram"]!);
-                                                    }
-                                                  },
-                                                ),
-                                                NavBarSocialMediaButtonWidget(
-                                                  icon:
-                                                      LineAwesomeIcons.snapchat,
-                                                  onPressed: () {
-                                                    if (GlobalController
-                                                                .to
-                                                                .storeInfo
-                                                                ?.social[
-                                                            "snapchat"] !=
-                                                        null) {
-                                                      launchUrlString(
-                                                          GlobalController
-                                                                  .to
-                                                                  .storeInfo!
-                                                                  .social[
-                                                              "snapchat"]!);
-                                                    }
-                                                  },
-                                                ),
-                                                NavBarSocialMediaButtonWidget(
-                                                  icon: LineAwesomeIcons
-                                                      .what_s_app,
-                                                  onPressed: () {
-                                                    if (GlobalController
-                                                                .to
-                                                                .storeInfo
-                                                                ?.social[
-                                                            "whatsapp"] !=
-                                                        null) {
-                                                      launchUrlString(
-                                                          GlobalController
-                                                                  .to
-                                                                  .storeInfo!
-                                                                  .social[
-                                                              "whatsapp"]!);
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(width: 95.w),
-                                            Expanded(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                        width: 34.w,
-                                                        height: 3.h,
-                                                        decoration: BoxDecoration(
-                                                            color: AppTheme.to
-                                                                .yellowColor),
+                                                              ? "english".tr
+                                                              : "arabic".tr,
+                                                          style: AppStyles
+                                                              .bodyMediumL
+                                                              .copyWith(
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
                                                       ),
-                                                      SizedBox(width: 10.w),
-                                                      Text(
-                                                        "welcome_to".tr,
-                                                        style: AppStyles
-                                                            .heading3
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .white,
-                                                                height: 5.h,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(height: 16.h),
-                                                  Text(
-                                                    "${GlobalController.to.storeInfo?.heroTitle}",
-                                                    style: AppStyles.heading3
-                                                        .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 50.sp,
-                                                            height: 4.5.h,
-                                                            color:
-                                                                Colors.white),
-                                                  ),
-                                                  SizedBox(height: 32.h),
-                                                  if (GlobalController
-                                                          .to.storeInfo?.bio !=
-                                                      null) ...[
-                                                    Text(
-                                                      "${GlobalController.to.storeInfo?.bio}",
-                                                      style: AppStyles
-                                                          .bodyRegularXL
-                                                          .copyWith(
-                                                        color: Colors.white,
-                                                        height: 7.h,
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 50.h),
-                                                  ],
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Container(
-                                                                height: 16.w,
-                                                                width: 16.w,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppTheme
-                                                                      .to
-                                                                      .yellowColor,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              16.r),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 13.w),
-                                                              Text(
-                                                                "contact_information"
-                                                                    .tr,
-                                                                style: AppStyles
-                                                                    .heading4
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        height:
-                                                                            5.h),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 10),
-                                                          HeroInfoItem(
-                                                              onPressed: () {
-                                                                if (GlobalController
-                                                                        .to
-                                                                        .storeInfo
-                                                                        ?.phone !=
-                                                                    null) {
-                                                                  launchUrlString(
-                                                                      "tel:${GlobalController.to.storeInfo?.phone}");
-                                                                }
-                                                              },
-                                                              text:
-                                                                  "${GlobalController.to.storeInfo?.phone}",
-                                                              icon:
-                                                                  LineAwesomeIcons
-                                                                      .phone),
-                                                          const SizedBox(
-                                                              height: 3),
-                                                          HeroInfoItem(
-                                                              onPressed: () {
-                                                                if (GlobalController
-                                                                        .to
-                                                                        .storeInfo
-                                                                        ?.email !=
-                                                                    null) {
-                                                                  launchUrlString(
-                                                                      "mailto:${GlobalController.to.storeInfo?.email}");
-                                                                }
-                                                              },
-                                                              text:
-                                                                  "${GlobalController.to.storeInfo?.email}",
-                                                              icon:
-                                                                  LineAwesomeIcons
-                                                                      .envelope),
-                                                          const SizedBox(
-                                                              height: 3),
-                                                          HeroInfoItem(
-                                                              text:
-                                                                  "${GlobalController.to.storeInfo?.address}",
-                                                              icon: LineAwesomeIcons
-                                                                  .map_marker),
-                                                        ],
-                                                      ),
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Container(
-                                                                height: 16.w,
-                                                                width: 16.w,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: AppTheme
-                                                                      .to
-                                                                      .yellowColor,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              16.r),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  width: 13.w),
-                                                              Text(
-                                                                "working_hours"
-                                                                    .tr,
-                                                                style: AppStyles
-                                                                    .heading4
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        height:
-                                                                            5.h),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          const SizedBox(
-                                                              height: 10),
-                                                          HeroInfoItem(
-                                                              text:
-                                                                  "${GlobalController.to.storeInfo?.workingHours}",
-                                                              icon:
-                                                                  LineAwesomeIcons
-                                                                      .clock),
-                                                        ],
-                                                      )
                                                     ],
                                                   )
                                                 ],
                                               ),
-                                            ),
-                                            SizedBox(width: 95.w),
-                                            Expanded(
-                                              child: GlobalController.to
-                                                          .storeInfo?.cover !=
-                                                      null
-                                                  ? Image.network(
-                                                      GlobalController
-                                                          .to.storeInfo!.cover!)
-                                                  : Image.asset(
-                                                      "assets/images/bg.png",
-                                                      height: 750.h,
-                                                      fit: BoxFit.fill,
+                                              const SizedBox(height: 20),
+                                              SelectionArea(
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                width: 34.w,
+                                                                height: 3.h,
+                                                                decoration: BoxDecoration(
+                                                                    color: AppTheme
+                                                                        .to
+                                                                        .yellowColor),
+                                                              ),
+                                                              SizedBox(
+                                                                  width: 10.w),
+                                                              Text(
+                                                                "welcome_to".tr,
+                                                                style: AppStyles
+                                                                    .heading3
+                                                                    .copyWith(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        height:
+                                                                            5.h,
+                                                                        fontWeight:
+                                                                            FontWeight.normal),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                              height: 16.h),
+                                                          Text(
+                                                            "${GlobalController.to.storeInfo?.heroTitle}",
+                                                            style: AppStyles
+                                                                .heading3
+                                                                .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        50.sp,
+                                                                    height:
+                                                                        4.5.h,
+                                                                    color: Colors
+                                                                        .white),
+                                                          ),
+                                                          SizedBox(
+                                                              height: 32.h),
+                                                          if (GlobalController
+                                                                  .to
+                                                                  .storeInfo
+                                                                  ?.bio !=
+                                                              null) ...[
+                                                            Text(
+                                                              "${GlobalController.to.storeInfo?.bio}",
+                                                              style: AppStyles
+                                                                  .bodyRegularXL
+                                                                  .copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                                height: 7.h,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 50.h),
+                                                          ],
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      Container(
+                                                                        height:
+                                                                            16.w,
+                                                                        width:
+                                                                            16.w,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color: AppTheme
+                                                                              .to
+                                                                              .yellowColor,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(16.r),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              13.w),
+                                                                      Text(
+                                                                        "contact_information"
+                                                                            .tr,
+                                                                        style: AppStyles.heading4.copyWith(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            height: 5.h),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  HeroInfoItem(
+                                                                      onPressed:
+                                                                          () {
+                                                                        if (GlobalController.to.storeInfo?.phone !=
+                                                                            null) {
+                                                                          launchUrlString(
+                                                                              "tel:${GlobalController.to.storeInfo?.phone}");
+                                                                        }
+                                                                      },
+                                                                      text:
+                                                                          "${GlobalController.to.storeInfo?.phone}",
+                                                                      icon: LineAwesomeIcons
+                                                                          .phone),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          3),
+                                                                  HeroInfoItem(
+                                                                      onPressed:
+                                                                          () {
+                                                                        if (GlobalController.to.storeInfo?.email !=
+                                                                            null) {
+                                                                          launchUrlString(
+                                                                              "mailto:${GlobalController.to.storeInfo?.email}");
+                                                                        }
+                                                                      },
+                                                                      text:
+                                                                          "${GlobalController.to.storeInfo?.email}",
+                                                                      icon: LineAwesomeIcons
+                                                                          .envelope),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          3),
+                                                                  HeroInfoItem(
+                                                                      text:
+                                                                          "${GlobalController.to.storeInfo?.address}",
+                                                                      icon: LineAwesomeIcons
+                                                                          .map_marker),
+                                                                ],
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      Container(
+                                                                        height:
+                                                                            16.w,
+                                                                        width:
+                                                                            16.w,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color: AppTheme
+                                                                              .to
+                                                                              .yellowColor,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(16.r),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              13.w),
+                                                                      Text(
+                                                                        "working_hours"
+                                                                            .tr,
+                                                                        style: AppStyles.heading4.copyWith(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            height: 5.h),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  const SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  HeroInfoItem(
+                                                                      text:
+                                                                          "${GlobalController.to.storeInfo?.workingHours}",
+                                                                      icon: LineAwesomeIcons
+                                                                          .clock),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
-                                            ),
-                                          ],
+                                                    SizedBox(width: 95.w),
+                                                    Expanded(
+                                                      child: GlobalController
+                                                                  .to
+                                                                  .storeInfo
+                                                                  ?.cover !=
+                                                              null
+                                                          ? Image.network(
+                                                              GlobalController
+                                                                  .to
+                                                                  .storeInfo!
+                                                                  .cover!)
+                                                          : Image.asset(
+                                                              "assets/images/bg.png",
+                                                              height: 750.h,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
                                 SizedBox(height: 50.h),
                                 Padding(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 280.w),
+                                      EdgeInsets.symmetric(horizontal: 180.w),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -495,7 +500,7 @@ class DesktopWidget extends StatelessWidget {
                                                               ? Border(
                                                                   left: GlobalController.to.currentLocale.languageCode == "en"
                                                                       ? BorderSide(
-                                                                          width: 5
+                                                                          width: 15
                                                                               .w,
                                                                           color: AppTheme
                                                                               .to
@@ -503,7 +508,7 @@ class DesktopWidget extends StatelessWidget {
                                                                       : BorderSide
                                                                           .none,
                                                                   right: GlobalController.to.currentLocale.languageCode == "ar"
-                                                                      ? BorderSide(width: 5.w, color: AppTheme.to.yellowColor)
+                                                                      ? BorderSide(width: 15.w, color: AppTheme.to.yellowColor)
                                                                       : BorderSide.none)
                                                               : null,
                                                           color: AppTheme.to.yellowColor.withOpacity(0.1)),
@@ -560,7 +565,7 @@ class DesktopWidget extends StatelessWidget {
                                         width: 32.w,
                                       ),
                                       Expanded(
-                                        flex: 3,
+                                        flex: 2,
                                         child: Column(
                                           children: [
                                             Row(
@@ -606,7 +611,7 @@ class DesktopWidget extends StatelessWidget {
                                         width: 32.w,
                                       ),
                                       const Expanded(
-                                        flex: 2,
+                                        flex: 1,
                                         child: CartWidget(),
                                       ),
                                     ],
@@ -656,7 +661,7 @@ Widget productCard({
                           .length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 1),
+                              crossAxisCount: 2, childAspectRatio: 1.20),
                       itemBuilder: (context, index) {
                         return HorizontalProductCardWidget(
                             product: Get.find<MainController>()
@@ -761,7 +766,7 @@ class VerticalProductCardWidget extends StatelessWidget {
                 if (product.description != null) ...[
                   SizedBox(height: 2.w),
                   Text(
-                    "${product.description}",
+                    "${product.description}".removeHtmlTags(),
                     style: AppStyles.bodyRegularS,
                     maxLines: 2,
                   ),

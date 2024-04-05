@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice_item.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/e_invoice_controller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
@@ -18,7 +20,13 @@ class EInvoiceDesktopView extends StatelessWidget {
             title: "taxes_invoice".tr,
             color: Colors.black,
             child: WillPopScope(
-              onWillPop: () async => await Future.value(false),
+              onWillPop: () async {
+                GlobalController.to.slug = controller.eInvoice?.storeInfo?.slug;
+                Get.offAllNamed(
+                  "${AppRoutes.main}/shop/${GlobalController.to.slug}",
+                );
+                return Future(() => true);
+              },
               child: Scaffold(
                 body: controller.eInvoiceLoading.value
                     ? const Center(
@@ -35,14 +43,34 @@ class EInvoiceDesktopView extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Center(
-                                    child: Text(
-                                      "taxes_invoice".tr,
-                                      style: AppStyles.bodyMediumXL
-                                          .copyWith(fontSize: 25.sp),
-                                    ),
+                                  Row(
+                                    children: [
+                                      if (controller
+                                              .eInvoice?.storeInfo?.logo !=
+                                          null)
+                                        Image.network(
+                                          controller.eInvoice!.storeInfo!.logo!,
+                                          width: 100.w,
+                                        )
+                                      else
+                                        Image.asset(
+                                          "assets/images/1.png",
+                                          width: 100.w,
+                                        ),
+                                      Expanded(
+                                        child: Center(
+                                          child: Text(
+                                            "taxes_invoice".tr,
+                                            style: AppStyles.bodyMediumXL
+                                                .copyWith(fontSize: 25.sp),
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(height: 30.h),
+                                  SizedBox(height: 35.h),
+                                  const Divider(),
+                                  SizedBox(height: 35.h),
                                   Text(
                                     "${"invoice_date".tr} : ${controller.eInvoice?.invoice.date}",
                                     style: AppStyles.bodySemiBoldXL,
@@ -223,6 +251,7 @@ class EInvoiceDesktopView extends StatelessWidget {
                                       ),
                                     ],
                                   ),
+                                
                                   SizedBox(height: 30.h),
                                   Row(
                                     children: [

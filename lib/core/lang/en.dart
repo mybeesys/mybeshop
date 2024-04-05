@@ -79,6 +79,8 @@ class EnLang {
         "error": "Error",
         "success": "Success",
         "ok": "OK",
-        "open_e_invoice": "Open E-Invoice"
+        "open_e_invoice": "Open E-Invoice",
+        "this_store_have_no_traking_service":
+            "This Store Have No Tracking Service"
       };
 }

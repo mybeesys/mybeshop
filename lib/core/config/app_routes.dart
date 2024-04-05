@@ -4,7 +4,9 @@ import 'package:mybeshop/features/main/prenestation/views/desktop/error404_view.
 import 'package:mybeshop/features/main/prenestation/views/e_invoice_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/main_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/mobile/checkout_completed_view.dart';
+import 'package:mybeshop/features/main/prenestation/views/price_offer_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/settings_view.dart';
+import 'package:mybeshop/features/main/prenestation/views/supply_order_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/track_orders.dart';
 
 class AppRoutes {
@@ -15,6 +17,8 @@ class AppRoutes {
   static const String trackOrders = '/track_orders';
   static const String checkoutCompleted = '/checkout_completed';
   static const String einvoice = '/einvoice';
+  static const String priceOffer = '/price-offers';
+  static const String supplyOrder = '/supply-orders';
 
   static final List<GetPage> routes = [
     GetPage(
@@ -44,6 +48,14 @@ class AppRoutes {
     GetPage(
       name: einvoice,
       page: () => EInoviceView(),
+    ),
+    GetPage(
+      name: priceOffer,
+      page: () => PriceOfferView(),
+    ),
+    GetPage(
+      name: supplyOrder,
+      page: () => SupplyOrderView(),
     ),
   ];
 }

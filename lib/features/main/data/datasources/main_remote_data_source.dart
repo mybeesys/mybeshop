@@ -3,8 +3,10 @@ import 'package:mybeshop/features/main/data/models/category_model.dart';
 import 'package:mybeshop/features/main/data/models/city_model.dart';
 import 'package:mybeshop/features/main/data/models/e_invoice_model.dart';
 import 'package:mybeshop/features/main/data/models/order_model.dart';
+import 'package:mybeshop/features/main/data/models/price_offer_model.dart';
 import 'package:mybeshop/features/main/data/models/product_model.dart';
 import 'package:mybeshop/features/main/data/models/state_model.dart';
+import 'package:mybeshop/features/main/data/models/supply_order_model.dart';
 import 'package:mybeshop/features/main/domain/entities/order.dart';
 
 import '../../../../core/api/api_consumer.dart';
@@ -31,6 +33,10 @@ abstract class MainRemoteDataSource {
   Future<EInvoiceModel> getEInvoice({filters});
   // ApplyCoupon
   Future<ShoppingCartModel> applyCoupon({data});
+  // Price Offer
+  Future<PriceOfferModel> getPriceOffer({no, filters});
+  // Supply Order
+  Future<SupplyOrderModel> getSupplyOrder({no, filters});
 }
 
 class MainRemoteDataSourceImpl implements MainRemoteDataSource {
@@ -188,5 +194,27 @@ class MainRemoteDataSourceImpl implements MainRemoteDataSource {
     );
     ShoppingCartModel cartModel = ShoppingCartModel.fromJson(response["data"]);
     return cartModel;
+  }
+
+  @override
+  Future<PriceOfferModel> getPriceOffer({no, filters}) async {
+    final response = await apiConsumer.get(
+      "v1/store/price-offers/$no",
+      queryParameters: filters,
+    );
+    PriceOfferModel priceOfferModel =
+        PriceOfferModel.fromJson(response["data"]);
+    return priceOfferModel;
+  }
+
+  @override
+  Future<SupplyOrderModel> getSupplyOrder({no, filters}) async {
+    final response = await apiConsumer.get(
+      "v1/store/supply-orders/$no",
+      queryParameters: filters,
+    );
+    SupplyOrderModel supplyOrderModel =
+        SupplyOrderModel.fromJson(response["data"]);
+    return supplyOrderModel;
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 import 'package:mybeshop/features/main/domain/entities/product_extra.dart';
 import 'package:mybeshop/features/main/domain/entities/variant_option.dart';

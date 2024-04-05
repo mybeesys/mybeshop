@@ -22,9 +22,11 @@ import 'package:mybeshop/features/main/domain/usecases/get_categories_use_case.d
 import 'package:mybeshop/features/main/domain/usecases/get_cities_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_e_invoice_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_orders_use_case.dart';
+import 'package:mybeshop/features/main/domain/usecases/get_price_offer_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_products_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_shopping_cart_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_states_use_case.dart';
+import 'package:mybeshop/features/main/domain/usecases/get_supply_order_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_variant_product_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/update_cart_use_case.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/cart_controller.dart';
@@ -125,6 +127,11 @@ class MainFeatureInjector {
     Get.lazyPut(() => GetEInvoiceUseCase(Get.find()), fenix: true);
     // ApplyCoupon
     Get.lazyPut(() => ApplyCouponUseCase(Get.find()), fenix: true);
+    // Price Offer
+    Get.lazyPut(() => GetPriceOfferUseCase(Get.find()), fenix: true);
+    // Supply Orders
+    Get.lazyPut(() => GetSupplyOrderUseCase(Get.find()), fenix: true);
+    // supply-orders/83040855
 
     // Controllers
     Get.put(CartController());

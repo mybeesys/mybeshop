@@ -1,4 +1,5 @@
 import 'dart:developer';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,10 @@ class GlobalController extends SuperController {
     baseURL = "${js.context["location"]["href"]}";
     var segment = baseURL.toString().split("/");
     slug = segment.lastWhere((segment) => segment.isNotEmpty, orElse: () => '');
-    if (!(baseURL!.contains("shop") || baseURL!.contains("einvoice"))) {
+    if (!(baseURL!.contains("shop") ||
+        baseURL!.contains("einvoice") ||
+        baseURL!.contains("price-offers") ||
+        baseURL!.contains("supply-orders"))) {
       slug = "";
     }
   }
@@ -33,6 +37,10 @@ class GlobalController extends SuperController {
     if (slug == null || slug == "") {
       Get.toNamed(AppRoutes.error,
           arguments: {"message": "the_page_not_found".tr});
+    } else if (baseURL!.contains("price-offers")) {
+      Get.offAllNamed("${AppRoutes.priceOffer}/${slug ?? ""}");
+    } else if (baseURL!.contains("supply-orders")) {
+      Get.offAllNamed("${AppRoutes.supplyOrder}/${slug ?? ""}");
     } else {
       if (baseURL!.contains("envoice")) {
         Get.offAllNamed(AppRoutes.einvoice);

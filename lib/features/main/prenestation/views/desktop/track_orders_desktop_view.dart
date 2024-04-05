@@ -293,8 +293,8 @@ class OrdersListWidget extends StatelessWidget {
                             ),
                             backgroundColor: Colors.grey.shade100,
                             content: SingleChildScrollView(
-                              child: Container(
-                                decoration: BoxDecoration(),
+                              child: SizedBox(
+                                // decoration: BoxDecoration(),
                                 width: 500.w,
                                 child: Column(
                                   children: [

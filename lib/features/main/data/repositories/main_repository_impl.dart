@@ -7,10 +7,12 @@ import 'package:mybeshop/features/main/domain/entities/area.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 import 'package:mybeshop/features/main/domain/entities/city.dart';
 import 'package:mybeshop/features/main/domain/entities/e_invoice.dart';
+import 'package:mybeshop/features/main/domain/entities/price_offer.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/domain/entities/shopping_cart.dart';
 import 'package:mybeshop/features/main/domain/entities/state.dart' as state;
 import 'package:mybeshop/features/main/domain/entities/order.dart' as order;
+import 'package:mybeshop/features/main/domain/entities/supply_order.dart';
 import 'package:mybeshop/features/main/domain/repositories/main_repository.dart';
 
 class MainRepositoryImpl implements MainRepository {
@@ -175,6 +177,28 @@ class MainRepositoryImpl implements MainRepository {
     } on MyBeeException catch (e) {
       return Left(
           ServerFailure(message: e.message, exception: e, code: e.code));
+    }
+  }
+
+  @override
+  Future<Either<Failure, PriceOffer>> getPriceOffer({no, filters}) async {
+    try {
+      final response =
+          await mainRemoteDataSource.getPriceOffer(no: no, filters: filters);
+      return Right(response);
+    } on MyBeeException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SupplyOrder>> getSupplyOrder({no, filters}) async {
+    try {
+      final response =
+          await mainRemoteDataSource.getSupplyOrder(no: no, filters: filters);
+      return Right(response);
+    } on MyBeeException catch (e) {
+      return Left(ServerFailure(message: e.message));
     }
   }
 }

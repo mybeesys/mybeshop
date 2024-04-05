@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:mybeshop/features/main/data/models/product_model.dart';
 import 'package:mybeshop/features/main/domain/entities/category.dart';
 

@@ -30,7 +30,10 @@ class CartWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: (controller.shoppingCart != null &&
+                                controller.shoppingCart!.items.isNotEmpty)
+                            ? MainAxisAlignment.spaceBetween
+                            : MainAxisAlignment.center,
                         children: [
                           Text(
                             "shopping_cart".tr,
@@ -38,8 +41,8 @@ class CartWidget extends StatelessWidget {
                           ),
                           if (controller.shoppingCart != null &&
                               controller.shoppingCart!.items.isNotEmpty)
-                            GestureDetector(
-                              onTap: () {
+                            TextButton(
+                              onPressed: () {
                                 controller.clearShoppingCart();
                               },
                               child: Text(
@@ -48,9 +51,11 @@ class CartWidget extends StatelessWidget {
                                   color: AppTheme.to.primaryColor,
                                 ),
                               ),
-                            ),
+                            )
                         ],
                       ),
+                      SizedBox(height: 10.h),
+                      const Divider(),
                       SizedBox(height: 90.h),
                       if (controller.shopingCartLoading.value)
                         ListView.builder(
@@ -200,16 +205,10 @@ class CartProductCardWidget extends StatelessWidget {
                     cartItem.name,
                     style: AppStyles.heading5.copyWith(fontSize: 16.sp),
                   ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    "${"type".tr} : ${cartItem.type}",
-                    style: AppStyles.bodyMediumM
-                        .copyWith(color: AppTheme.to.greyColor),
-                  ),
                   if (cartItem.extras.isNotEmpty) ...[
                     SizedBox(height: 10.h),
                     SizedBox(
-                      height: 50.h,
+                      height: 55.h,
                       child: ScrollConfiguration(
                         behavior: const MaterialScrollBehavior().copyWith(
                           dragDevices: {
@@ -250,14 +249,29 @@ class CartProductCardWidget extends StatelessWidget {
                                       horizontal: 3.w, vertical: 1.h),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      color: AppTheme.to.yellowColor,
+                                      color: AppTheme.to.primaryColor,
                                       borderRadius:
                                           BorderRadius.circular(10.r)),
-                                  child: Text(
-                                    extra.name,
-                                    style: AppStyles.bodyBoldS.copyWith(
-                                        fontSize: 8.sp, color: Colors.white),
-                                    textAlign: TextAlign.center,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        extra.name,
+                                        style: AppStyles.bodyBoldS.copyWith(
+                                            fontSize: 9.sp,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Directionality(
+                                        textDirection: TextDirection.ltr,
+                                        child: Text(
+                                          extra.priceFormatted,
+                                          style: AppStyles.bodyBoldS.copyWith(
+                                              fontSize: 9.sp,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -283,7 +297,8 @@ class CartProductCardWidget extends StatelessWidget {
                               .updateCart(cartItem, isIncrease: false);
                         },
                         child: Container(
-                          height: 50.h,
+                          alignment: Alignment.center,
+                          height: 55.h,
                           padding: EdgeInsets.symmetric(
                               horizontal: 1.w, vertical: 1.h),
                           decoration: BoxDecoration(
@@ -305,7 +320,8 @@ class CartProductCardWidget extends StatelessWidget {
                               .updateCart(cartItem, isIncrease: true);
                         },
                         child: Container(
-                          height: 50.h,
+                          alignment: Alignment.center,
+                          height: 55.h,
                           padding: EdgeInsets.symmetric(
                               horizontal: 1.w, vertical: 1.h),
                           decoration: BoxDecoration(

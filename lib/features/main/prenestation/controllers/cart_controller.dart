@@ -216,9 +216,9 @@ class CartController extends GetxController {
 
   double getTotalExtrasPrice() {
     double price = 0;
-    extras.forEach((element) {
+    for (var element in extras) {
       price = price + double.parse(element.price);
-    });
+    }
     return price;
   }
 

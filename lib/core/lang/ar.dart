@@ -94,6 +94,27 @@ class ArLang {
         "error": "خطأ",
         "success": "نجاح",
         "ok": "حسناً",
-        "open_e_invoice": "فتح الفاتورة الضريبية"
+        "open_e_invoice": "فتح الفاتورة الضريبية",
+        "price_offer": "عرض السعر",
+        "price_offer_date": "تاريخ عرض السعر",
+        "price_offer_no": "رقم عرض السعر",
+        "unit_price": "سعر الوحدة",
+        "additional_costs": "التكاليف الإضافية",
+        "cost": "التكلفة",
+        "description": "الوصف",
+        "services": "الخدمات",
+        "this_store_have_no_traking_service":
+            "هذا المتجر لا يحتوي على خدمات تتبع الطلب",
+        "supply_order": "طلب توريد",
+        "supply_order_no": "رقم طلب التوريد",
+        "supply_order_date": "تاريخ طلب التوريد",
+        "this_supply_order_not_found": "طلب التوريد هذا غير موجود",
+        "this_price_offer_not_found": "عرض السعر هذا غير موجود",
+        "client_information": "بيانات العميل",
+        "supplier_information": "بيانات المورد",
+        "items": "العناصر",
+        "address": "العنوان",
+        "company": "الشركة",
+        "null": "لا يوجد"
       };
 }

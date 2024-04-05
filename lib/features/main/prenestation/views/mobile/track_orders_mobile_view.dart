@@ -11,7 +11,6 @@ import 'package:mybeshop/features/main/domain/entities/order.dart';
 import 'package:mybeshop/features/main/domain/entities/order_detail.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/track_orders_contorller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TrackOrdersMobileView extends StatelessWidget {
   const TrackOrdersMobileView({super.key});
@@ -31,64 +30,76 @@ class TrackOrdersMobileView extends StatelessWidget {
                 "track_orders".tr,
                 style: AppStyles.bodyMediumM,
               ),
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(kToolbarHeight * 2.5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.w, vertical: 10.h),
-                      child: Text(
-                        "pleae_enter_phone_number_to_get_orders".tr,
-                        style: AppStyles.bodyRegularS
-                            .copyWith(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(height: 5.h),
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: CupertinoSearchTextField(
-                          itemColor: Colors.grey.shade50,
-                          controller: controller.searchInput,
-                          onSubmitted: (v) => controller.onSearch(v),
-                          placeholder: "phone".tr,
-                          style: AppStyles.bodyMediumM.copyWith(
-                              fontFamily: "Alexandria", color: Colors.white),
-                        )),
-                    SizedBox(height: 20.h),
-                    TabBar(
-                      isScrollable: true,
-                      controller: controller.tabController,
-                      tabs: [
-                        for (var filter in controller.filters)
-                          Tab(
-                            text: filter.tr,
+              bottom: GlobalController.to.storeInfo?.ordersTrackingEnabled ==
+                      false
+                  ? null
+                  : PreferredSize(
+                      preferredSize:
+                          const Size.fromHeight(kToolbarHeight * 2.5),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 10.h),
+                            child: Text(
+                              "pleae_enter_phone_number_to_get_orders".tr,
+                              style: AppStyles.bodyRegularS
+                                  .copyWith(color: Colors.white),
+                            ),
                           ),
-                      ],
+                          SizedBox(height: 5.h),
+                          Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: CupertinoSearchTextField(
+                                itemColor: Colors.grey.shade50,
+                                controller: controller.searchInput,
+                                onSubmitted: (v) => controller.onSearch(v),
+                                placeholder: "phone".tr,
+                                style: AppStyles.bodyMediumM.copyWith(
+                                    fontFamily: "Alexandria",
+                                    color: Colors.white),
+                              )),
+                          SizedBox(height: 20.h),
+                          TabBar(
+                            isScrollable: true,
+                            controller: controller.tabController,
+                            tabs: [
+                              for (var filter in controller.filters)
+                                Tab(
+                                  text: filter.tr,
+                                ),
+                            ],
+                          ),
+                        ],
+                      ), //based on searchBar height
                     ),
-                  ],
-                ), //based on searchBar height
-              ),
             ),
             body: controller.ordersLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : TabBarView(
-                    controller: controller.tabController,
-                    children: [
-                      for (var filter in controller.filters)
-                        OrdersListWidget(
-                            orders: filter == "all"
-                                ? controller.orders
-                                : controller.orders
-                                    .where(
-                                        (element) => element.status == filter)
-                                    .toList()),
-                    ],
-                  ),
+                : GlobalController.to.storeInfo?.ordersTrackingEnabled == false
+                    ? Center(
+                        child: Text(
+                          "this_store_have_no_traking_service".tr,
+                          style: AppStyles.bodyBoldL,
+                        ),
+                      )
+                    : TabBarView(
+                        controller: controller.tabController,
+                        children: [
+                          for (var filter in controller.filters)
+                            OrdersListWidget(
+                                orders: filter == "all"
+                                    ? controller.orders
+                                    : controller.orders
+                                        .where((element) =>
+                                            element.status == filter)
+                                        .toList()),
+                        ],
+                      ),
           );
         });
   }
@@ -286,8 +297,8 @@ class OrdersListWidget extends StatelessWidget {
                         ),
                         backgroundColor: Colors.grey.shade100,
                         content: SingleChildScrollView(
-                          child: Container(
-                            decoration: BoxDecoration(),
+                          child: SizedBox(
+                            // decoration: BoxDecoration(),
                             width: 500.w,
                             child: Column(
                               children: [

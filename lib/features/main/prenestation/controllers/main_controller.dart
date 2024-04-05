@@ -39,6 +39,7 @@ class MainController extends GetxController {
               name: "all".tr,
               productsCount: products.length,
               products: products));
+
       selectedCategory = categories.first;
 
       update();
@@ -59,13 +60,8 @@ class MainController extends GetxController {
   Future<void> getProducts() async {
     productsLoading(true);
     update();
-    var response;
-    if (selectedCategory != null) {
-      response = await _getProductsUseCase(
-          filters: {"categories_ids[]": "${selectedCategory?.id}"});
-    } else {
-      response = await _getProductsUseCase();
-    }
+    final response = await _getProductsUseCase();
+    // }
     response.fold((failure) {
       productsLoading(false);
       update();
