@@ -269,7 +269,7 @@ class DesktopWidget extends StatelessWidget {
                                                                   ?.bio !=
                                                               null) ...[
                                                             Text(
-                                                              "${GlobalController.to.storeInfo?.bio}",
+                                                              "${GlobalController.to.storeInfo?.bio.removeHtmlTags()}",
                                                               style: AppStyles
                                                                   .bodyRegularXL
                                                                   .copyWith(

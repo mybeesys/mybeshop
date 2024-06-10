@@ -7,6 +7,7 @@ import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/errors/exceptions.dart';
 import 'package:mybeshop/features/global/domain/entities/store_info.dart';
 import 'package:mybeshop/features/global/domain/usecases/get_store_info_use_case.dart';
+import 'package:mybeshop/features/global/domain/usecases/get_store_uuid_use_case.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/mobile/view_contorller.dart';
 
@@ -16,6 +17,7 @@ class GlobalController extends SuperController {
   Locale currentLocale = const Locale('ar', 'SA');
 
   String? slug = "";
+  String? storeUUID = "";
   String? baseURL;
   StoreInfo? storeInfo;
   RxBool isLoading = true.obs;
@@ -80,9 +82,18 @@ class GlobalController extends SuperController {
     update();
   }
 
+  Future<void> getStoreUUID() async {
+    final GetStoreUUIDUseCase getStoreUUIDUseCase =
+        GetStoreUUIDUseCase(Get.find());
+    storeUUID = await getStoreUUIDUseCase();
+    update();
+  }
+
   @override
   void onInit() async {
     getSlugFromURL();
+    await getStoreUUID();
+
     await getStoreInfo();
     super.onInit();
   }
@@ -91,6 +102,11 @@ class GlobalController extends SuperController {
   void onReady() {
     navigateAfterCheck();
     super.onReady();
+  }
+
+  void slugSetter(s) {
+    slug = s;
+    update();
   }
 
   @override
@@ -108,3 +124,11 @@ class GlobalController extends SuperController {
   @override
   void onResumed() {}
 }
+
+// 1 phones exp
+// 2 reveraw
+// 3 review client - einvoice
+// 4 trview back
+// 5. add barcode price offer
+// 6. store logo all
+// 7. show links tooltip

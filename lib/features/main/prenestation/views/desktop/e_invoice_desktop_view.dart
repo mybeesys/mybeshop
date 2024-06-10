@@ -5,6 +5,7 @@ import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice_item.dart';
+import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/e_invoice_controller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
@@ -21,9 +22,10 @@ class EInvoiceDesktopView extends StatelessWidget {
             color: Colors.black,
             child: WillPopScope(
               onWillPop: () async {
-                GlobalController.to.slug = controller.eInvoice?.storeInfo?.slug;
+                GlobalController.to
+                    .slugSetter(controller.eInvoice?.storeInfo?.slug);
                 Get.offAllNamed(
-                  "${AppRoutes.main}/shop/${GlobalController.to.slug}",
+                  "${AppRoutes.main}shop/${GlobalController.to.slug}",
                 );
                 return Future(() => true);
               },
@@ -193,36 +195,56 @@ class EInvoiceDesktopView extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Text(
-                                                    item.price,
-                                                    style: AppStyles.bodyBoldL,
+                                                  child: Directionality(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    child: Text(
+                                                      item.price,
+                                                      style:
+                                                          AppStyles.bodyBoldL,
+                                                    ),
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Text(
-                                                    item.discount,
-                                                    style: AppStyles.bodyBoldL,
+                                                  child: Directionality(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    child: Text(
+                                                      item.discount,
+                                                      style:
+                                                          AppStyles.bodyBoldL,
+                                                    ),
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Text(
-                                                    item.tax,
-                                                    style: AppStyles.bodyBoldL,
+                                                  child: Directionality(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    child: Text(
+                                                      item.tax,
+                                                      style:
+                                                          AppStyles.bodyBoldL,
+                                                    ),
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Text(
-                                                    item.subTotal,
-                                                    style: AppStyles.bodyBoldL,
+                                                  child: Directionality(
+                                                    textDirection:
+                                                        TextDirection.ltr,
+                                                    child: Text(
+                                                      item.subTotal,
+                                                      style:
+                                                          AppStyles.bodyBoldL,
+                                                    ),
                                                   ),
                                                 ),
                                               ]),
@@ -230,6 +252,21 @@ class EInvoiceDesktopView extends StatelessWidget {
                                       ],
                                     ),
                                   ),
+                                  if (controller.eInvoice!.invoice.services
+                                      .isNotEmpty) ...[
+                                    SizedBox(height: 80.h),
+                                    Center(
+                                      child: Text(
+                                        "services".tr,
+                                        style: AppStyles.bodyBoldXL,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    ServicesTableWiget(
+                                      services:
+                                          controller.eInvoice!.invoice.services,
+                                    ),
+                                  ],
                                   SizedBox(height: 60.h),
                                   Row(
                                     children: [
@@ -244,14 +281,13 @@ class EInvoiceDesktopView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10.w),
+                                      SizedBox(width: 40.w),
                                       Text(
                                         "total".tr,
                                         style: AppStyles.bodyRegularL,
                                       ),
                                     ],
                                   ),
-                                
                                   SizedBox(height: 30.h),
                                   Row(
                                     children: [
@@ -267,7 +303,7 @@ class EInvoiceDesktopView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10.w),
+                                      SizedBox(width: 40.w),
                                       Text("discount".tr,
                                           style: AppStyles.bodyRegularL),
                                     ],
@@ -287,7 +323,7 @@ class EInvoiceDesktopView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10.w),
+                                      SizedBox(width: 40.w),
                                       Text("total_after_discount".tr,
                                           style: AppStyles.bodyRegularL),
                                     ],
@@ -306,7 +342,7 @@ class EInvoiceDesktopView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10.w),
+                                      SizedBox(width: 40.w),
                                       Text("added_tax".tr,
                                           style: AppStyles.bodyRegularL),
                                     ],
@@ -326,7 +362,7 @@ class EInvoiceDesktopView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 10.w),
+                                      SizedBox(width: 40.w),
                                       Text("total_after_taxes".tr,
                                           style: AppStyles.bodyRegularL),
                                       Expanded(
@@ -378,5 +414,145 @@ class EInvoiceDesktopView extends StatelessWidget {
             ),
           );
         });
+  }
+}
+
+class ServicesTableWiget extends StatelessWidget {
+  const ServicesTableWiget({super.key, required this.services});
+  final List<PriceOfferService> services;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Table(
+        defaultColumnWidth: const IntrinsicColumnWidth(flex: 0.5),
+        border: TableBorder
+            .all(), // Allows to add a border decoration around your table
+        children: [
+          TableRow(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  '#',
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  'name'.tr,
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  'description'.tr,
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  'price'.tr,
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  'tax'.tr,
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(5.0.w),
+                child: Text(
+                  'sub_total'.tr,
+                  style: AppStyles.bodyBoldL,
+                ),
+              ),
+            ],
+          ),
+          for (PriceOfferService service in services)
+            TableRow(
+                decoration: BoxDecoration(
+                    color: services.indexOf(service) % 2 == 0
+                        ? Colors.grey.shade300
+                        : Colors.grey),
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Text(
+                      "${services.indexOf(service) + 1}",
+                      style: AppStyles.bodyBoldL,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Text(
+                      service.name,
+                      style: AppStyles.bodyBoldL,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Text(
+                      service.description,
+                      style: AppStyles.bodyBoldL,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          service.price,
+                          style: AppStyles.bodyBoldL,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          service.tax,
+                          style: AppStyles.bodyBoldL,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(5.0.w),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Text(
+                        service.subTotal,
+                        style: AppStyles.bodyBoldL,
+                      ),
+                    ),
+                  ),
+                ]),
+        ],
+      ),
+    );
   }
 }

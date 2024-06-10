@@ -1,4 +1,4 @@
-import 'dart:developer';
+// import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
@@ -95,7 +95,7 @@ class CartController extends GetxController {
           (element) => element.variantOptionName == option.variantOptionName);
       options.add(option);
     }
-    qty = 0;
+    qty = 1;
     await getProductVariant();
   }
 
@@ -119,7 +119,7 @@ class CartController extends GetxController {
     });
 
     response.fold((failure) {
-      log("HERE IS THE FAILURE  : ${failure.toString()}");
+      // log("HERE IS THE FAILURE  : ${failure.toString()}");
       Get.back();
       Get.dialog(AppDialogs.customDialog(
         isLottie: true,
@@ -161,7 +161,7 @@ class CartController extends GetxController {
   void deleteItemFromCart(id, {int? extraId, bool withBack = false}) async {
     AppLoaders.showLoading(); // log(selectedProduct!.name);
     // log(optionsIds.toString());
-    log(extraId.toString());
+    // log(extraId.toString());
     final DeleteItemFromCartUseCase deleteItemFromCartUseCase =
         Get.find<DeleteItemFromCartUseCase>();
     final response = await deleteItemFromCartUseCase(data: {
@@ -199,6 +199,7 @@ class CartController extends GetxController {
       "variants_options_id[]": optionsIds,
     });
     response.fold((failure) {}, (success) {
+      // log("${success.price} .... ,,,,, ..... ,,,,, ....");
       variantDetails = success;
       variantProductDetailsLoading(false);
       update();

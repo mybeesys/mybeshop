@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:mybeshop/features/main/domain/entities/additional_cost.dart';
 import 'package:mybeshop/features/main/domain/entities/customer.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice_item.dart';
+import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
 
 class Invoice extends Equatable {
   final int id;
@@ -12,6 +13,7 @@ class Invoice extends Equatable {
   final String date;
   final Customer customer;
   final String tax;
+  final List<PriceOfferService> services;
   final String discount;
   final List<AdditionalCost> additionalCosts;
   final String total;
@@ -30,6 +32,7 @@ class Invoice extends Equatable {
     required this.date,
     required this.customer,
     required this.tax,
+    required this.services,
     required this.discount,
     required this.additionalCosts,
     required this.total,
@@ -49,6 +52,7 @@ class Invoice extends Equatable {
         date,
         customer,
         tax,
+        services,
         discount,
         additionalCosts,
         total,

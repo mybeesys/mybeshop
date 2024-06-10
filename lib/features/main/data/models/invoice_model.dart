@@ -1,6 +1,7 @@
 import 'package:mybeshop/features/main/data/models/addtional_cost_model.dart';
 import 'package:mybeshop/features/main/data/models/customer_model.dart';
 import 'package:mybeshop/features/main/data/models/invoice_item_model.dart';
+import 'package:mybeshop/features/main/data/models/price_offer_service_model.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice.dart';
 
 class InvoiceModel extends Invoice {
@@ -13,6 +14,7 @@ class InvoiceModel extends Invoice {
     required super.date,
     required super.customer,
     required super.tax,
+    required super.services,
     required super.discount,
     required super.additionalCosts,
     required super.total,
@@ -32,6 +34,9 @@ class InvoiceModel extends Invoice {
         date: json["date"],
         customer: CustomerModel.fromJson(json["customer"]),
         tax: json["tax"],
+        services: List.from(json["services"])
+            .map((additonal) => PriceOfferServiceModel.fromJson(additonal))
+            .toList(),
         discount: json["discount"],
         additionalCosts: List.from(json["additionalCosts"])
             .map((additonal) => AdditionalCostModel.fromJson(additonal))

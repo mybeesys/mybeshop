@@ -11,6 +11,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       this.iconSize = 40,
       this.textStyle,
       this.keyboardType,
+      this.hint,
       this.validator});
   final IconData icon;
   final String label;
@@ -20,6 +21,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
   final TextStyle? textStyle;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       decoration: InputDecoration(
+        hintText: hint,
         label: Text(
           label,
         ),

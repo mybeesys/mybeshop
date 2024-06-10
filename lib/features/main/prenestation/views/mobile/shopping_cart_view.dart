@@ -160,18 +160,24 @@ class ShoppingCartView extends StatelessWidget {
                                                         Directionality(
                                                           textDirection:
                                                               TextDirection.ltr,
-                                                          child: Text(
-                                                            extra
-                                                                .priceFormatted,
-                                                            style: AppStyles
-                                                                .bodyRegularS
-                                                                .copyWith(
-                                                                    fontSize:
-                                                                        8.sp,
-                                                                    color: Colors
-                                                                        .white),
-                                                            textAlign: TextAlign
-                                                                .center,
+                                                          child: Directionality(
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .ltr,
+                                                            child: Text(
+                                                              extra
+                                                                  .priceFormatted,
+                                                              style: AppStyles
+                                                                  .bodyRegularS
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          8.sp,
+                                                                      color: Colors
+                                                                          .white),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            ),
                                                           ),
                                                         ),
                                                       ],
@@ -184,9 +190,12 @@ class ShoppingCartView extends StatelessWidget {
                                       ),
                                     ],
                                     SizedBox(height: 8.h),
-                                    Text(
-                                      item.priceFormatted,
-                                      style: AppStyles.bodyMediumM,
+                                    Directionality(
+                                      textDirection: TextDirection.ltr,
+                                      child: Text(
+                                        item.priceFormatted,
+                                        style: AppStyles.bodyMediumM,
+                                      ),
                                     ),
                                     SizedBox(height: 8.h),
                                     Row(
@@ -287,13 +296,19 @@ class ShoppingCartView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "sub_total".tr,
-                                style: AppStyles.bodyMediumS,
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Text(
+                                  "sub_total".tr,
+                                  style: AppStyles.bodyMediumS,
+                                ),
                               ),
-                              Text(
-                                controller.shoppingCart!.subTotalFotmatted,
-                                style: AppStyles.bodyMediumS,
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Text(
+                                  controller.shoppingCart!.subTotalFotmatted,
+                                  style: AppStyles.bodyMediumS,
+                                ),
                               ),
                             ],
                           ),

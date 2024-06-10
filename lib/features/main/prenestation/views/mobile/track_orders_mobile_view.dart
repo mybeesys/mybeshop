@@ -56,7 +56,8 @@ class TrackOrdersMobileView extends StatelessWidget {
                                 itemColor: Colors.grey.shade50,
                                 controller: controller.searchInput,
                                 onSubmitted: (v) => controller.onSearch(v),
-                                placeholder: "phone".tr,
+                                placeholder:
+                                    "${"phone".tr} - EXP: 966557013119",
                                 style: AppStyles.bodyMediumM.copyWith(
                                     fontFamily: "Alexandria",
                                     color: Colors.white),
@@ -194,10 +195,13 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Text(
-                              orders[index].tax,
-                              style: AppStyles.bodyMediumM
-                                  .copyWith(color: Colors.grey),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Text(
+                                orders[index].tax,
+                                style: AppStyles.bodyMediumM
+                                    .copyWith(color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),
@@ -212,10 +216,13 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Text(
-                              orders[index].delivery,
-                              style: AppStyles.bodyMediumM
-                                  .copyWith(color: Colors.grey),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Text(
+                                orders[index].delivery,
+                                style: AppStyles.bodyMediumM
+                                    .copyWith(color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),
@@ -230,10 +237,13 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Text(
-                              orders[index].discount,
-                              style: AppStyles.bodyMediumM
-                                  .copyWith(color: Colors.grey),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Text(
+                                orders[index].discount,
+                                style: AppStyles.bodyMediumM
+                                    .copyWith(color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),
@@ -250,10 +260,13 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Text(
-                              orders[index].total,
-                              style: AppStyles.bodyMediumM
-                                  .copyWith(color: Colors.grey),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Text(
+                                orders[index].total,
+                                style: AppStyles.bodyMediumM
+                                    .copyWith(color: Colors.grey),
+                              ),
                             ),
                           ],
                         ),

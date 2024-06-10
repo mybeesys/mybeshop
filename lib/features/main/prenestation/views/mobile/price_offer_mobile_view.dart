@@ -29,10 +29,10 @@ class PriceOfferMobileView extends StatelessWidget {
                   color: Colors.black,
                   child: WillPopScope(
                     onWillPop: () async {
-                      GlobalController.to.slug =
-                          controller.priceOffer?.store.slug;
+                      GlobalController.to
+                          .slugSetter(controller.priceOffer?.store.slug);
                       Get.offAllNamed(
-                        "${AppRoutes.main}/shop/${GlobalController.to.slug}",
+                        "${AppRoutes.main}shop/${GlobalController.to.slug}",
                       );
                       return Future(() => true);
                     },
@@ -208,7 +208,7 @@ class PriceOfferMobileView extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 10.w),
+                                            SizedBox(width: 40.w),
                                             Text(
                                               "discount".tr,
                                               style: AppStyles.bodyRegularS,
@@ -233,7 +233,7 @@ class PriceOfferMobileView extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 10.w),
+                                            SizedBox(width: 40.w),
                                             Text(
                                               "total_after_discount".tr,
                                               style: AppStyles.bodyRegularS,
@@ -256,7 +256,7 @@ class PriceOfferMobileView extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 10.w),
+                                            SizedBox(width: 40.w),
                                             Text(
                                               "tax".tr,
                                               style: AppStyles.bodyRegularS,
@@ -281,7 +281,7 @@ class PriceOfferMobileView extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(width: 10.w),
+                                            SizedBox(width: 40.w),
                                             Text(
                                               "total_after_taxes".tr,
                                               style: AppStyles.bodyRegularS,

@@ -4,6 +4,7 @@ import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
 import 'package:mybeshop/core/utils/helper/app_loaders_helper.dart';
 import 'package:mybeshop/core/utils/helper/validator.dart';
+import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/area.dart';
 import 'package:mybeshop/features/main/domain/entities/city.dart';
 import 'package:mybeshop/features/main/domain/entities/shopping_cart.dart';
@@ -260,10 +261,13 @@ class CheckoutController extends GetxController
 
   @override
   void onInit() {
-    shoppingCart = CartController.to.shoppingCart;
-    getStates();
-    tabController = TabController(length: 3, vsync: this);
-
+    if (GlobalController.to.slug != "") {
+      shoppingCart = CartController.to.shoppingCart;
+      getStates();
+      tabController = TabController(length: 3, vsync: this);
+    } else {
+      Get.back();
+    }
     super.onInit();
   }
 }

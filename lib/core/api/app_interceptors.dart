@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:get/get.dart' as getx;
@@ -16,9 +18,10 @@ class AppInterceptos implements Interceptor {
       // 'FcmToken': "${getx.Get.find<FirebaseMessagingService>().token}",
       // 'Store-UUID':
       //     "${DeviceInfoService.to.webBrowserInfo.product}${Random(200).nextInt(9999999)}",
-      'Store-UUID': '1234',
+      'Store-UUID': '${getx.Get.find<GlobalController>().storeUUID}',
       'Store-Slug': "${getx.Get.find<GlobalController>().slug}"
     };
+    log(options.headers.toString());
     handler.next(options);
   }
 

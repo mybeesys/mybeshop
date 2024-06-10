@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
+import 'package:mybeshop/core/utils/helper/extenstions.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
@@ -31,6 +32,7 @@ class HomeView extends StatelessWidget {
               ),
               actions: [
                 NavBarSocialMediaButtonWidget(
+                  url: GlobalController.to.storeInfo?.social["facebook"],
                   verticalMargin: 10.h,
                   icon: LineAwesomeIcons.facebook_f,
                   onPressed: () {
@@ -105,9 +107,12 @@ class HomeView extends StatelessWidget {
                             color: Colors.white,
                             height: double.infinity,
                             width: 150.w,
-                            child: GlobalController.to.storeInfo?.logo != null
+                            child: GlobalController.to.storeInfo?.cover != null
                                 ? Image.network(
-                                    GlobalController.to.storeInfo!.logo!)
+                                    GlobalController.to.storeInfo!.cover!,
+                                    height: 750.h,
+                                    fit: BoxFit.cover,
+                                  )
                                 : Image.asset(
                                     "assets/images/bg.png",
                                     height: 750.h,
@@ -127,7 +132,7 @@ class HomeView extends StatelessWidget {
                               ),
                               SizedBox(height: 10.h),
                               Text(
-                                "${GlobalController.to.storeInfo?.bio}",
+                                "${GlobalController.to.storeInfo?.bio.removeHtmlTags()}",
                                 style: AppStyles.bodyRegularS
                                     .copyWith(color: Colors.white),
                               ),
@@ -291,23 +296,31 @@ class HomeView extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          Text(
-                                            "${product.price!} ${product.currency}",
-                                            style: AppStyles.bodyBoldS.copyWith(
-                                              fontWeight: FontWeight.normal,
+                                          Directionality(
+                                            textDirection: TextDirection.ltr,
+                                            child: Text(
+                                              "${product.price!} ${product.currency}",
+                                              style:
+                                                  AppStyles.bodyBoldS.copyWith(
+                                                fontWeight: FontWeight.normal,
+                                              ),
                                             ),
                                           ),
                                           SizedBox(width: 10.w),
                                           if (product.hasDiscount ?? false) ...[
-                                            Text(
-                                              product.originalPrice!,
-                                              style: AppStyles.bodyMediumS
-                                                  .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.normal,
-                                                      decoration: TextDecoration
-                                                          .lineThrough,
-                                                      color: Colors.red),
+                                            Directionality(
+                                              textDirection: TextDirection.ltr,
+                                              child: Text(
+                                                product.originalPrice!,
+                                                style: AppStyles.bodyMediumS
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                        color: Colors.red),
+                                              ),
                                             ),
                                           ]
                                         ],

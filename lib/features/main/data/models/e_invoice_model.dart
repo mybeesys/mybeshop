@@ -10,7 +10,7 @@ class EInvoiceModel extends EInvoice {
   });
   factory EInvoiceModel.fromJson(Map<String, dynamic> json) {
     return EInvoiceModel(
-        storeInfo: json["storeInfo"] != null
+        storeInfo: json["store"] != null
             ? StoreInfoModel.fromJson(json["store"])
             : null,
         termsAndConditions: json["termsAndConditions"],

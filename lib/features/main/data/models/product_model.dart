@@ -36,10 +36,12 @@ class ProductModel extends Product {
       type: json["type"],
       image: json["image"],
       name: json["name"],
-      sku: json["sku"],
-      categoryId: json["categoryId"],
+      sku: json["sku"].toString(),
+      categoryId: json["categoryId"].toString(),
       description: json["description"],
-      calories: json["calories"] != null ? int.parse(json["calories"]) : null,
+      calories: json["calories"] != null
+          ? int.parse(json["calories"].toString())
+          : null,
       currency: json["currency"],
       tax: json["tax"],
       hasDiscount: json["hasDiscount"],

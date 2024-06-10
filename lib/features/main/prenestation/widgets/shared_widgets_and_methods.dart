@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+// import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ bool checkCanAdd(product) {
   if (product.type == "basic") {
     canAdd = product.inStock!;
   } else {
-    canAdd = CartController.to.variantDetails!.inStock!;
+    canAdd = CartController.to.variantDetails?.inStock ?? false;
   }
   return canAdd;
 }
@@ -54,7 +53,7 @@ bool checkIsInCart(Product product) {
   if (product.type == "basic") {
     inCart = product.inCart!;
   } else {
-    inCart = CartController.to.variantDetails!.inCart!;
+    inCart = CartController.to.variantDetails?.inCart ?? false;
   }
   return inCart;
 }
@@ -140,7 +139,7 @@ addToCartAction(Product product) async {
   bool canAdd = checkCanAdd(product);
   bool isInCart = checkIsInCart(product);
 
-  log("CAN ADD = ${checkCanAdd(product)}");
+  // log("CAN ADD = ${checkCanAdd(product)}");
   Get.dialog(AlertDialog(
     content: SizedBox(
       width: 500.w,
@@ -353,7 +352,7 @@ addToCartAction(Product product) async {
                           InputQty(
                             maxVal: product.type == "basic"
                                 ? (product.qty ?? 0)
-                                : CartController.to.variantDetails!.qty ?? 0,
+                                : CartController.to.variantDetails?.qty ?? 0,
                             initVal: CartController.to.qty,
                             minVal: 1,
                             steps: 1,
@@ -490,7 +489,7 @@ addToCartMobileAction(Product product) async {
   bool canAdd = checkCanAdd(product);
   bool isInCart = checkIsInCart(product);
 
-  log("CAN ADD = ${checkCanAdd(product)}");
+  // log("CAN ADD = ${checkCanAdd(product)}");
   Get.dialog(AlertDialog(
     content: SizedBox(
       width: 500.w,
@@ -679,7 +678,7 @@ addToCartMobileAction(Product product) async {
                           InputQty(
                             maxVal: product.type == "basic"
                                 ? (product.qty ?? 0)
-                                : CartController.to.variantDetails!.qty ?? 0,
+                                : CartController.to.variantDetails?.qty ?? 0,
                             initVal: CartController.to.qty,
                             minVal: 1,
                             steps: 1,

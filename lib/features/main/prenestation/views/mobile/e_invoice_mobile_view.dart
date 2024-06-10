@@ -5,6 +5,7 @@ import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice_item.dart';
+import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/e_invoice_controller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
@@ -27,10 +28,10 @@ class EInvoiceMobileView extends StatelessWidget {
                 color: Colors.black,
                 child: WillPopScope(
                   onWillPop: () async {
-                    GlobalController.to.slug =
-                        controller.eInvoice?.storeInfo?.slug;
+                    GlobalController.to
+                        .slugSetter(controller.eInvoice?.storeInfo?.slug);
                     Get.offAllNamed(
-                      "${AppRoutes.main}/shop/${GlobalController.to.slug}",
+                      "${AppRoutes.main}shop/${GlobalController.to.slug}",
                     );
                     return Future(() => true);
                   },
@@ -224,10 +225,14 @@ class EInvoiceMobileView extends StatelessWidget {
                                                             Alignment.center,
                                                         padding: EdgeInsets.all(
                                                             5.0.r),
-                                                        child: Text(
-                                                          item.price,
-                                                          style: AppStyles
-                                                              .bodyRegularS,
+                                                        child: Directionality(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          child: Text(
+                                                            item.price,
+                                                            style: AppStyles
+                                                                .bodyRegularS,
+                                                          ),
                                                         ),
                                                       ),
                                                       Container(
@@ -235,10 +240,14 @@ class EInvoiceMobileView extends StatelessWidget {
                                                             Alignment.center,
                                                         padding: EdgeInsets.all(
                                                             5.0.r),
-                                                        child: Text(
-                                                          item.discount,
-                                                          style: AppStyles
-                                                              .bodyRegularS,
+                                                        child: Directionality(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          child: Text(
+                                                            item.discount,
+                                                            style: AppStyles
+                                                                .bodyRegularS,
+                                                          ),
                                                         ),
                                                       ),
                                                       Container(
@@ -246,10 +255,14 @@ class EInvoiceMobileView extends StatelessWidget {
                                                             Alignment.center,
                                                         padding: EdgeInsets.all(
                                                             5.0.r),
-                                                        child: Text(
-                                                          item.tax,
-                                                          style: AppStyles
-                                                              .bodyRegularS,
+                                                        child: Directionality(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          child: Text(
+                                                            item.tax,
+                                                            style: AppStyles
+                                                                .bodyRegularS,
+                                                          ),
                                                         ),
                                                       ),
                                                       Container(
@@ -257,10 +270,14 @@ class EInvoiceMobileView extends StatelessWidget {
                                                             Alignment.center,
                                                         padding: EdgeInsets.all(
                                                             5.0.r),
-                                                        child: Text(
-                                                          item.subTotal,
-                                                          style: AppStyles
-                                                              .bodyRegularM,
+                                                        child: Directionality(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          child: Text(
+                                                            item.subTotal,
+                                                            style: AppStyles
+                                                                .bodyRegularM,
+                                                          ),
                                                         ),
                                                       ),
                                                     ]),
@@ -269,6 +286,21 @@ class EInvoiceMobileView extends StatelessWidget {
                                           ),
                                         ),
                                       ),
+                                      if (controller.eInvoice!.invoice.services
+                                          .isNotEmpty) ...[
+                                        SizedBox(height: 40.h),
+                                        Center(
+                                          child: Text(
+                                            "services".tr,
+                                            style: AppStyles.bodyBoldM,
+                                          ),
+                                        ),
+                                        SizedBox(height: 20.h),
+                                        ServicesTableWiget(
+                                          services: controller
+                                              .eInvoice!.invoice.services,
+                                        ),
+                                      ],
                                       SizedBox(height: 30.h),
                                       Row(
                                         children: [
@@ -284,7 +316,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 40.w),
                                           Text(
                                             "total".tr,
                                             style: AppStyles.bodyRegularS,
@@ -306,7 +338,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 40.w),
                                           Text("discount".tr,
                                               style: AppStyles.bodyRegularS),
                                         ],
@@ -326,7 +358,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 40.w),
                                           Text("total_after_discount".tr,
                                               style: AppStyles.bodyRegularS),
                                         ],
@@ -346,7 +378,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 40.w),
                                           Text("added_tax".tr,
                                               style: AppStyles.bodyRegularS),
                                         ],
@@ -366,7 +398,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 40.w),
                                           Text("total_after_taxes".tr,
                                               style: AppStyles.bodyRegularS),
                                         ],
@@ -431,6 +463,143 @@ class EInvoiceMobileView extends StatelessWidget {
               );
             });
       },
+    );
+  }
+}
+
+class ServicesTableWiget extends StatelessWidget {
+  const ServicesTableWiget({super.key, required this.services});
+  final List<PriceOfferService> services;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Table(
+          defaultColumnWidth: const IntrinsicColumnWidth(flex: 0.5),
+          border: TableBorder
+              .all(), // Allows to add a border decoration around your table
+          children: [
+            TableRow(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    '#',
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    'name'.tr,
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    'description'.tr,
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    'price'.tr,
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    'tax'.tr,
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(5.0.w),
+                  child: Text(
+                    'sub_total'.tr,
+                    style: AppStyles.bodyBoldS,
+                  ),
+                ),
+              ],
+            ),
+            for (PriceOfferService service in services)
+              TableRow(
+                  decoration: BoxDecoration(
+                      color: services.indexOf(service) % 2 == 0
+                          ? Colors.grey.shade300
+                          : Colors.grey),
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Text(
+                        "${services.indexOf(service) + 1}",
+                        style: AppStyles.bodyRegularS,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Text(
+                        service.name,
+                        style: AppStyles.bodyRegularS,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Text(
+                        service.description,
+                        style: AppStyles.bodyRegularS,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          service.price,
+                          style: AppStyles.bodyRegularS,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          service.tax,
+                          style: AppStyles.bodyRegularS,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.all(5.0.w),
+                      child: Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: Text(
+                          service.subTotal,
+                          style: AppStyles.bodyRegularS,
+                        ),
+                      ),
+                    ),
+                  ]),
+          ],
+        ),
+      ),
     );
   }
 }

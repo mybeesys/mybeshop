@@ -3,14 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 
 class NavBarSocialMediaButtonWidget extends StatelessWidget {
-  const NavBarSocialMediaButtonWidget(
-      {super.key,
-      required this.icon,
-      this.onPressed,
-      this.verticalMargin = 0.0});
+  const NavBarSocialMediaButtonWidget({
+    super.key,
+    required this.icon,
+    this.url,
+    this.onPressed,
+    this.verticalMargin = 0.0,
+  });
   final IconData icon;
   final Function()? onPressed;
   final double verticalMargin;
+  final String? url;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,12 +24,13 @@ class NavBarSocialMediaButtonWidget extends StatelessWidget {
         color: Colors.white,
       ),
       child: InkWell(
-          onTap: onPressed,
-          child: Icon(
-            icon,
-            size: 24.sp,
-            color: AppTheme.to.primaryColor,
-          )),
+        onTap: onPressed,
+        child: Icon(
+          icon,
+          size: 24.sp,
+          color: AppTheme.to.primaryColor,
+        ),
+      ),
     );
   }
 }

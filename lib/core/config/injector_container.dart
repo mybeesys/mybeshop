@@ -6,6 +6,7 @@ import 'package:mybeshop/core/api/dio_consumer.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/core/utils/services/local_storage_service/local_storage_service.dart';
 import 'package:mybeshop/core/utils/services/local_storage_service/local_storage_service_shared_preferences_impl.dart';
+import 'package:mybeshop/features/global/data/datasources/global_local_data_source.dart';
 import 'package:mybeshop/features/global/data/datasources/global_remote_data_source.dart';
 import 'package:mybeshop/features/global/data/repositories/global_repository_impl.dart';
 import 'package:mybeshop/features/global/domain/repositories/global_repository.dart';
@@ -77,9 +78,14 @@ class GlobalInjector {
     Get.lazyPut<GlobalRemoteDataSource>(
         () => GlobalRemoteDataSourceImpl(Get.find()),
         fenix: true);
+    Get.lazyPut<GlobalLocalDataSource>(
+        () => GlobalLocalDataSourceImpl(Get.find()),
+        fenix: true);
     // // Repositories
     Get.lazyPut<GlobalRepository>(
-        () => GlobalRepositoryImpl(globalRemoteDataSource: Get.find()),
+        () => GlobalRepositoryImpl(
+            globalRemoteDataSource: Get.find(),
+            globalLocalDataSource: Get.find()),
         fenix: true);
     // UseCases
     Get.lazyPut(() => GetStoreInfoUseCase(Get.find()), fenix: true);

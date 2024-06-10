@@ -71,7 +71,11 @@ class CheckoutView extends GetResponsiveView {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10.w),
+                            ],
+                          ),
+                          SizedBox(height: 15.h),
+                          Row(
+                            children: [
                               Expanded(
                                 child: TextFormField(
                                   controller: controller.phoneInput,
@@ -86,10 +90,9 @@ class CheckoutView extends GetResponsiveView {
                                     }
                                     return message;
                                   },
-                                  decoration: InputDecoration(
-                                    prefixIcon:
-                                        const Icon(LineAwesomeIcons.phone),
-                                    hintText: "phone".tr,
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(LineAwesomeIcons.phone),
+                                    hintText: "EXP: 966557013119",
                                   ),
                                 ),
                               ),
@@ -116,7 +119,7 @@ class CheckoutView extends GetResponsiveView {
                                     ),
                             ),
                           ]),
-                          SizedBox(height: 15.h),
+                          SizedBox(height: 20.h),
                           Row(
                             children: [
                               Expanded(
@@ -139,7 +142,7 @@ class CheckoutView extends GetResponsiveView {
                               )
                             ],
                           ),
-                          SizedBox(height: 15.h),
+                          SizedBox(height: 20.h),
                           Row(
                             children: [
                               Expanded(
@@ -162,6 +165,7 @@ class CheckoutView extends GetResponsiveView {
                               ),
                             ],
                           ),
+                          SizedBox(height: 10.h),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20.w, vertical: 10.h),
@@ -935,6 +939,7 @@ class PersonalInformationStepWidget extends StatelessWidget {
                                 controller: CheckoutController.to.phoneInput,
                                 label: "phone".tr,
                                 icon: LineAwesomeIcons.phone,
+                                hint: "EXP: 966557013119",
                                 validator: (v) {
                                   var message =
                                       Validator.validateRequired(v, "phone".tr);

@@ -27,6 +27,7 @@ dependencies:
   url_launcher: ^6.2.4
   dropdown_search: ^5.0.6
   input_quantity: ^2.2.0
+  uuid:
   intl:
 
 dev_dependencies:
