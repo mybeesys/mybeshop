@@ -40,6 +40,9 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Wrangler local state
+.wrangler/
+
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
