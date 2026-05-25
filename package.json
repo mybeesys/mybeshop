@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "bash scripts/cloudflare-build.sh",
-    "deploy": "wrangler versions upload"
+    "deploy": "bash scripts/cloudflare-deploy.sh"
   },
   "devDependencies": {
     "wrangler": "^4.94.0"
