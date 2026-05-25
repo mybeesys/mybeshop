@@ -1,0 +1,11 @@
+{
+  "name": "mybeshop",
+  "private": true,
+  "scripts": {
+    "build": "bash scripts/cloudflare-build.sh",
+    "deploy": "wrangler versions upload"
+  },
+  "devDependencies": {
+    "wrangler": "^4.94.0"
+  }
+}
