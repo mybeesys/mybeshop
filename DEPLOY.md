@@ -2,21 +2,25 @@
 
 ## Cloudflare dashboard settings
 
-Configure **two** steps (build, then deploy). Do not run deploy alone.
+Your logs show **only** the deploy command runs. Use **one** of these setups.
 
-| Step | Command |
-|------|---------|
-| **Build command** | `npm run build` |
-| **Deploy command** | `npm run deploy` |
+### Option A (recommended): single deploy command
 
-Or without npm scripts:
+| Setting | Value |
+|---------|--------|
+| **Build command** | *(leave empty)* |
+| **Deploy command** | `bash scripts/cloudflare-deploy.sh` |
+
+This builds `build/web` then runs `wrangler versions upload`.
+
+### Option B: separate build + deploy
 
 | Step | Command |
 |------|---------|
 | **Build command** | `bash scripts/cloudflare-build.sh` |
-| **Deploy command** | `npx wrangler versions upload` |
+| **Deploy command** | `npx wrangler versions upload --config wrangler.jsonc` |
 
-The build must produce `build/web/` before Wrangler uploads. That directory is configured in `wrangler.jsonc`.
+**Important:** Commit and push `wrangler.jsonc`, `package.json`, and `scripts/` before deploying.
 
 ## Local deploy
 
@@ -29,3 +33,14 @@ npm run deploy
 ## Worker name
 
 The worker name in `wrangler.jsonc` is `mybeshop`. Change it if your Cloudflare Worker uses a different name.
+
+## URLs
+
+| URL | Meaning |
+|-----|---------|
+| `https://mybeshop.mybeeerp.workers.dev/apple` | Production — `apple` is the store slug |
+| `https://ali-mybeshop.mybeeerp.workers.dev/apple` | Preview for Git branch `ali` only (not the store name) |
+
+Store links use `/{slug}` (e.g. `/apple`), not `/shop/apple`.
+
+Promote the latest Worker version in the Cloudflare dashboard so production uses `mybeshop.*` without the `ali-` prefix.

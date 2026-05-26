@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:mybeshop/core/config/app_routes.dart';
+import 'package:mybeshop/core/utils/store_slug_parser.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/features/main/domain/entities/supply_order_item.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/supply_order_controller.dart';
@@ -25,7 +25,7 @@ class SupplyOrderDesktopView extends StatelessWidget {
             onWillPop: () async {
               GlobalController.to.slug = controller.supplyOrder?.store.slug;
               Get.offAllNamed(
-                "${AppRoutes.main}/shop/${GlobalController.to.slug}",
+                StoreSlugParser.storePath(GlobalController.to.slug ?? ''),
               );
               return Future(() => true);
             },

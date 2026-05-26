@@ -53,8 +53,8 @@ class _DevStoreSlugSetupState extends State<DevStoreSlugSetup> {
                 ),
                 SizedBox(height: 12.h),
                 Text(
-                  'Local Chrome has no shop URL. Enter your store slug from MyBee (same as production /shop/{slug}), or open:\n'
-                  'http://localhost:<port>/shop/your-slug',
+                  'Local Chrome has no store in the URL. Enter your store slug (e.g. apple), or open:\n'
+                  'http://localhost:<port>/your-slug',
                   style: AppStyles.bodyBoldL,
                   textAlign: TextAlign.center,
                 ),

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/core/utils/store_slug_parser.dart';
+import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/price_offer_additional_cost.dart';
 import 'package:mybeshop/features/main/domain/entities/price_offer_product.dart';
 import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
-// import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/price_offer_controller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
-
-import '../../../../global/presentation/global_controller.dart';
 
 class PriceOfferDesktopView extends StatelessWidget {
   const PriceOfferDesktopView({super.key, required this.priceOfferNo});
@@ -27,7 +25,7 @@ class PriceOfferDesktopView extends StatelessWidget {
             onWillPop: () async {
               GlobalController.to.slugSetter(controller.priceOffer?.store.slug);
               Get.offAllNamed(
-                "${AppRoutes.main}shop/${GlobalController.to.slug}",
+                StoreSlugParser.storePath(GlobalController.to.slug ?? ''),
               );
               return Future(() => true);
             },
