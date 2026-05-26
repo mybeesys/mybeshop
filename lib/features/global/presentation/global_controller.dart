@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mybeshop/core/config/app_config.dart';
 import 'package:mybeshop/core/utils/platform/browser_location.dart';
+import 'package:mybeshop/core/utils/platform/browser_path.dart';
 import 'package:mybeshop/core/utils/store_slug_parser.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
@@ -26,11 +27,11 @@ class GlobalController extends SuperController {
   String? baseURL;
   StoreInfo? storeInfo;
   RxBool isLoading = true.obs;
+  String? storeLoadError;
 
-  bool get needsDevSlug =>
-      kIsWeb &&
-      StoreSlugParser.isLocalDevHost(baseURL ?? '') &&
-      (slug == null || slug!.isEmpty);
+  /// True when the web URL has no store slug (show slug entry instead of 404).
+  bool get needsStoreSlug =>
+      kIsWeb && (slug == null || slug!.isEmpty);
 
   Future<void> resolveStoreSlug() async {
     if (!kIsWeb) {
@@ -38,7 +39,8 @@ class GlobalController extends SuperController {
       return;
     }
     baseURL = getBrowserHref() ?? '';
-    slug = StoreSlugParser.parseFromHref(baseURL!) ?? '';
+    final slugFromUrl = StoreSlugParser.parseFromHref(baseURL!) ?? '';
+    slug = slugFromUrl;
 
     if (slug!.isEmpty) {
       slug = Get.find<LocalStorageService>().getString(_storeSlugStorageKey) ?? '';
@@ -59,11 +61,16 @@ class GlobalController extends SuperController {
     if (slug!.isEmpty) {
       return;
     }
+    storeLoadError = null;
     await Get.find<LocalStorageService>()
         .setString(_storeSlugStorageKey, slug!);
     isLoading(true);
     update();
     await getStoreInfo();
+    if (kIsWeb) {
+      replaceBrowserPath(StoreSlugParser.storePath(slug!));
+      baseURL = getBrowserHref() ?? baseURL;
+    }
     if (Get.isRegistered<MainController>()) {
       Get.find<MainController>().getCategories();
     }
@@ -79,14 +86,9 @@ class GlobalController extends SuperController {
     }
     log("THE SLUG IS : $slug");
     if (slug == null || slug!.isEmpty) {
-      if (StoreSlugParser.isLocalDevHost(baseURL ?? '')) {
-        if (Get.currentRoute == AppRoutes.error) {
-          Get.offAllNamed(AppRoutes.main);
-        }
-        return;
+      if (Get.currentRoute == AppRoutes.error) {
+        Get.offAllNamed(AppRoutes.main);
       }
-      Get.toNamed(AppRoutes.error,
-          arguments: {"message": "the_page_not_found".tr});
       return;
     }
     if (Get.currentRoute == AppRoutes.error) {
@@ -113,12 +115,26 @@ class GlobalController extends SuperController {
     final response = await getStoreInfoUseCase();
 
     response.fold((failure) {
+      isLoading(false);
+      if (kIsWeb) {
+        storeLoadError = failure.message;
+        if (failure.exception is NotFoundException) {
+          slug = '';
+          Get.find<LocalStorageService>().remove(_storeSlugStorageKey);
+        }
+        if (Get.currentRoute == AppRoutes.error) {
+          Get.offAllNamed(AppRoutes.main);
+        }
+        update();
+        return;
+      }
       if (failure.exception is NotFoundException) {
         Get.toNamed(AppRoutes.error, arguments: {"message": failure.message});
       }
-      isLoading(false);
+      update();
     }, (success) {
       storeInfo = success;
+      storeLoadError = null;
       log(storeInfo.toString());
       isLoading(false);
       update();
@@ -146,18 +162,16 @@ class GlobalController extends SuperController {
   }
 
   @override
-  void onInit() async {
-    await resolveStoreSlug();
-    await getStoreUUID();
-
-    await getStoreInfo();
+  void onInit() {
     super.onInit();
+    _bootstrap();
   }
 
-  @override
-  void onReady() {
+  Future<void> _bootstrap() async {
+    await resolveStoreSlug();
+    await getStoreUUID();
+    await getStoreInfo();
     navigateAfterCheck();
-    super.onReady();
   }
 
   void slugSetter(s) {

@@ -17,10 +17,10 @@ class MobileView extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return GetBuilder<ViewController>(
-              init: Get.find<ViewController>(),
-              builder: (controller) {
-                if (GlobalController.to.needsDevSlug) {
+          return GetBuilder<GlobalController>(
+              init: Get.find<GlobalController>(),
+              builder: (_) {
+                if (GlobalController.to.needsStoreSlug) {
                   return const DevStoreSlugSetup();
                 }
                 if (GlobalController.to.isLoading.value) {
@@ -30,12 +30,16 @@ class MobileView extends StatelessWidget {
                           height: 200.h),
                     ),
                   );
-                } else {
-                  return Scaffold(
-                    body: controller.views[controller.currentIndex],
-                    bottomNavigationBar: const CustomBottomNavigationBar(),
-                  );
                 }
+                return GetBuilder<ViewController>(
+                  init: Get.find<ViewController>(),
+                  builder: (controller) {
+                    return Scaffold(
+                      body: controller.views[controller.currentIndex],
+                      bottomNavigationBar: const CustomBottomNavigationBar(),
+                    );
+                  },
+                );
               });
         });
   }

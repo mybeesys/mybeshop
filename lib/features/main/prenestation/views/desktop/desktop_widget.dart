@@ -34,20 +34,26 @@ class DesktopWidget extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return GetBuilder(
-              init: MainController(Get.find(), Get.find()),
-              builder: (controller) {
-                if (GlobalController.to.needsDevSlug) {
+          return GetBuilder<GlobalController>(
+              init: Get.find<GlobalController>(),
+              builder: (_) {
+                if (GlobalController.to.needsStoreSlug) {
                   return const DevStoreSlugSetup();
                 }
+                if (GlobalController.to.isLoading.value) {
+                  return Scaffold(
+                    body: Center(
+                      child: Lottie.asset("assets/lotties/loader.json",
+                          height: 400),
+                    ),
+                  );
+                }
+                return GetBuilder(
+              init: MainController(Get.find(), Get.find()),
+              builder: (controller) {
                 return Scaffold(
                     key: _key,
-                    body: GlobalController.to.isLoading.value
-                        ? Center(
-                            child: Lottie.asset("assets/lotties/loader.json",
-                                height: 400),
-                          )
-                        : SingleChildScrollView(
+                    body: SingleChildScrollView(
                             child: Column(
                               children: [
                                 Container(
@@ -625,6 +631,7 @@ class DesktopWidget extends StatelessWidget {
                               ],
                             ),
                           ));
+              });
               });
         });
   }
