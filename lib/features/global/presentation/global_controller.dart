@@ -45,9 +45,7 @@ class GlobalController extends SuperController {
     if (slug!.isEmpty) {
       slug = Get.find<LocalStorageService>().getString(_storeSlugStorageKey) ?? '';
     }
-    if (slug!.isEmpty &&
-        StoreSlugParser.isLocalDevHost(baseURL!) &&
-        AppConfig.defaultStoreSlug.isNotEmpty) {
+    if (slug!.isEmpty && AppConfig.defaultStoreSlug.isNotEmpty) {
       slug = AppConfig.defaultStoreSlug;
     }
     if (slug!.isNotEmpty) {

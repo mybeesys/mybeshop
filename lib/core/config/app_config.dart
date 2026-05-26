@@ -5,6 +5,6 @@ class AppConfig {
   /// Pass at run time: `--dart-define=STORE_SLUG=your-store-slug`
   static const String defaultStoreSlug = String.fromEnvironment(
     'STORE_SLUG',
-    defaultValue: '',
+    defaultValue: 'apple',
   );
 }
