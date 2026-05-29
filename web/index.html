@@ -31,6 +31,14 @@
 
   <title>mybeshop</title>
   <link rel="manifest" href="manifest.json">
+  <script>
+    // Before Flutter loads: never keep /error as the entry URL (causes 404 flash on deploy).
+    (function () {
+      if (window.location.pathname === '/error') {
+        window.history.replaceState(null, '', '/');
+      }
+    })();
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>

@@ -28,6 +28,7 @@ class GlobalController extends SuperController {
   StoreInfo? storeInfo;
   RxBool isLoading = true.obs;
   String? storeLoadError;
+  bool bootstrapComplete = false;
 
   /// True when the web URL has no store slug (show slug entry instead of 404).
   bool get needsStoreSlug =>
@@ -203,14 +204,23 @@ class GlobalController extends SuperController {
   @override
   void onInit() {
     super.onInit();
-    _bootstrap();
+    if (!bootstrapComplete) {
+      bootstrap();
+    }
   }
 
-  Future<void> _bootstrap() async {
+  /// Loads store slug + store info before the UI should call APIs.
+  Future<void> bootstrap() async {
+    if (bootstrapComplete) {
+      return;
+    }
+    isLoading(true);
     await resolveStoreSlug();
     await getStoreUUID();
     await getStoreInfo();
     navigateAfterCheck();
+    bootstrapComplete = true;
+    update();
   }
 
   void slugSetter(s) {

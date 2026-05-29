@@ -17,7 +17,7 @@ if ! command -v flutter >/dev/null 2>&1; then
 fi
 
 flutter pub get
-flutter build web --release
+flutter build web --release --base-href=/
 
 if [ ! -f build/web/index.html ]; then
   echo "Build failed: build/web/index.html was not created." >&2

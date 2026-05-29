@@ -87,7 +87,8 @@ class MainController extends GetxController {
   Future<void> _loadCatalogWhenReady() async {
     final global = GlobalController.to;
     var attempts = 0;
-    while (!_hasStoreSlug(global) && attempts < 100) {
+    while ((!global.bootstrapComplete || !_hasStoreSlug(global)) &&
+        attempts < 200) {
       await Future.delayed(const Duration(milliseconds: 50));
       attempts++;
     }
@@ -100,7 +101,7 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     final global = GlobalController.to;
-    if (_hasStoreSlug(global)) {
+    if (global.bootstrapComplete && _hasStoreSlug(global)) {
       getCategories();
     } else {
       _loadCatalogWhenReady();
