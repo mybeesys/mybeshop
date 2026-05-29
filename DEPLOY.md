@@ -2,45 +2,39 @@
 
 ## Cloudflare dashboard settings
 
-Your logs show **only** the deploy command runs. Use **one** of these setups.
-
-### Option A (recommended): single deploy command
-
 | Setting | Value |
 |---------|--------|
 | **Build command** | *(leave empty)* |
 | **Deploy command** | `bash scripts/cloudflare-deploy.sh` |
 
-This builds `build/web` then runs `wrangler versions upload`.
-
-### Option B: separate build + deploy
-
-| Step | Command |
-|------|---------|
-| **Build command** | `bash scripts/cloudflare-build.sh` |
-| **Deploy command** | `npx wrangler versions upload --config wrangler.jsonc` |
-
-**Important:** Commit and push `wrangler.jsonc`, `package.json`, and `scripts/` before deploying.
+Do **not** pass `--assets` on the wrangler CLI — it overrides `wrangler.jsonc` and breaks SPA routing (`/apple` returns Chrome 404).
 
 ## Local deploy
 
 ```bash
 npm install
-npm run build
 npm run deploy
 ```
 
-## Worker name
+Requires `CLOUDFLARE_API_TOKEN` or `wrangler login`.
 
-The worker name in `wrangler.jsonc` is `mybeshop`. Change it if your Cloudflare Worker uses a different name.
-
-## URLs
+## Store URLs
 
 | URL | Meaning |
 |-----|---------|
-| `https://mybeshop.mybeeerp.workers.dev/apple` | Production — `apple` is the store slug |
-| `https://ali-mybeshop.mybeeerp.workers.dev/apple` | Preview for Git branch `ali` only (not the store name) |
+| `https://mybeshop.mybeeerp.workers.dev/apple` | Production |
+| `https://ali-mybeshop.mybeeerp.workers.dev/apple` | Preview for Git branch `ali` |
 
-Store links use `/{slug}` (e.g. `/apple`), not `/shop/apple`.
+`apple` = store slug (change per store). Path shape: `/{slug}` not `/shop/apple`.
 
-Promote the latest Worker version in the Cloudflare dashboard so production uses `mybeshop.*` without the `ali-` prefix.
+## Two different “404” errors
+
+| What you see | Cause | Fix |
+|--------------|-------|-----|
+| Chrome gray page: “This page can’t be found” on `/apple` | Production Worker missing SPA config | Redeploy with `bash scripts/cloudflare-deploy.sh`, then **Promote** latest version |
+| Flutter 404 Lottie + Arabic text on `/error` | App redirected to `/error` (old deploy or bad slug) | Open `/apple` (your slug), redeploy latest code, use Incognito |
+
+## After deploy
+
+1. Cloudflare Dashboard → **Workers** → **mybeshop** → **Deployments** → **Promote** latest to production.
+2. Test: `https://mybeshop.mybeeerp.workers.dev/apple` must return **200** (not Chrome 404).
