@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,14 @@ class App extends StatelessWidget {
           translations: Languages(),
           getPages: AppRoutes.routes,
           initialRoute: AppRoutes.main,
+          routingCallback: (routing) {
+            if (!kIsWeb || routing?.current == null) {
+              return;
+            }
+            if (routing!.current == AppRoutes.error) {
+              GlobalController.to.recoverFromErrorRoute();
+            }
+          },
           theme: AppTheme.to.appTheme(),
         );
       },

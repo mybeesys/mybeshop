@@ -1,80 +1,60 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/features/global/presentation/global_controller.dart';
 
-class Error404View extends GetResponsiveView {
-  Error404View({super.key});
-  final arguments = Get.arguments;
+class Error404View extends StatefulWidget {
+  const Error404View({super.key});
+
   @override
-  Widget? desktop() {
-    return Scaffold(
-        body: Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 50.w),
-      child: Column(
-        children: [
-          Expanded(child: Lottie.asset("assets/lotties/404.json")),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            arguments == null ? "Error" : "${arguments?["message"]}",
-            style: AppStyles.heading2,
-          ),
-          // SizedBox(height: 40.h),
-          // MaterialButton(onPressed: (){},child: Text("data"),)
-        ],
-      ),
-    ));
+  State<Error404View> createState() => _Error404ViewState();
+}
+
+class _Error404ViewState extends State<Error404View> {
+  @override
+  void initState() {
+    super.initState();
+    if (kIsWeb) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GlobalController.to.recoverFromErrorRoute();
+      });
+    }
   }
 
   @override
-  Widget? phone() {
-    return Scaffold(
-        body: Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 50.h),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Lottie.asset("assets/lotties/404.json", height: 130.h),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            arguments == null ? "Error" : "${arguments?["message"]}",
-            style: AppStyles.heading2,
-          ),
-          // SizedBox(height: 40.h),
-          // MaterialButton(onPressed: (){},child: Text("data"),)
-        ],
-      ),
-    ));
-  }
+  Widget build(BuildContext context) {
+    final arguments = Get.arguments;
+    final message = arguments == null
+        ? 'the_page_not_found'.tr
+        : '${arguments['message']}';
 
-  @override
-  Widget? tablet() {
     return Scaffold(
-        body: Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(vertical: 50.w),
-      child: Column(
-        children: [
-          Expanded(child: Lottie.asset("assets/lotties/404.json")),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            arguments == null ? "Error" : "${arguments?["message"]}",
-            style: AppStyles.heading2,
-          ),
-          // SizedBox(height: 40.h),
-          // MaterialButton(onPressed: (){},child: Text("data"),)
-        ],
+      body: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 50.w, horizontal: 24.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(child: Lottie.asset('assets/lotties/404.json')),
+            SizedBox(height: 20.h),
+            Text(
+              message,
+              style: AppStyles.heading2,
+              textAlign: TextAlign.center,
+            ),
+            if (kIsWeb) ...[
+              SizedBox(height: 24.h),
+              FilledButton(
+                onPressed: GlobalController.to.recoverFromErrorRoute,
+                child: Text('back_to_home'.tr),
+              ),
+            ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

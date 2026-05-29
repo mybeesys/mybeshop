@@ -33,12 +33,56 @@ class GlobalController extends SuperController {
   bool get needsStoreSlug =>
       kIsWeb && (slug == null || slug!.isEmpty);
 
+  void _syncStoreUrlInBrowser() {
+    if (!kIsWeb || slug == null || slug!.isEmpty) {
+      return;
+    }
+    final path = Uri.tryParse(baseURL ?? '')?.path ?? '';
+    if (path.contains('price-offers') ||
+        path.contains('supply-orders') ||
+        path.contains('envoice') ||
+        path.contains('einvoice')) {
+      return;
+    }
+    // Only normalize generic entry URLs — not /checkout, /settings, etc.
+    if (path == AppRoutes.error || path == '/') {
+      replaceBrowserPath(StoreSlugParser.storePath(slug!));
+      baseURL = getBrowserHref() ?? baseURL;
+    }
+  }
+
+  /// Leaves `/error` and restores the store URL on web (PathUrlStrategy keeps `/error` in the address bar otherwise).
+  void recoverFromErrorRoute() {
+    if (!kIsWeb) {
+      return;
+    }
+    if (slug == null || slug!.isEmpty) {
+      replaceBrowserPath('/');
+      if (Get.currentRoute == AppRoutes.error) {
+        Get.offAllNamed(AppRoutes.main);
+      }
+      update();
+      return;
+    }
+    replaceBrowserPath(StoreSlugParser.storePath(slug!));
+    baseURL = getBrowserHref() ?? baseURL;
+    if (Get.currentRoute == AppRoutes.error) {
+      Get.offAllNamed(AppRoutes.main);
+    }
+    update();
+  }
+
   Future<void> resolveStoreSlug() async {
     if (!kIsWeb) {
       baseURL = '';
       return;
     }
     baseURL = getBrowserHref() ?? '';
+    final browserPath = Uri.tryParse(baseURL!)?.path ?? '';
+    if (browserPath == AppRoutes.error) {
+      replaceBrowserPath('/');
+      baseURL = getBrowserHref() ?? baseURL;
+    }
     final slugFromUrl = StoreSlugParser.parseFromHref(baseURL!) ?? '';
     slug = slugFromUrl;
 
@@ -72,9 +116,7 @@ class GlobalController extends SuperController {
     if (Get.isRegistered<MainController>()) {
       Get.find<MainController>().getCategories();
     }
-    if (Get.currentRoute == AppRoutes.error) {
-      Get.offAllNamed(AppRoutes.main);
-    }
+    recoverFromErrorRoute();
     update();
   }
 
@@ -84,14 +126,11 @@ class GlobalController extends SuperController {
     }
     log("THE SLUG IS : $slug");
     if (slug == null || slug!.isEmpty) {
-      if (Get.currentRoute == AppRoutes.error) {
-        Get.offAllNamed(AppRoutes.main);
-      }
+      recoverFromErrorRoute();
       return;
     }
-    if (Get.currentRoute == AppRoutes.error) {
-      Get.offAllNamed(AppRoutes.main);
-    }
+    recoverFromErrorRoute();
+    _syncStoreUrlInBrowser();
     if (baseURL!.contains("price-offers")) {
       Get.offAllNamed("${AppRoutes.priceOffer}/${slug ?? ""}");
     } else if (baseURL!.contains("supply-orders")) {
@@ -120,9 +159,7 @@ class GlobalController extends SuperController {
           slug = '';
           Get.find<LocalStorageService>().remove(_storeSlugStorageKey);
         }
-        if (Get.currentRoute == AppRoutes.error) {
-          Get.offAllNamed(AppRoutes.main);
-        }
+        recoverFromErrorRoute();
         update();
         return;
       }
@@ -135,6 +172,10 @@ class GlobalController extends SuperController {
       storeLoadError = null;
       log(storeInfo.toString());
       isLoading(false);
+      if (kIsWeb) {
+        _syncStoreUrlInBrowser();
+        recoverFromErrorRoute();
+      }
       update();
       if (Get.isRegistered<MainController>()) {
         Get.find<MainController>().update();
