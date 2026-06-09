@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
@@ -55,8 +54,8 @@ class CartWidget extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 10.h),
-                      const Divider(),
-                      SizedBox(height: 90.h),
+                      const Divider(height: 1),
+                      SizedBox(height: 16.h),
                       if (controller.shopingCartLoading.value)
                         ListView.builder(
                             itemCount: 10,
@@ -76,14 +75,18 @@ class CartWidget extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Center(
-                                child: Lottie.asset(
-                                    "assets/lotties/empty_cart.json",
-                                    height: 400.h),
+                              Icon(
+                                LineAwesomeIcons.shopping_bag,
+                                size: 56.sp,
+                                color: AppTheme.to.greyColor.withOpacity(0.4),
                               ),
-                              SizedBox(height: 20.h),
-                              Text("your_cart_is_empty".tr,
-                                  style: AppStyles.bodyMediumXL),
+                              SizedBox(height: 12.h),
+                              Text(
+                                'your_cart_is_empty'.tr,
+                                style: AppStyles.bodyMediumM.copyWith(
+                                  color: AppTheme.to.greyColor,
+                                ),
+                              ),
                             ],
                           ),
                         )
