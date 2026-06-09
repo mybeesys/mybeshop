@@ -55,7 +55,7 @@ class AppStyles {
     fontSize: 16.sp,
   );
   static TextStyle bodySemiBoldM = TextStyle(
-    fontWeight: FontWeight.w300,
+    fontWeight: FontWeight.w600,
     fontSize: 14.sp,
   );
   static TextStyle bodySemiBoldS = TextStyle(

@@ -74,12 +74,10 @@ MaterialButton addToCartButton(
             await addToCartAction(product);
           },
     minWidth: width,
-    color: AppTheme.to.primaryColor,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(12),
-      bottomRight: Radius.circular(12),
-    )),
+    color: AppTheme.to.accentColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.r),
+    ),
     child: CartController.to.productSelectedLoading.value &&
             product == CartController.to.selectedProduct
         ? SizedBox(
@@ -101,32 +99,42 @@ MaterialButton addToCartButton(
 }
 
 Widget addToCartMobileButton(Product product) {
+  final loading = CartController.to.productSelectedLoading.value &&
+      product == CartController.to.selectedProduct;
+
   return Material(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.r)),
+    color: Colors.transparent,
     child: InkWell(
-      borderRadius: BorderRadius.circular(32.r),
-      // disabledColor: AppTheme.to.primaryColor.withOpacity(0.4),
-      onTap: CartController.to.productSelectedLoading.value &&
-              product == CartController.to.selectedProduct
+      borderRadius: BorderRadius.circular(12.r),
+      onTap: loading
           ? null
           : () async {
               await addToCartMobileAction(product);
             },
       child: Container(
-        width: 42.h,
-        height: 42.h,
+        width: 44.h,
+        height: 44.h,
         decoration: BoxDecoration(
-          color: AppTheme.to.primaryColor,
-          borderRadius: BorderRadius.circular(24.r),
+          color: AppTheme.to.accentColor,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.to.accentColor.withOpacity(0.35),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: CartController.to.productSelectedLoading.value &&
-                product == CartController.to.selectedProduct
-            ? CircularProgressIndicator(
-                strokeWidth: 3,
-                color: AppTheme.to.primaryColor,
+        child: loading
+            ? Padding(
+                padding: EdgeInsets.all(10.r),
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
               )
             : const Icon(
-                LineAwesomeIcons.add_to_shopping_cart,
+                LineAwesomeIcons.plus,
                 color: Colors.white,
               ),
       ),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
+import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/core/utils/helper/app_shimmer_loader.dart';
@@ -53,6 +54,7 @@ class DesktopWidget extends StatelessWidget {
               builder: (controller) {
                 return Scaffold(
                     key: _key,
+                    backgroundColor: AppTheme.to.backgroundColor,
                     body: SingleChildScrollView(
                             child: Column(
                               children: [
@@ -672,7 +674,8 @@ Widget productCard({
                           .length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 1.20),
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.72),
                       itemBuilder: (context, index) {
                         return HorizontalProductCardWidget(
                             product: Get.find<MainController>()
@@ -726,37 +729,45 @@ class VerticalProductCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 280.h,
-      clipBehavior: Clip.hardEdge,
-      margin: EdgeInsets.only(bottom: 30.h),
-      decoration: BoxDecoration(
-          color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
+      clipBehavior: Clip.antiAlias,
+      margin: EdgeInsets.only(bottom: 16.h),
+      decoration: AppDecorations.card(radius: AppDecorations.radiusL),
       child: Row(
         children: [
           Stack(
             children: [
-              Container(
-                height: 130.w,
-                width: 130.w,
-                decoration: BoxDecoration(color: Colors.grey.shade100),
-                child: Image.network(
-                  product.images.isNotEmpty
-                      ? product.images[0]
-                      : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png",
-                  fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(AppDecorations.radiusL),
+                  bottomLeft: Radius.circular(AppDecorations.radiusL),
+                ),
+                child: Container(
+                  height: double.infinity,
+                  width: 130.w,
+                  color: AppTheme.to.backgroundColor,
+                  child: Image.network(
+                    product.images.isNotEmpty
+                        ? product.images[0]
+                        : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               if (product.hasDiscount != null && product.hasDiscount!)
                 Positioned(
-                  right: 0,
-                  top: 0,
+                  left: 8.w,
+                  top: 8.h,
                   child: Container(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 1, horizontal: 3),
-                    decoration: const BoxDecoration(color: Colors.red),
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: AppTheme.to.saleColor,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                     child: Text(
                       "${product.discountPercent}%",
                       style:
-                          AppStyles.bodyMediumL.copyWith(color: Colors.white),
+                          AppStyles.bodyBoldS.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
@@ -844,107 +855,92 @@ class HorizontalProductCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110.h,
-      width: 50.w,
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.only(top: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(12),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            blurRadius: 10,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
+      margin: EdgeInsets.all(8.w),
+      decoration: AppDecorations.card(radius: AppDecorations.radiusL),
+      clipBehavior: Clip.antiAlias,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Image.network(
-                          product.images.isNotEmpty
-                              ? product.images[0]
-                              : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png",
-                          height: 300.h,
-                        ),
-                      ),
-                      Text(
-                        product.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppStyles.heading5,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      // if (product.type == "basic")
-                      Row(
-                        children: [
-                          Text(
-                            "${product.currency} ${product.price!}",
-                            style: AppStyles.bodyBoldL.copyWith(
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                          SizedBox(width: 10.w),
-                          if (product.hasDiscount ?? false) ...[
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Text(
-                                product.originalPrice!,
-                                style: AppStyles.bodyMediumM.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                    decoration: TextDecoration.lineThrough,
-                                    color: Colors.red),
-                              ),
-                            ),
-                          ]
-                        ],
-                      ),
-
-                      if (getHasExtrasOrVariantsText(product) != null) ...[
-                        SizedBox(height: 10.h),
-                        Text(
-                          getHasExtrasOrVariantsText(product)!,
-                          style: AppStyles.bodyMediumM
-                              .copyWith(color: AppTheme.to.greyColor),
-                        ),
-                      ],
-                    ]),
+              AspectRatio(
+                aspectRatio: 1.1,
+                child: Container(
+                  color: AppTheme.to.backgroundColor,
+                  padding: EdgeInsets.all(12.w),
+                  child: Image.network(
+                    product.images.isNotEmpty
+                        ? product.images[0]
+                        : "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png",
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
-              if (product.hasDiscount != null && product.hasDiscount!)
+              if (product.hasDiscount ?? false)
                 Positioned(
-                  right: 0,
-                  top: 0,
+                  top: 8.h,
+                  left: 8.w,
                   child: Container(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 3, horizontal: 4),
-                    decoration: const BoxDecoration(color: Colors.red),
+                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: AppTheme.to.saleColor,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
                     child: Text(
-                      "${product.discountPercent}%",
-                      style:
-                          AppStyles.bodyMediumL.copyWith(color: Colors.white),
+                      '${product.discountPercent}%',
+                      style: AppStyles.bodyBoldS.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
             ],
           ),
-          const Spacer(),
-          addToCartButton(
-            product,
-            height: 140.h,
-          )
+          Padding(
+            padding: EdgeInsets.fromLTRB(12.w, 0, 12.w, 12.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppStyles.bodyBoldM,
+                ),
+                SizedBox(height: 6.h),
+                Row(
+                  children: [
+                    Text(
+                      '${product.currency} ${product.price!}',
+                      style: AppStyles.bodyBoldM.copyWith(
+                        color: AppTheme.to.primaryColor,
+                      ),
+                    ),
+                    if (product.hasDiscount ?? false) ...[
+                      SizedBox(width: 8.w),
+                      Text(
+                        product.originalPrice!,
+                        style: AppStyles.bodyRegularS.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          color: AppTheme.to.greyColor,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                if (getHasExtrasOrVariantsText(product) != null) ...[
+                  SizedBox(height: 4.h),
+                  Text(
+                    getHasExtrasOrVariantsText(product)!,
+                    style: AppStyles.bodyRegularS.copyWith(
+                      color: AppTheme.to.greyColor,
+                    ),
+                  ),
+                ],
+                SizedBox(height: 8.h),
+                addToCartButton(product, height: 44.h, width: double.infinity),
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
+import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/features/global/presentation/widgets/dev_store_slug_setup.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/mobile/view_contorller.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/mobile/custom_bottom_navigation_bar.dart';
@@ -35,6 +36,7 @@ class MobileView extends StatelessWidget {
                   init: Get.find<ViewController>(),
                   builder: (controller) {
                     return Scaffold(
+                      backgroundColor: AppTheme.to.backgroundColor,
                       body: controller.views[controller.currentIndex],
                       bottomNavigationBar: const CustomBottomNavigationBar(),
                     );
