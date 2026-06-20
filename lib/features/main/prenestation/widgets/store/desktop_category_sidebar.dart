@@ -74,12 +74,12 @@ class _CategoryTile extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
             decoration: BoxDecoration(
               color: selected
-                  ? AppTheme.to.accentColor.withOpacity(0.1)
+                  ? AppTheme.to.primaryColor.withOpacity(0.1)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(AppDecorations.radiusM),
               border: Border.all(
                 color: selected
-                    ? AppTheme.to.accentColor
+                    ? AppTheme.to.primaryColor
                     : AppTheme.to.borderColor,
               ),
             ),
@@ -90,7 +90,7 @@ class _CategoryTile extends StatelessWidget {
                     category.name,
                     style: AppStyles.bodyMediumM.copyWith(
                       color: selected
-                          ? AppTheme.to.accentColor
+                          ? AppTheme.to.primaryColor
                           : AppTheme.to.primaryColor,
                       fontWeight:
                           selected ? FontWeight.w600 : FontWeight.w500,

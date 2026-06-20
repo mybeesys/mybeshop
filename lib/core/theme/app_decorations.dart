@@ -12,7 +12,7 @@ class AppDecorations {
 
   static List<BoxShadow> get cardShadow => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.06),
+          color: AppTheme.to.primaryColor.withOpacity(0.06),
           blurRadius: 16,
           offset: const Offset(0, 4),
         ),
@@ -20,7 +20,7 @@ class AppDecorations {
 
   static List<BoxShadow> get elevatedShadow => [
         BoxShadow(
-          color: Colors.black.withOpacity(0.08),
+          color: AppTheme.to.primaryColor.withOpacity(0.1),
           blurRadius: 24,
           offset: const Offset(0, 8),
         ),
@@ -29,31 +29,36 @@ class AppDecorations {
   static BoxDecoration card({Color? color, double? radius}) => BoxDecoration(
         color: color ?? AppTheme.to.surfaceColor,
         borderRadius: BorderRadius.circular(radius ?? radiusL),
-        border: Border.all(color: AppTheme.to.borderColor),
+        border: Border.all(
+          color: AppTheme.to.primaryColor.withOpacity(0.08),
+        ),
         boxShadow: cardShadow,
       );
 
   static BoxDecoration heroBanner() => BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
           colors: [
-            AppTheme.to.primaryColor,
-            AppTheme.to.primaryColor.withOpacity(0.88),
+            AppTheme.to.primaryColor.withOpacity(0.22),
+            AppTheme.to.surfaceColor,
+            AppTheme.to.surfaceColor,
           ],
+          stops: const [0.0, 0.45, 1.0],
         ),
         borderRadius: BorderRadius.circular(radiusXL),
+        border: Border.all(color: AppTheme.to.primaryColor.withOpacity(0.12)),
         boxShadow: elevatedShadow,
       );
 
   static BoxDecoration pill({bool selected = false}) => BoxDecoration(
         color: selected
-            ? AppTheme.to.primaryColor
+            ? AppTheme.to.primaryColor.withOpacity(0.18)
             : AppTheme.to.surfaceColor,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(
           color: selected
-              ? AppTheme.to.primaryColor
+              ? AppTheme.to.primaryColor.withOpacity(0.35)
               : AppTheme.to.borderColor,
         ),
       );

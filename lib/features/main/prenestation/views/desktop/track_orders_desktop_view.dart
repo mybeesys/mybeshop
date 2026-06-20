@@ -10,6 +10,7 @@ import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/order.dart';
 import 'package:mybeshop/features/main/domain/entities/order_detail.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/track_orders_contorller.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
 class TrackOrdersDesktopView extends StatelessWidget {
@@ -54,7 +55,7 @@ class TrackOrdersDesktopView extends StatelessWidget {
                           onSubmitted: (v) => controller.onSearch(v),
                           placeholder: "phone".tr,
                           style: AppStyles.bodyMediumXL.copyWith(
-                              fontFamily: "Alexandria", color: Colors.white),
+                              fontFamily: "Cairo", color: Colors.white),
                         )),
                     SizedBox(height: 50.h),
                     TabBar(
@@ -184,8 +185,9 @@ class OrdersListWidget extends StatelessWidget {
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
-                        Text(
-                          orders[index].tax,
+                        RiyalPriceText(
+                          amount: orders[index].tax,
+                          formatted: true,
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
@@ -202,8 +204,9 @@ class OrdersListWidget extends StatelessWidget {
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
-                        Text(
-                          orders[index].delivery,
+                        RiyalPriceText(
+                          amount: orders[index].delivery,
+                          formatted: true,
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
@@ -220,8 +223,9 @@ class OrdersListWidget extends StatelessWidget {
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
-                        Text(
-                          orders[index].discount,
+                        RiyalPriceText(
+                          amount: orders[index].discount,
+                          formatted: true,
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
@@ -240,8 +244,9 @@ class OrdersListWidget extends StatelessWidget {
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
-                        Text(
-                          orders[index].total,
+                        RiyalPriceText(
+                          amount: orders[index].total,
+                          formatted: true,
                           style: AppStyles.bodyMediumL
                               .copyWith(color: Colors.grey),
                         ),
@@ -337,14 +342,11 @@ class OrdersListWidget extends StatelessWidget {
                                                           AppStyles.bodyMediumM,
                                                     ),
                                                     SizedBox(height: 10.h),
-                                                    Directionality(
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                      child: Text(
-                                                        detail.price,
-                                                        style: AppStyles
-                                                            .bodyMediumM,
-                                                      ),
+                                                    RiyalPriceText(
+                                                      amount: detail.price,
+                                                      formatted: true,
+                                                      style: AppStyles
+                                                          .bodyMediumM,
                                                     ),
                                                   ],
                                                 ),

@@ -7,6 +7,7 @@ import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/invoice_item.dart';
 import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/e_invoice_controller.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
 class EInvoiceDesktopView extends StatelessWidget {
@@ -195,56 +196,40 @@ class EInvoiceDesktopView extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    child: Text(
-                                                      item.price,
-                                                      style:
-                                                          AppStyles.bodyBoldL,
-                                                    ),
+                                                  child: RiyalPriceText(
+                                                    amount: item.price,
+                                                    formatted: true,
+                                                    style: AppStyles.bodyBoldL,
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    child: Text(
-                                                      item.discount,
-                                                      style:
-                                                          AppStyles.bodyBoldL,
-                                                    ),
+                                                  child: RiyalPriceText(
+                                                    amount: item.discount,
+                                                    formatted: true,
+                                                    style: AppStyles.bodyBoldL,
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    child: Text(
-                                                      item.tax,
-                                                      style:
-                                                          AppStyles.bodyBoldL,
-                                                    ),
+                                                  child: RiyalPriceText(
+                                                    amount: item.tax,
+                                                    formatted: true,
+                                                    style: AppStyles.bodyBoldL,
                                                   ),
                                                 ),
                                                 Container(
                                                   alignment: Alignment.center,
                                                   padding:
                                                       EdgeInsets.all(5.0.w),
-                                                  child: Directionality(
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    child: Text(
-                                                      item.subTotal,
-                                                      style:
-                                                          AppStyles.bodyBoldL,
-                                                    ),
+                                                  child: RiyalPriceText(
+                                                    amount: item.subTotal,
+                                                    formatted: true,
+                                                    style: AppStyles.bodyBoldL,
                                                   ),
                                                 ),
                                               ]),
@@ -272,13 +257,12 @@ class EInvoiceDesktopView extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: 70.w,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Text(
-                                            controller.eInvoice!.invoice.total,
-                                            style: AppStyles.bodyRegularL,
-                                            textAlign: TextAlign.end,
-                                          ),
+                                        child: RiyalPriceText(
+                                          amount:
+                                              controller.eInvoice!.invoice.total,
+                                          formatted: true,
+                                          style: AppStyles.bodyRegularL,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                       SizedBox(width: 40.w),
@@ -293,14 +277,12 @@ class EInvoiceDesktopView extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: 70.w,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Text(
-                                            controller
-                                                .eInvoice!.invoice.discount,
-                                            style: AppStyles.bodyRegularL,
-                                            textAlign: TextAlign.end,
-                                          ),
+                                        child: RiyalPriceText(
+                                          amount: controller
+                                              .eInvoice!.invoice.discount,
+                                          formatted: true,
+                                          style: AppStyles.bodyRegularL,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                       SizedBox(width: 40.w),
@@ -313,14 +295,12 @@ class EInvoiceDesktopView extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: 70.w,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Text(
-                                            controller.eInvoice!.invoice
-                                                .totalAfterDiscount,
-                                            style: AppStyles.bodyRegularL,
-                                            textAlign: TextAlign.end,
-                                          ),
+                                        child: RiyalPriceText(
+                                          amount: controller.eInvoice!.invoice
+                                              .totalAfterDiscount,
+                                          formatted: true,
+                                          style: AppStyles.bodyRegularL,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                       SizedBox(width: 40.w),
@@ -333,13 +313,12 @@ class EInvoiceDesktopView extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: 70.w,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Text(
-                                            controller.eInvoice!.invoice.tax,
-                                            style: AppStyles.bodyRegularL,
-                                            textAlign: TextAlign.end,
-                                          ),
+                                        child: RiyalPriceText(
+                                          amount:
+                                              controller.eInvoice!.invoice.tax,
+                                          formatted: true,
+                                          style: AppStyles.bodyRegularL,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                       SizedBox(width: 40.w),
@@ -352,14 +331,12 @@ class EInvoiceDesktopView extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                         width: 70.w,
-                                        child: Directionality(
-                                          textDirection: TextDirection.ltr,
-                                          child: Text(
-                                            controller.eInvoice!.invoice
-                                                .totalAfterTaxes,
-                                            style: AppStyles.bodyRegularL,
-                                            textAlign: TextAlign.end,
-                                          ),
+                                        child: RiyalPriceText(
+                                          amount: controller.eInvoice!.invoice
+                                              .totalAfterTaxes,
+                                          formatted: true,
+                                          style: AppStyles.bodyRegularL,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                       SizedBox(width: 40.w),
@@ -514,40 +491,28 @@ class ServicesTableWiget extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5.0.w),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          service.price,
-                          style: AppStyles.bodyBoldL,
-                        ),
-                      ),
+                    child: RiyalPriceText(
+                      amount: service.price,
+                      formatted: true,
+                      style: AppStyles.bodyBoldL,
                     ),
                   ),
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5.0.w),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          service.tax,
-                          style: AppStyles.bodyBoldL,
-                        ),
-                      ),
+                    child: RiyalPriceText(
+                      amount: service.tax,
+                      formatted: true,
+                      style: AppStyles.bodyBoldL,
                     ),
                   ),
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5.0.w),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text(
-                        service.subTotal,
-                        style: AppStyles.bodyBoldL,
-                      ),
+                    child: RiyalPriceText(
+                      amount: service.subTotal,
+                      formatted: true,
+                      style: AppStyles.bodyBoldL,
                     ),
                   ),
                 ]),

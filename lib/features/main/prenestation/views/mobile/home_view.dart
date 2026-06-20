@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
               SliverAppBar(
                 pinned: true,
                 elevation: 0,
-                backgroundColor: AppTheme.to.surfaceColor,
+                backgroundColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
                 title: Row(
                   children: [

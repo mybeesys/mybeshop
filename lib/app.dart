@@ -17,21 +17,26 @@ class App extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          locale: GlobalController.to.currentLocale,
-          translations: Languages(),
-          getPages: AppRoutes.routes,
-          initialRoute: AppRoutes.main,
-          routingCallback: (routing) {
-            if (!kIsWeb || routing?.current == null) {
-              return;
-            }
-            if (routing!.current == AppRoutes.error) {
-              GlobalController.to.recoverFromErrorRoute();
-            }
+        return GetBuilder<AppTheme>(
+          init: Get.find<AppTheme>(),
+          builder: (_) {
+            return GetMaterialApp(
+              debugShowCheckedModeBanner: false,
+              locale: GlobalController.to.currentLocale,
+              translations: Languages(),
+              getPages: AppRoutes.routes,
+              initialRoute: AppRoutes.main,
+              routingCallback: (routing) {
+                if (!kIsWeb || routing?.current == null) {
+                  return;
+                }
+                if (routing!.current == AppRoutes.error) {
+                  GlobalController.to.recoverFromErrorRoute();
+                }
+              },
+              theme: AppTheme.to.appTheme.value,
+            );
           },
-          theme: AppTheme.to.appTheme(),
         );
       },
     );

@@ -6,6 +6,8 @@ import 'package:input_quantity/input_quantity.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
+import 'package:mybeshop/core/utils/currency/riyal_formatter.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/core/utils/helper/extenstions.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/features/main/domain/entities/product_extra.dart';
@@ -74,7 +76,7 @@ MaterialButton addToCartButton(
             await addToCartAction(product);
           },
     minWidth: width,
-    color: AppTheme.to.accentColor,
+    color: AppTheme.to.primaryColor,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.r),
     ),
@@ -115,11 +117,11 @@ Widget addToCartMobileButton(Product product) {
         width: 44.h,
         height: 44.h,
         decoration: BoxDecoration(
-          color: AppTheme.to.accentColor,
+          color: AppTheme.to.primaryColor,
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.to.accentColor.withOpacity(0.35),
+              color: AppTheme.to.primaryColor.withOpacity(0.35),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -200,25 +202,22 @@ addToCartAction(Product product) async {
                           SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: Text(
-                                  "${product.price!} ${product.currency}",
-                                  style: AppStyles.bodyBoldL.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                              RiyalPriceText(
+                                amount: product.price!,
+                                currency: product.currency,
+                                style: AppStyles.bodyBoldL.copyWith(
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                               SizedBox(width: 10.w),
                               if (product.hasDiscount ?? false) ...[
-                                Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: Text(
-                                    product.originalPrice!,
-                                    style: AppStyles.bodyMediumM.copyWith(
-                                        fontWeight: FontWeight.normal,
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.red),
+                                RiyalPriceText(
+                                  amount: product.originalPrice!,
+                                  currency: product.currency,
+                                  style: AppStyles.bodyMediumM.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ]
@@ -308,31 +307,23 @@ addToCartAction(Product product) async {
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
                                                 children: [
-                                                  Directionality(
-                                                    textDirection:
-                                                        TextDirection.ltr,
-                                                    child: Text(
-                                                      extra.priceFormatted,
-                                                      style:
-                                                          AppStyles.bodyMediumS,
-                                                    ),
+                                                  RiyalPriceText(
+                                                    amount: extra.priceFormatted,
+                                                    formatted: true,
+                                                    style: AppStyles.bodyMediumS,
                                                   ),
                                                   if (extra.hasDiscount) ...[
                                                     SizedBox(width: 10.w),
-                                                    Directionality(
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                      child: Text(
-                                                        extra
-                                                            .originalPriceFormatted,
-                                                        style: AppStyles
-                                                            .bodyMediumS
-                                                            .copyWith(
-                                                                color:
-                                                                    Colors.red,
-                                                                decoration:
-                                                                    TextDecoration
-                                                                        .lineThrough),
+                                                    RiyalPriceText(
+                                                      amount: extra
+                                                          .originalPriceFormatted,
+                                                      formatted: true,
+                                                      style: AppStyles.bodyMediumS
+                                                          .copyWith(
+                                                        color: Colors.red,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
                                                       ),
                                                     ),
                                                   ]
@@ -381,17 +372,16 @@ addToCartAction(Product product) async {
                               : Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(text: "${"final_price".tr} "),
-                                      TextSpan(
-                                        text: getTotalPriceAsText(product),
+                                      TextSpan(text: '${'final_price'.tr} '),
+                                      RiyalFormatter.buildPriceSpan(
+                                        RiyalFormatter.format(
+                                          amount: getTotalPriceAsText(product),
+                                          currency: product.currency,
+                                        ),
+                                        AppStyles.bodyBoldM
+                                            .copyWith(color: Colors.red),
                                       ),
-                                      TextSpan(
-                                        text: " ${product.currency}",
-                                        style:
-                                            const TextStyle(color: Colors.red),
-                                      )
                                     ],
-                                    style: AppStyles.bodyBoldM,
                                   ),
                                 ),
                         ],
@@ -550,25 +540,22 @@ addToCartMobileAction(Product product) async {
                           SizedBox(height: 10.h),
                           Row(
                             children: [
-                              Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: Text(
-                                  "${product.price!} ${product.currency}",
-                                  style: AppStyles.bodyBoldM.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                  ),
+                              RiyalPriceText(
+                                amount: product.price!,
+                                currency: product.currency,
+                                style: AppStyles.bodyBoldM.copyWith(
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                               SizedBox(width: 10.w),
                               if (product.hasDiscount ?? false) ...[
-                                Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: Text(
-                                    product.originalPrice!,
-                                    style: AppStyles.bodyMediumM.copyWith(
-                                        fontWeight: FontWeight.normal,
-                                        decoration: TextDecoration.lineThrough,
-                                        color: Colors.red),
+                                RiyalPriceText(
+                                  amount: product.originalPrice!,
+                                  currency: product.currency,
+                                  style: AppStyles.bodyMediumM.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ]
@@ -656,8 +643,9 @@ addToCartMobileAction(Product product) async {
                                                 style: AppStyles.bodyMediumM,
                                               ),
                                               SizedBox(height: 10.h),
-                                              Text(
-                                                extra.originalPriceFormatted,
+                                              RiyalPriceText(
+                                                amount: extra.originalPriceFormatted,
+                                                formatted: true,
                                                 style: AppStyles.bodyMediumS
                                                     .copyWith(
                                                   color:
@@ -705,17 +693,16 @@ addToCartMobileAction(Product product) async {
                               : Text.rich(
                                   TextSpan(
                                     children: [
-                                      TextSpan(text: "${"final_price".tr} "),
-                                      TextSpan(
-                                        text: getTotalPriceAsText(product),
+                                      TextSpan(text: '${'final_price'.tr} '),
+                                      RiyalFormatter.buildPriceSpan(
+                                        RiyalFormatter.format(
+                                          amount: getTotalPriceAsText(product),
+                                          currency: product.currency,
+                                        ),
+                                        AppStyles.bodyBoldM
+                                            .copyWith(color: Colors.red),
                                       ),
-                                      TextSpan(
-                                        text: " ${product.currency}",
-                                        style:
-                                            const TextStyle(color: Colors.red),
-                                      )
                                     ],
-                                    style: AppStyles.bodyBoldM,
                                   ),
                                 ),
                         ],

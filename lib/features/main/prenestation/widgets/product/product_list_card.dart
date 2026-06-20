@@ -4,6 +4,7 @@ import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/shared_widgets_and_methods.dart';
 
 class ProductListCard extends StatelessWidget {
@@ -67,25 +68,21 @@ class ProductListCard extends StatelessWidget {
                   SizedBox(height: 8.h),
                   Row(
                     children: [
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          '${product.price} ${product.currency}',
-                          style: AppStyles.bodyBoldM.copyWith(
-                            color: AppTheme.to.primaryColor,
-                          ),
+                      RiyalPriceText(
+                        amount: '${product.price}',
+                        currency: product.currency,
+                        style: AppStyles.bodyBoldM.copyWith(
+                          color: AppTheme.to.primaryColor,
                         ),
                       ),
                       if (hasDiscount) ...[
                         SizedBox(width: 8.w),
-                        Directionality(
-                          textDirection: TextDirection.ltr,
-                          child: Text(
-                            product.originalPrice ?? '',
-                            style: AppStyles.bodyRegularS.copyWith(
-                              decoration: TextDecoration.lineThrough,
-                              color: AppTheme.to.greyColor,
-                            ),
+                        RiyalPriceText(
+                          amount: product.originalPrice ?? '',
+                          currency: product.currency,
+                          style: AppStyles.bodyRegularS.copyWith(
+                            decoration: TextDecoration.lineThrough,
+                            color: AppTheme.to.greyColor,
                           ),
                         ),
                       ],

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
@@ -123,12 +124,12 @@ class CartWidget extends StatelessWidget {
                                 "sub_total".tr,
                                 style: AppStyles.bodyBoldL,
                               ),
-                              Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: Text(
-                                  "${controller.shoppingCart?.subTotalFotmatted}",
-                                  style: AppStyles.bodyBoldL,
-                                ),
+                              RiyalPriceText(
+                                amount:
+                                    controller.shoppingCart?.subTotalFotmatted ??
+                                        '',
+                                formatted: true,
+                                style: AppStyles.bodyBoldL,
                               ),
                             ],
                           ),
@@ -140,12 +141,11 @@ class CartWidget extends StatelessWidget {
                                 "tax".tr,
                                 style: AppStyles.bodyBoldL,
                               ),
-                              Directionality(
-                                textDirection: TextDirection.ltr,
-                                child: Text(
-                                  "${controller.shoppingCart?.taxFormatted}",
-                                  style: AppStyles.bodyBoldL,
-                                ),
+                              RiyalPriceText(
+                                amount:
+                                    controller.shoppingCart?.taxFormatted ?? '',
+                                formatted: true,
+                                style: AppStyles.bodyBoldL,
                               ),
                             ],
                           ),
@@ -264,15 +264,14 @@ class CartProductCardWidget extends StatelessWidget {
                                             color: Colors.white),
                                         textAlign: TextAlign.center,
                                       ),
-                                      Directionality(
-                                        textDirection: TextDirection.ltr,
-                                        child: Text(
-                                          extra.priceFormatted,
-                                          style: AppStyles.bodyBoldS.copyWith(
-                                              fontSize: 9.sp,
-                                              color: Colors.white),
-                                          textAlign: TextAlign.center,
+                                      RiyalPriceText(
+                                        amount: extra.priceFormatted,
+                                        formatted: true,
+                                        style: AppStyles.bodyBoldS.copyWith(
+                                          fontSize: 9.sp,
+                                          color: Colors.white,
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
@@ -284,12 +283,10 @@ class CartProductCardWidget extends StatelessWidget {
                     ),
                   ],
                   SizedBox(height: 8.h),
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: Text(
-                      cartItem.priceFormatted,
-                      style: AppStyles.heading3.copyWith(fontSize: 16.sp),
-                    ),
+                  RiyalPriceText(
+                    amount: cartItem.priceFormatted,
+                    formatted: true,
+                    style: AppStyles.heading3.copyWith(fontSize: 16.sp),
                   ),
                   SizedBox(height: 8.h),
                   Row(

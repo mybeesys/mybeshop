@@ -4,6 +4,7 @@ import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/shared_widgets_and_methods.dart';
 
 const _placeholder =
@@ -111,23 +112,19 @@ class _PriceRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(
-            '${product.currency} ${product.price}',
-            style: AppStyles.bodyBoldM.copyWith(color: AppTheme.to.primaryColor),
-          ),
+        RiyalPriceText(
+          amount: '${product.price}',
+          currency: product.currency,
+          style: AppStyles.bodyBoldM.copyWith(color: AppTheme.to.primaryColor),
         ),
         if (product.hasDiscount == true) ...[
           SizedBox(width: 8.w),
-          Directionality(
-            textDirection: TextDirection.ltr,
-            child: Text(
-              '${product.originalPrice}',
-              style: AppStyles.bodyRegularS.copyWith(
-                decoration: TextDecoration.lineThrough,
-                color: AppTheme.to.greyColor,
-              ),
+          RiyalPriceText(
+            amount: product.originalPrice ?? '',
+            currency: product.currency,
+            style: AppStyles.bodyRegularS.copyWith(
+              decoration: TextDecoration.lineThrough,
+              color: AppTheme.to.greyColor,
             ),
           ),
         ],

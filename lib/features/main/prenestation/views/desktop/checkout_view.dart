@@ -12,6 +12,7 @@ import 'package:mybeshop/features/main/prenestation/controllers/checkout_control
 import 'package:mybeshop/features/main/prenestation/widgets/custom_select_widget.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/custom_text_form_field_widget.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/mobile/custom_divider.dart';
 
 class CheckoutView extends GetResponsiveView {
@@ -369,13 +370,11 @@ class CheckoutOrderSummeryWidget extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Directionality(
-              textDirection: TextDirection.ltr,
-              child: Text(
-                value,
-                style: AppStyles.bodyRegularM.copyWith(
-                  color: valueColor ?? AppTheme.to.greyColor.withOpacity(0.8),
-                ),
+            child: RiyalPriceText(
+              amount: value,
+              formatted: true,
+              style: AppStyles.bodyRegularM.copyWith(
+                color: valueColor ?? AppTheme.to.greyColor.withOpacity(0.8),
               ),
             ),
           ),
@@ -411,7 +410,7 @@ class CheckoutDesktopView extends StatelessWidget {
                         ignoring: true,
                         child: TabBar(
                           labelStyle: AppStyles.bodyBoldXL
-                              .copyWith(fontFamily: "Alexandria"),
+                              .copyWith(fontFamily: "Cairo"),
                           labelColor: AppTheme.to.primaryColor,
                           controller: controller.tabController,
                           tabs: [
@@ -590,14 +589,12 @@ class CheckoutDesktopView extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Directionality(
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                      child: Text(
-                                                        "${item?.priceFormatted}",
-                                                        style:
-                                                            AppStyles.bodyBoldL,
-                                                      ),
+                                                    RiyalPriceText(
+                                                      amount:
+                                                          item?.priceFormatted ??
+                                                              '',
+                                                      formatted: true,
+                                                      style: AppStyles.bodyBoldL,
                                                     ),
                                                     SizedBox(
                                                       height: 15.h,
@@ -755,12 +752,10 @@ class OrderSummeryItemWidget extends StatelessWidget {
           name.tr,
           style: AppStyles.bodyBoldL,
         ),
-        Directionality(
-          textDirection: TextDirection.ltr,
-          child: Text(
-            value,
-            style: AppStyles.bodyMediumL.copyWith(color: Colors.grey),
-          ),
+        RiyalPriceText(
+          amount: value,
+          formatted: true,
+          style: AppStyles.bodyMediumL.copyWith(color: Colors.grey),
         )
       ],
     );

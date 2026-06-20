@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/core/utils/helper/extenstions.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 
@@ -52,7 +53,9 @@ class StoreHeroBanner extends StatelessWidget {
                     children: [
                       Text(
                         store?.heroTitle ?? store?.name ?? '',
-                        style: AppStyles.bodyBoldL.copyWith(color: Colors.white),
+                        style: AppStyles.bodyBoldL.copyWith(
+                          color: AppTheme.to.textColor,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -61,7 +64,7 @@ class StoreHeroBanner extends StatelessWidget {
                         Text(
                           store.bio.removeHtmlTags(),
                           style: AppStyles.bodyRegularS.copyWith(
-                            color: Colors.white.withOpacity(0.85),
+                            color: AppTheme.to.greyColor,
                             height: 1.4,
                           ),
                           maxLines: 2,

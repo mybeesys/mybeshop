@@ -28,7 +28,7 @@ class MobileView extends StatelessWidget {
                     backgroundColor: AppTheme.to.backgroundColor,
                     body: Center(
                       child: CircularProgressIndicator(
-                        color: AppTheme.to.accentColor,
+                        color: AppTheme.to.primaryColor,
                       ),
                     ),
                   );

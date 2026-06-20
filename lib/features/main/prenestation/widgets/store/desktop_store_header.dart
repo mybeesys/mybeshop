@@ -64,7 +64,8 @@ class DesktopStoreHeader extends StatelessWidget {
               icon: Icon(Icons.local_shipping_outlined, size: 18.sp),
               label: Text('track_orders'.tr),
               style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.to.accentColor,
+                backgroundColor: AppTheme.to.primaryColor,
+                foregroundColor: AppTheme.to.textColor,
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               ),
             ),

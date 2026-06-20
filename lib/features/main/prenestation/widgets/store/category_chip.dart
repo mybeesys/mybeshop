@@ -34,30 +34,36 @@ class CategoryChip extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (selected) ...[
-                  Icon(Icons.check_rounded, size: 16.sp, color: Colors.white),
+                  Icon(Icons.check_rounded,
+                      size: 16.sp, color: AppTheme.to.textColor),
                   SizedBox(width: 6.w),
                 ],
                 Text(
                   category.name,
                   style: AppStyles.bodyMediumS.copyWith(
-                    color: selected ? Colors.white : AppTheme.to.primaryColor,
-                    fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+                    color: selected
+                        ? AppTheme.to.textColor
+                        : AppTheme.to.greyColor,
+                    fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   ),
                 ),
                 if (category.productsCount > 0) ...[
                   SizedBox(width: 6.w),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: selected
-                          ? Colors.white.withOpacity(0.2)
+                          ? AppTheme.to.primaryColor.withOpacity(0.15)
                           : AppTheme.to.backgroundColor,
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
                       '${category.productsCount}',
                       style: AppStyles.bodyRegularSS.copyWith(
-                        color: selected ? Colors.white : AppTheme.to.greyColor,
+                        color: selected
+                            ? AppTheme.to.textColor
+                            : AppTheme.to.greyColor,
                       ),
                     ),
                   ),

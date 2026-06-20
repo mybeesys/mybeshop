@@ -50,6 +50,18 @@ flutter:
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo/Rubik-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Cairo/Rubik-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Cairo/Rubik-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo/Rubik-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo/Rubik-ExtraBold.ttf
+          weight: 800
     - family: Alexandria
       fonts:
         - asset: assets/fonts/alex/Alexandria-Regular.ttf
@@ -62,3 +74,7 @@ flutter:
           weight: 700
         - asset: assets/fonts/alex/Alexandria-ExtraBold.ttf
           weight: 800
+    - family: SaudiRiyal
+      fonts:
+        - asset: assets/fonts/saudi_riyal/saudi_riyal.ttf
+          weight: 400

@@ -10,6 +10,7 @@ import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/order.dart';
 import 'package:mybeshop/features/main/domain/entities/order_detail.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/track_orders_contorller.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
 class TrackOrdersMobileView extends StatelessWidget {
@@ -59,7 +60,7 @@ class TrackOrdersMobileView extends StatelessWidget {
                                 placeholder:
                                     "${"phone".tr} - EXP: 966557013119",
                                 style: AppStyles.bodyMediumM.copyWith(
-                                    fontFamily: "Alexandria",
+                                    fontFamily: "Cairo",
                                     color: Colors.white),
                               )),
                           SizedBox(height: 20.h),
@@ -195,13 +196,11 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Text(
-                                orders[index].tax,
-                                style: AppStyles.bodyMediumM
-                                    .copyWith(color: Colors.grey),
-                              ),
+                            RiyalPriceText(
+                              amount: orders[index].tax,
+                              formatted: true,
+                              style: AppStyles.bodyMediumM
+                                  .copyWith(color: Colors.grey),
                             ),
                           ],
                         ),
@@ -216,13 +215,11 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Text(
-                                orders[index].delivery,
-                                style: AppStyles.bodyMediumM
-                                    .copyWith(color: Colors.grey),
-                              ),
+                            RiyalPriceText(
+                              amount: orders[index].delivery,
+                              formatted: true,
+                              style: AppStyles.bodyMediumM
+                                  .copyWith(color: Colors.grey),
                             ),
                           ],
                         ),
@@ -237,13 +234,11 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Text(
-                                orders[index].discount,
-                                style: AppStyles.bodyMediumM
-                                    .copyWith(color: Colors.grey),
-                              ),
+                            RiyalPriceText(
+                              amount: orders[index].discount,
+                              formatted: true,
+                              style: AppStyles.bodyMediumM
+                                  .copyWith(color: Colors.grey),
                             ),
                           ],
                         ),
@@ -260,13 +255,11 @@ class OrdersListWidget extends StatelessWidget {
                               style: AppStyles.bodyMediumM
                                   .copyWith(color: Colors.grey),
                             ),
-                            Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: Text(
-                                orders[index].total,
-                                style: AppStyles.bodyMediumM
-                                    .copyWith(color: Colors.grey),
-                              ),
+                            RiyalPriceText(
+                              amount: orders[index].total,
+                              formatted: true,
+                              style: AppStyles.bodyMediumM
+                                  .copyWith(color: Colors.grey),
                             ),
                           ],
                         ),
@@ -351,14 +344,11 @@ class OrdersListWidget extends StatelessWidget {
                                                   style: AppStyles.bodyMediumS,
                                                 ),
                                                 SizedBox(height: 5.h),
-                                                Directionality(
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                  child: Text(
-                                                    detail.price,
-                                                    style:
-                                                        AppStyles.bodyMediumS,
-                                                  ),
+                                                RiyalPriceText(
+                                                  amount: detail.price,
+                                                  formatted: true,
+                                                  style:
+                                                      AppStyles.bodyMediumS,
                                                 ),
                                               ],
                                             ),

@@ -8,6 +8,7 @@ import 'package:mybeshop/features/main/domain/entities/price_offer_additional_co
 import 'package:mybeshop/features/main/domain/entities/price_offer_product.dart';
 import 'package:mybeshop/features/main/domain/entities/price_offet_service.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/price_offer_controller.dart';
+import 'package:mybeshop/core/widgets/riyal_price_text.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 
 class PriceOfferMobileView extends StatelessWidget {
@@ -172,15 +173,12 @@ class PriceOfferMobileView extends StatelessWidget {
                                           children: [
                                             SizedBox(
                                               width: 70.w,
-                                              child: Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: Text(
-                                                  controller.priceOffer!
-                                                      .priceOfferDetail.total,
-                                                  style: AppStyles.bodyRegularS,
-                                                  textAlign: TextAlign.end,
-                                                ),
+                                              child: RiyalPriceText(
+                                                amount: controller.priceOffer!
+                                                    .priceOfferDetail.total,
+                                                formatted: true,
+                                                style: AppStyles.bodyRegularS,
+                                                textAlign: TextAlign.end,
                                               ),
                                             ),
                                             SizedBox(width: 10.w),
@@ -195,17 +193,14 @@ class PriceOfferMobileView extends StatelessWidget {
                                           children: [
                                             SizedBox(
                                               width: 70.w,
-                                              child: Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: Text(
-                                                  controller
-                                                      .priceOffer!
-                                                      .priceOfferDetail
-                                                      .discount,
-                                                  style: AppStyles.bodyRegularS,
-                                                  textAlign: TextAlign.end,
-                                                ),
+                                              child: RiyalPriceText(
+                                                amount: controller
+                                                    .priceOffer!
+                                                    .priceOfferDetail
+                                                    .discount,
+                                                formatted: true,
+                                                style: AppStyles.bodyRegularS,
+                                                textAlign: TextAlign.end,
                                               ),
                                             ),
                                             SizedBox(width: 40.w),
@@ -220,17 +215,14 @@ class PriceOfferMobileView extends StatelessWidget {
                                           children: [
                                             SizedBox(
                                               width: 70.w,
-                                              child: Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: Text(
-                                                  controller
-                                                      .priceOffer!
-                                                      .priceOfferDetail
-                                                      .totalAfterDiscount,
-                                                  style: AppStyles.bodyRegularS,
-                                                  textAlign: TextAlign.end,
-                                                ),
+                                              child: RiyalPriceText(
+                                                amount: controller
+                                                    .priceOffer!
+                                                    .priceOfferDetail
+                                                    .totalAfterDiscount,
+                                                formatted: true,
+                                                style: AppStyles.bodyRegularS,
+                                                textAlign: TextAlign.end,
                                               ),
                                             ),
                                             SizedBox(width: 40.w),
@@ -245,15 +237,12 @@ class PriceOfferMobileView extends StatelessWidget {
                                           children: [
                                             SizedBox(
                                               width: 70.w,
-                                              child: Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: Text(
-                                                  controller.priceOffer!
-                                                      .priceOfferDetail.tax,
-                                                  style: AppStyles.bodyRegularS,
-                                                  textAlign: TextAlign.end,
-                                                ),
+                                              child: RiyalPriceText(
+                                                amount: controller.priceOffer!
+                                                    .priceOfferDetail.tax,
+                                                formatted: true,
+                                                style: AppStyles.bodyRegularS,
+                                                textAlign: TextAlign.end,
                                               ),
                                             ),
                                             SizedBox(width: 40.w),
@@ -268,17 +257,14 @@ class PriceOfferMobileView extends StatelessWidget {
                                           children: [
                                             SizedBox(
                                               width: 70.w,
-                                              child: Directionality(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                child: Text(
-                                                  controller
-                                                      .priceOffer!
-                                                      .priceOfferDetail
-                                                      .totalWithTax,
-                                                  style: AppStyles.bodyRegularS,
-                                                  textAlign: TextAlign.end,
-                                                ),
+                                              child: RiyalPriceText(
+                                                amount: controller
+                                                    .priceOffer!
+                                                    .priceOfferDetail
+                                                    .totalWithTax,
+                                                formatted: true,
+                                                style: AppStyles.bodyRegularS,
+                                                textAlign: TextAlign.end,
                                               ),
                                             ),
                                             SizedBox(width: 40.w),
@@ -407,12 +393,10 @@ class ProductsTableWiget extends StatelessWidget {
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          product.unitPrice,
-                          style: AppStyles.bodyRegularL,
-                        ),
+                      child: RiyalPriceText(
+                        amount: product.unitPrice,
+                        formatted: true,
+                        style: AppStyles.bodyRegularL,
                       ),
                     ),
                     Container(
@@ -426,23 +410,19 @@ class ProductsTableWiget extends StatelessWidget {
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          product.discount,
-                          style: AppStyles.bodyRegularL,
-                        ),
+                      child: RiyalPriceText(
+                        amount: product.discount,
+                        formatted: true,
+                        style: AppStyles.bodyRegularL,
                       ),
                     ),
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          product.tax,
-                          style: AppStyles.bodyRegularL,
-                        ),
+                      child: RiyalPriceText(
+                        amount: product.tax,
+                        formatted: true,
+                        style: AppStyles.bodyRegularL,
                       ),
                     ),
                     Container(
@@ -456,12 +436,10 @@ class ProductsTableWiget extends StatelessWidget {
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          product.subTotal,
-                          style: AppStyles.bodyRegularL,
-                        ),
+                      child: RiyalPriceText(
+                        amount: product.subTotal,
+                        formatted: true,
+                        style: AppStyles.bodyRegularL,
                       ),
                     ),
                   ]),
@@ -571,34 +549,28 @@ class ServicesTableWiget extends StatelessWidget {
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          service.price,
-                          style: AppStyles.bodyRegularS,
-                        ),
+                      child: RiyalPriceText(
+                        amount: service.price,
+                        formatted: true,
+                        style: AppStyles.bodyRegularS,
                       ),
                     ),
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          service.tax,
-                          style: AppStyles.bodyRegularS,
-                        ),
+                      child: RiyalPriceText(
+                        amount: service.tax,
+                        formatted: true,
+                        style: AppStyles.bodyRegularS,
                       ),
                     ),
                     Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.all(5.0.w),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: Text(
-                          service.subTotal,
-                          style: AppStyles.bodyRegularS,
-                        ),
+                      child: RiyalPriceText(
+                        amount: service.subTotal,
+                        formatted: true,
+                        style: AppStyles.bodyRegularS,
                       ),
                     ),
                   ]),
@@ -690,12 +662,10 @@ class AdditionalCostsTableWiget extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.all(5.0.w),
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text(
-                        cost.cost,
-                        style: AppStyles.bodyRegularS,
-                      ),
+                    child: RiyalPriceText(
+                      amount: cost.cost,
+                      formatted: true,
+                      style: AppStyles.bodyRegularS,
                     ),
                   ),
                 ]),
