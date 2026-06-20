@@ -33,12 +33,16 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+.flutter/
 
 # Symbolication related
 app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Wrangler / Node (do not commit — install via npm ci on CI)
+node_modules/
 
 # Wrangler local state
 .wrangler/

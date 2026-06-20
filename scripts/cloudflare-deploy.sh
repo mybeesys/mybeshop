@@ -5,6 +5,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+echo "==> Installing npm dependencies (wrangler)..."
+npm install --no-audit --no-fund
+
 echo "==> Building Flutter web..."
 bash scripts/cloudflare-build.sh
 
@@ -14,8 +17,7 @@ if [ ! -d build/web ] || [ ! -f build/web/index.html ]; then
 fi
 
 echo "==> Deploying to Cloudflare Workers (SPA: all paths serve index.html)..."
-# Use wrangler.jsonc only — do NOT pass --assets on CLI or not_found_handling is dropped.
-npx wrangler deploy --config "$ROOT_DIR/wrangler.jsonc"
+npm run deploy:worker
 
 echo ""
 echo "Done. Test:"
