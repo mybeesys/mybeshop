@@ -174,7 +174,7 @@ class _NavBarItemState extends State<_NavBarItem>
                 duration: const Duration(milliseconds: 280),
                 curve: Curves.easeOutCubic,
                 style: TextStyle(
-                  fontSize: selected ? 11.5.sp : 11.sp,
+                  fontSize: selected ? 10.5.sp : 10.sp,
                   fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                   color: color,
                   fontFamily: 'Cairo',

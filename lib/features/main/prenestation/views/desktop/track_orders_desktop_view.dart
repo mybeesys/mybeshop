@@ -25,11 +25,13 @@ class TrackOrdersDesktopView extends StatelessWidget {
             backgroundColor: Colors.grey.shade100,
             appBar: AppBar(
               backgroundColor: AppTheme.to.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.to.onPrimaryColor,
               centerTitle: false,
               title: Text(
                 "track_orders".tr,
-                style: AppStyles.bodyBoldL,
+                style: AppStyles.bodyBoldL.copyWith(
+                  color: AppTheme.to.onPrimaryColor,
+                ),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(kToolbarHeight * 1.8),
@@ -42,8 +44,9 @@ class TrackOrdersDesktopView extends StatelessWidget {
                           horizontal: 20.w, vertical: 15.h),
                       child: Text(
                         "pleae_enter_phone_number_to_get_orders".tr,
-                        style: AppStyles.bodyRegularS
-                            .copyWith(color: Colors.white),
+                        style: AppStyles.bodyRegularS.copyWith(
+                          color: AppTheme.to.onPrimaryColor.withOpacity(0.8),
+                        ),
                       ),
                     ),
                     SizedBox(height: 20.h),
@@ -55,11 +58,17 @@ class TrackOrdersDesktopView extends StatelessWidget {
                           onSubmitted: (v) => controller.onSearch(v),
                           placeholder: "phone".tr,
                           style: AppStyles.bodyMediumXL.copyWith(
-                              fontFamily: "Cairo", color: Colors.white),
+                            fontFamily: 'Cairo',
+                            color: AppTheme.to.textColor,
+                          ),
                         )),
                     SizedBox(height: 50.h),
                     TabBar(
                       controller: controller.tabController,
+                      labelColor: AppTheme.to.onPrimaryColor,
+                      unselectedLabelColor:
+                          AppTheme.to.onPrimaryColor.withOpacity(0.55),
+                      indicatorColor: AppTheme.to.onPrimaryColor,
                       tabs: [
                         for (var filter in controller.filters)
                           Tab(

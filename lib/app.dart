@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
 import 'package:mybeshop/core/lang/languages.dart';
@@ -12,31 +11,24 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(1920, 2720),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return GetBuilder<AppTheme>(
-          init: Get.find<AppTheme>(),
-          builder: (_) {
-            return GetMaterialApp(
-              debugShowCheckedModeBanner: false,
-              locale: GlobalController.to.currentLocale,
-              translations: Languages(),
-              getPages: AppRoutes.routes,
-              initialRoute: AppRoutes.main,
-              routingCallback: (routing) {
-                if (!kIsWeb || routing?.current == null) {
-                  return;
-                }
-                if (routing!.current == AppRoutes.error) {
-                  GlobalController.to.recoverFromErrorRoute();
-                }
-              },
-              theme: AppTheme.to.appTheme.value,
-            );
+    return GetBuilder<AppTheme>(
+      init: Get.find<AppTheme>(),
+      builder: (_) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          locale: GlobalController.to.currentLocale,
+          translations: Languages(),
+          getPages: AppRoutes.routes,
+          initialRoute: AppRoutes.main,
+          routingCallback: (routing) {
+            if (!kIsWeb || routing?.current == null) {
+              return;
+            }
+            if (routing!.current == AppRoutes.error) {
+              GlobalController.to.recoverFromErrorRoute();
+            }
           },
+          theme: AppTheme.to.appTheme.value,
         );
       },
     );

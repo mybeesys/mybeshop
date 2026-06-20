@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
@@ -58,8 +59,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                           if (controller
                                                   .eInvoice?.storeInfo?.logo !=
                                               null)
-                                            Image.network(
-                                              controller
+                                            AppNetworkImage(imageUrl: controller
                                                   .eInvoice!.storeInfo!.logo!,
                                               width: 50.w,
                                             )
@@ -403,8 +403,7 @@ class EInvoiceMobileView extends StatelessWidget {
                                       SizedBox(height: 60.h),
                                       Row(
                                         children: [
-                                          Image.network(
-                                              "https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=${controller.eInvoice?.invoice.no}"),
+                                          AppNetworkImage(imageUrl: "https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=${controller.eInvoice?.invoice.no}"),
                                           SizedBox(width: 30.w),
                                           Expanded(
                                               child: Column(

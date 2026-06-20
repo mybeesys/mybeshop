@@ -25,11 +25,13 @@ class TrackOrdersMobileView extends StatelessWidget {
             backgroundColor: Colors.grey.shade100,
             appBar: AppBar(
               backgroundColor: AppTheme.to.primaryColor,
-              foregroundColor: Colors.white,
+              foregroundColor: AppTheme.to.onPrimaryColor,
               centerTitle: false,
               title: Text(
                 "track_orders".tr,
-                style: AppStyles.bodyMediumM,
+                style: AppStyles.bodyMediumM.copyWith(
+                  color: AppTheme.to.onPrimaryColor,
+                ),
               ),
               bottom: GlobalController.to.storeInfo?.ordersTrackingEnabled ==
                       false
@@ -46,8 +48,9 @@ class TrackOrdersMobileView extends StatelessWidget {
                                 horizontal: 20.w, vertical: 10.h),
                             child: Text(
                               "pleae_enter_phone_number_to_get_orders".tr,
-                              style: AppStyles.bodyRegularS
-                                  .copyWith(color: Colors.white),
+                              style: AppStyles.bodyRegularS.copyWith(
+                                color: AppTheme.to.onPrimaryColor.withOpacity(0.8),
+                              ),
                             ),
                           ),
                           SizedBox(height: 5.h),
@@ -60,13 +63,18 @@ class TrackOrdersMobileView extends StatelessWidget {
                                 placeholder:
                                     "${"phone".tr} - EXP: 966557013119",
                                 style: AppStyles.bodyMediumM.copyWith(
-                                    fontFamily: "Cairo",
-                                    color: Colors.white),
+                                  fontFamily: 'Cairo',
+                                  color: AppTheme.to.textColor,
+                                ),
                               )),
                           SizedBox(height: 20.h),
                           TabBar(
                             isScrollable: true,
                             controller: controller.tabController,
+                            labelColor: AppTheme.to.onPrimaryColor,
+                            unselectedLabelColor:
+                                AppTheme.to.onPrimaryColor.withOpacity(0.55),
+                            indicatorColor: AppTheme.to.onPrimaryColor,
                             tabs: [
                               for (var filter in controller.filters)
                                 Tab(

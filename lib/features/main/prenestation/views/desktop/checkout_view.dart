@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -13,7 +14,7 @@ import 'package:mybeshop/features/main/prenestation/widgets/custom_select_widget
 import 'package:mybeshop/features/main/prenestation/widgets/custom_text_form_field_widget.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:mybeshop/core/widgets/riyal_price_text.dart';
-import 'package:mybeshop/features/main/prenestation/widgets/mobile/custom_divider.dart';
+import 'package:mybeshop/features/main/prenestation/views/mobile/checkout_mobile_view.dart';
 
 class CheckoutView extends GetResponsiveView {
   CheckoutView({super.key});
@@ -24,326 +25,7 @@ class CheckoutView extends GetResponsiveView {
   }
 
   @override
-  Widget? phone() {
-    return GetBuilder<CheckoutController>(
-        init: CheckoutController(
-            Get.find(), Get.find(), Get.find(), Get.find(), Get.find()),
-        builder: (controller) {
-          return Scaffold(
-            appBar: AppBar(
-              foregroundColor: Colors.white,
-              backgroundColor: AppTheme.to.primaryColor,
-              title: Text(
-                "checkout".tr,
-                style: AppStyles.bodyBoldM.copyWith(color: Colors.white),
-              ),
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-                    child: Form(
-                      key: controller.checkoutForm,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: controller.nameInput,
-                                  validator: (v) {
-                                    var message = Validator.validateRequired(
-                                        v, "name".tr);
-                                    if (message == null) {
-                                      return Validator
-                                          .networkValidatorErrorViewer(
-                                              CheckoutController.to.errors,
-                                              "name");
-                                    }
-                                    return message;
-                                  },
-                                  decoration: InputDecoration(
-                                    prefixIcon:
-                                        const Icon(LineAwesomeIcons.user),
-                                    hintText: "name".tr,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: controller.phoneInput,
-                                  validator: (v) {
-                                    var message = Validator.validateRequired(
-                                        v, "phone".tr);
-                                    if (message == null) {
-                                      return Validator
-                                          .networkValidatorErrorViewer(
-                                              CheckoutController.to.errors,
-                                              "phone");
-                                    }
-                                    return message;
-                                  },
-                                  decoration: const InputDecoration(
-                                    prefixIcon: Icon(LineAwesomeIcons.phone),
-                                    hintText: "EXP: 966557013119",
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 15.h),
-                          Row(children: [
-                            Expanded(
-                              child: CheckoutController.to.stateLoading.value
-                                  ? const LinearProgressIndicator()
-                                  : CustomSearchableSelectWidget(
-                                      enabled: CheckoutController
-                                          .to.states.isNotEmpty,
-                                      textStyle: AppStyles.bodyMediumM,
-                                      leadingIcon:
-                                          const Icon(LineAwesomeIcons.map),
-                                      name: "state".tr,
-                                      itemAsString: (v) => v.name,
-                                      selectedItem:
-                                          CheckoutController.to.selectedState,
-                                      items: CheckoutController.to.states,
-                                      onSelected: (v) => CheckoutController.to
-                                          .onStateSelected(v),
-                                    ),
-                            ),
-                          ]),
-                          SizedBox(height: 20.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckoutController.to.citiesLoading.value
-                                    ? const LinearProgressIndicator()
-                                    : CustomSearchableSelectWidget(
-                                        enabled: CheckoutController
-                                            .to.cities.isNotEmpty,
-                                        textStyle: AppStyles.bodyMediumM,
-                                        leadingIcon: const Icon(
-                                            LineAwesomeIcons.map_signs),
-                                        name: "city".tr,
-                                        itemAsString: (v) => v.name,
-                                        selectedItem:
-                                            CheckoutController.to.selectedCity,
-                                        items: CheckoutController.to.cities,
-                                        onSelected: (v) => CheckoutController.to
-                                            .onCitySelected(v),
-                                      ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: CheckoutController.to.areasLoading.value
-                                    ? const LinearProgressIndicator()
-                                    : CustomSearchableSelectWidget(
-                                        enabled: CheckoutController
-                                            .to.areas.isNotEmpty,
-                                        textStyle: AppStyles.bodyMediumM,
-                                        leadingIcon: const Icon(
-                                            LineAwesomeIcons.map_marker),
-                                        name: "area".tr,
-                                        itemAsString: (v) => v.name,
-                                        selectedItem:
-                                            CheckoutController.to.selectedArea,
-                                        items: CheckoutController.to.areas,
-                                        onSelected: (v) => CheckoutController.to
-                                            .onAreaSelected(v),
-                                      ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.w, vertical: 10.h),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: controller.deliveryAddressInput,
-                                    validator: (v) {
-                                      var message = Validator.validateRequired(
-                                          v, "delivery_address".tr);
-                                      if (message == null) {
-                                        return Validator
-                                            .networkValidatorErrorViewer(
-                                                CheckoutController.to.errors,
-                                                "delivery_address");
-                                      }
-                                      return message;
-                                    },
-                                    maxLines: 3,
-                                    decoration: InputDecoration(
-                                      prefixIcon: const Icon(
-                                          LineAwesomeIcons.map_marked),
-                                      hintText: "delivery_address".tr,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const CustomDivider(),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                    child: Text(
-                      "payment_methods".tr,
-                      style: AppStyles.bodyMediumM,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20.w),
-                    padding: EdgeInsets.all(8.r),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3.r),
-                      color: AppTheme.to.greyColor.withOpacity(0.09),
-                    ),
-                    child: Row(
-                      children: [
-                        Radio(
-                          visualDensity:
-                              const VisualDensity(horizontal: -3, vertical: -3),
-                          value: "cash_on_delivery",
-                          groupValue: controller.paymentMethod,
-                          onChanged: (v) =>
-                              controller.onPaymentMethodChanged(v),
-                        ),
-                        SizedBox(width: 10.w),
-                        Text(
-                          "cash_on_delivery".tr,
-                          style: AppStyles.bodyMediumM,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  const CustomDivider(),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.h),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Form(
-                            key: controller.couponFormKey,
-                            child: TextFormField(
-                              controller: controller.couponInput,
-                              style: AppStyles.bodyMediumM,
-                              decoration: InputDecoration(
-                                hintText: "coupon".tr,
-                                prefixIcon:
-                                    const Icon(LineAwesomeIcons.percentage),
-                              ),
-                              validator: (v) {
-                                return Validator.validateRequired(
-                                    v, "coupon".tr);
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        MaterialButton(
-                          height: 50.h,
-                          minWidth: 120.w,
-                          onPressed: () => controller.applyCoupon(),
-                          color: AppTheme.to.primaryColor,
-                          child: Text(
-                            "apply".tr,
-                            style: AppStyles.bodyMediumM
-                                .copyWith(color: Colors.white),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                    child: Text(
-                      "order_summery".tr,
-                      style: AppStyles.bodyMediumM,
-                    ),
-                  ),
-                  CheckoutOrderSummeryWidget(
-                    name: "sub_total".tr,
-                    value:
-                        "${controller.shoppingCart?.subTotalFormattedAfterDiscount}",
-                  ),
-                  if (controller.shoppingCart != null &&
-                      controller.shoppingCart!.coupon.valid) ...[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            "after_discount_applied".tr,
-                            style: AppStyles.bodyMediumS
-                                .copyWith(color: Colors.green),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                  CheckoutOrderSummeryWidget(
-                    name: "tax".tr,
-                    value: "${controller.shoppingCart?.taxFormatted}",
-                  ),
-                  CheckoutOrderSummeryWidget(
-                    name: "delivery".tr,
-                    value: "${controller.shoppingCart?.deliveryFees}",
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                    child: MaterialButton(
-                      height: 55.h,
-                      minWidth: double.infinity,
-                      color: AppTheme.to.primaryColor,
-                      onPressed: () async {
-                        controller.errors.clear();
-                        if (controller.checkoutForm.currentState!.validate()) {
-                          await controller.checkout(isMobile: true);
-                        }
-                      },
-                      child: Text(
-                        "checkout".tr,
-                        style:
-                            AppStyles.bodyMediumM.copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  Widget? phone() => const CheckoutMobileView();
 }
 
 class CheckoutOrderSummeryWidget extends StatelessWidget {
@@ -459,7 +141,7 @@ class CheckoutDesktopView extends StatelessWidget {
                                   child: Text(
                                     "next".tr,
                                     style: AppStyles.bodyMediumL
-                                        .copyWith(color: Colors.white),
+                                        .copyWith(color: AppTheme.to.onPrimaryColor),
                                   ),
                                 ),
                               if (controller.tabController.index > 0) ...[
@@ -476,7 +158,7 @@ class CheckoutDesktopView extends StatelessWidget {
                                   child: Text(
                                     "previus".tr,
                                     style: AppStyles.bodyMediumL
-                                        .copyWith(color: Colors.white),
+                                        .copyWith(color: AppTheme.to.onPrimaryColor),
                                   ),
                                 ),
                               ]
@@ -540,7 +222,7 @@ class CheckoutDesktopView extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 color: AppTheme.to.greyColor
                                                     .withOpacity(0.4)),
-                                            child: Image.network(item?.image ??
+                                            child: AppNetworkImage(imageUrl: item?.image ??
                                                 "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png"),
                                           ),
                                           SizedBox(width: 10.w),
@@ -671,7 +353,7 @@ class CheckoutDesktopView extends StatelessWidget {
                                 child: Text(
                                   "apply".tr,
                                   style: AppStyles.bodyMediumL
-                                      .copyWith(color: Colors.white),
+                                      .copyWith(color: AppTheme.to.onPrimaryColor),
                                 ),
                               )
                             ],
@@ -843,7 +525,9 @@ class PaymentMethodTypeWidget extends StatelessWidget {
                 name,
                 style: AppStyles.bodyBoldL.copyWith(
                     color:
-                        isSelected ? Colors.white : AppTheme.to.primaryColor),
+                        isSelected
+                            ? AppTheme.to.onPrimaryColor
+                            : AppTheme.to.primaryColor),
               )
             ],
           ),
@@ -877,7 +561,9 @@ class TrackOrderStepWidget extends StatelessWidget {
               },
               child: Text(
                 "back_to_home".tr,
-                style: AppStyles.bodyBoldXL.copyWith(color: Colors.white),
+                style: AppStyles.bodyBoldXL.copyWith(
+                  color: AppTheme.to.onPrimaryColor,
+                ),
                 textAlign: TextAlign.center,
               ),
             )

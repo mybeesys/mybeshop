@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
@@ -31,18 +32,18 @@ class StoreHeroBanner extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(14.w),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(AppDecorations.radiusM),
                   child: Container(
-                    width: 88.w,
-                    height: 88.w,
+                    width: 72.w,
+                    height: 72.w,
                     color: Colors.white,
                     child: store?.cover != null
-                        ? Image.network(store!.cover!, fit: BoxFit.cover)
+                        ? AppNetworkImage(imageUrl: store!.cover!, fit: BoxFit.cover)
                         : Image.asset('assets/images/bg.png', fit: BoxFit.contain),
                   ),
                 ),

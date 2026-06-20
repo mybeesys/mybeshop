@@ -1,57 +1,72 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/core/theme/app_theme.dart';
 
 class AppLoaders {
+  static bool _isShowing = false;
+
   static Future<void> showLoading({String? message}) async {
+    if (_isShowing || Get.isDialogOpen == true) {
+      return;
+    }
+    _isShowing = true;
+
     await Get.dialog(
-      WillPopScope(
-        onWillPop: () async => false,
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10.w, sigmaY: 10.h),
-          child: AlertDialog(
-            clipBehavior: Clip.hardEdge,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(200.r)),
-            backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
-            contentPadding: EdgeInsets.zero,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onVerticalDragStart: (v) {
-                    Get.back();
-                  },
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.transparent,
-                    ),
-                    alignment: Alignment.center,
-                    child: Lottie.asset(
-                      "assets/lotties/loader.json",
-                      height: AppStyles.deviceWidth(Get.context!) > 430
-                          ? 350.h
-                          : 100.h,
-                      repeat: true,
+      PopScope(
+        canPop: false,
+        child: Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 36,
+                    height: 36,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: AppTheme.to.primaryColor,
                     ),
                   ),
-                ),
-              ],
+                  if (message != null) ...[
+                    const SizedBox(height: 16),
+                    Text(
+                      message,
+                      style: AppStyles.bodyMediumM,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ],
+              ),
             ),
           ),
         ),
       ),
       barrierDismissible: false,
+      barrierColor: Colors.black.withOpacity(0.35),
     );
+
+    _isShowing = false;
   }
 
-  static Future<void> hideLoading() async {
-    if (Get.isDialogOpen!) Get.back();
+  static void hideLoading() {
+    if (Get.isDialogOpen == true) {
+      Get.back();
+    }
+    _isShowing = false;
   }
 }

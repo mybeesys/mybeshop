@@ -94,7 +94,7 @@ class AppDialogs {
                             child: Text(
                               okButtonText!.tr,
                               style: AppStyles.bodyBoldL.copyWith(
-                                color: Colors.white,
+                                color: AppTheme.to.onPrimaryColor,
                               ),
                             ),
                           ),
@@ -127,7 +127,7 @@ class AppDialogs {
                               child: Text(
                                 cancelText.tr,
                                 style: AppStyles.bodyBoldL.copyWith(
-                                  color: Colors.white,
+                                  color: AppTheme.to.onPrimaryColor,
                                 ),
                               ),
                             ),

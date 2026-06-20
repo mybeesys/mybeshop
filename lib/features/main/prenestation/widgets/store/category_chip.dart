@@ -28,7 +28,7 @@ class CategoryChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(999),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
             decoration: AppDecorations.pill(selected: selected),
             child: Row(
               mainAxisSize: MainAxisSize.min,

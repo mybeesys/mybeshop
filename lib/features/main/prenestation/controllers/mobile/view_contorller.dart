@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mybeshop/features/main/prenestation/controllers/cart_controller.dart';
 import 'package:mybeshop/features/main/prenestation/views/mobile/home_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/mobile/shopping_cart_view.dart';
 import 'package:mybeshop/features/main/prenestation/views/settings_view.dart';
@@ -19,7 +20,9 @@ class ViewController extends GetxController {
 
   void onPageChanged(int index) {
     currentIndex = index;
-
+    if (index == 1) {
+      CartController.to.getShoppingCart();
+    }
     update();
   }
 

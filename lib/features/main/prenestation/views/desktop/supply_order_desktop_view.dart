@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/utils/store_slug_parser.dart';
@@ -49,8 +50,7 @@ class SupplyOrderDesktopView extends StatelessWidget {
                                   children: [
                                     if (controller.supplyOrder?.store.logo !=
                                         null)
-                                      Image.network(
-                                        controller.supplyOrder!.store.logo!,
+                                      AppNetworkImage(imageUrl: controller.supplyOrder!.store.logo!,
                                         width: 100.w,
                                       )
                                     else

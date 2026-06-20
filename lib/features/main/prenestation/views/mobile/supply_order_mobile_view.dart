@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
@@ -56,8 +57,7 @@ class SupplyOrderMobileView extends StatelessWidget {
                                             if (controller
                                                     .supplyOrder?.store.logo !=
                                                 null)
-                                              Image.network(
-                                                controller
+                                              AppNetworkImage(imageUrl: controller
                                                     .supplyOrder!.store.logo!,
                                                 width: 50.w,
                                               )

@@ -18,6 +18,8 @@ class AppTheme extends GetxController {
   Color saleColor = const Color(0xFFEF4444);
   Color successColor = const Color(0xFF10B981);
   Color textColor = const Color(0xFF1E293B);
+  /// Text and icons on [primaryColor] backgrounds.
+  Color onPrimaryColor = Colors.black;
 
   MaterialColor primarySwitch = Colors.amber;
 
@@ -53,6 +55,7 @@ class AppTheme extends GetxController {
     surfaceColor = Colors.white;
     borderColor = const Color(0xFFEEF2F7);
     textColor = const Color(0xFF1E293B);
+    onPrimaryColor = Colors.black;
   }
 
   void changeTheme(ThemeColor color) {
@@ -112,18 +115,23 @@ class AppTheme extends GetxController {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: primary,
-          foregroundColor: textColor,
+          foregroundColor: onPrimaryColor,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           textStyle: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
+            color: onPrimaryColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
             fontFamily: 'Cairo',
           ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: onPrimaryColor,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(

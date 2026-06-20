@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -34,8 +35,7 @@ class HomeView extends StatelessWidget {
                     if (GlobalController.to.storeInfo?.logo != null)
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8.r),
-                        child: Image.network(
-                          GlobalController.to.storeInfo!.logo!,
+                        child: AppNetworkImage(imageUrl: GlobalController.to.storeInfo!.logo!,
                           width: 32.w,
                           height: 32.w,
                           fit: BoxFit.cover,
@@ -60,26 +60,29 @@ class HomeView extends StatelessWidget {
               SliverToBoxAdapter(child: const StoreHeroBanner()),
               SliverToBoxAdapter(child: SizedBox(height: 20.h)),
               SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 44.h,
-                  child: controller.categoriesLoading.value
-                      ? const Center(child: CircularProgressIndicator())
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          itemCount: controller.categories.length,
-                          itemBuilder: (context, index) {
-                            final category = controller.categories[index];
-                            return CategoryChip(
-                              category: category,
-                              selected: controller.selectedCategory?.id ==
-                                  category.id,
-                              onTap: () =>
-                                  controller.onCategorySelected(category),
-                            );
-                          },
+                child: controller.categoriesLoading.value
+                    ? SizedBox(
+                        height: 48.h,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
                         ),
-                ),
+                      )
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Row(
+                          children: [
+                            for (final category in controller.categories)
+                              CategoryChip(
+                                category: category,
+                                selected: controller.selectedCategory?.id ==
+                                    category.id,
+                                onTap: () =>
+                                    controller.onCategorySelected(category),
+                              ),
+                          ],
+                        ),
+                      ),
               ),
               SliverToBoxAdapter(child: SizedBox(height: 24.h)),
               SliverPadding(

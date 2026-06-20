@@ -41,7 +41,9 @@ class CheckoutCompletedView extends StatelessWidget {
                 color: AppTheme.to.primaryColor,
                 child: Text(
                   "back_to_home".tr,
-                  style: AppStyles.bodyMediumM.copyWith(color: Colors.white),
+                  style: AppStyles.bodyMediumM.copyWith(
+                    color: AppTheme.to.onPrimaryColor,
+                  ),
                 ),
               )
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -95,7 +96,7 @@ class _Logo extends StatelessWidget {
         height: 48.w,
         color: AppTheme.to.backgroundColor,
         child: url != null
-            ? Image.network(url!, fit: BoxFit.cover)
+            ? AppNetworkImage(imageUrl: url!, fit: BoxFit.cover)
             : Icon(LineAwesomeIcons.store, color: AppTheme.to.primaryColor),
       ),
     );

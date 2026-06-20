@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
@@ -158,7 +159,7 @@ class _ProductImage extends StatelessWidget {
             width: width,
             height: height,
             color: AppTheme.to.backgroundColor,
-            child: Image.network(url, fit: BoxFit.cover),
+            child: AppNetworkImage(imageUrl: url, fit: BoxFit.cover),
           ),
         ),
         if (discount != null)

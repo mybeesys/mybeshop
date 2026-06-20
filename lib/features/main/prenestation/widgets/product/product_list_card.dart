@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
 import 'package:mybeshop/core/theme/app_theme.dart';
 import 'package:mybeshop/features/main/domain/entities/product.dart';
 import 'package:mybeshop/core/widgets/riyal_price_text.dart';
+import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
+import 'package:mybeshop/features/main/prenestation/widgets/product/product_add_feedback.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/shared_widgets_and_methods.dart';
 
 class ProductListCard extends StatelessWidget {
@@ -19,91 +23,137 @@ class ProductListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasDiscount = product.hasDiscount == true;
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      decoration: AppDecorations.card(),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: EdgeInsets.all(12.w),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
+    return GetBuilder<MainController>(
+      builder: (_) {
+        final inCart = isProductInCart(product);
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 12.h),
+          decoration: AppDecorations.card(),
+          clipBehavior: Clip.antiAlias,
+          child: Padding(
+            padding: EdgeInsets.all(12.w),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppDecorations.radiusM),
-                  child: Container(
-                    width: 88.w,
-                    height: 88.w,
-                    color: AppTheme.to.backgroundColor,
-                    child: Image.network(
-                      product.images.isNotEmpty
-                          ? product.images.first
-                          : _placeholder,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                if (hasDiscount)
-                  Positioned(
-                    top: 6.h,
-                    left: 6.w,
-                    child: _DiscountBadge(
-                      label: '${product.discountPercent}%',
-                    ),
-                  ),
-              ],
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name,
-                    style: AppStyles.bodyBoldM,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      RiyalPriceText(
-                        amount: '${product.price}',
-                        currency: product.currency,
-                        style: AppStyles.bodyBoldM.copyWith(
-                          color: AppTheme.to.primaryColor,
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(AppDecorations.radiusM),
+                      child: Container(
+                        width: 88.w,
+                        height: 88.w,
+                        color: AppTheme.to.backgroundColor,
+                        child: AppNetworkImage(
+                          imageUrl: product.images.isNotEmpty
+                              ? product.images.first
+                              : _placeholder,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      if (hasDiscount) ...[
-                        SizedBox(width: 8.w),
-                        RiyalPriceText(
-                          amount: product.originalPrice ?? '',
-                          currency: product.currency,
+                    ),
+                    if (hasDiscount)
+                      Positioned(
+                        top: 6.h,
+                        left: 6.w,
+                        child: _DiscountBadge(
+                          label: '${product.discountPercent}%',
+                        ),
+                      ),
+                    if (inCart)
+                      Positioned(
+                        bottom: 6.h,
+                        right: 6.w,
+                        child: _InCartBadge(),
+                      ),
+                  ],
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: AppStyles.bodyBoldM,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (inCart) ...[
+                        SizedBox(height: 4.h),
+                        Text(
+                          'in_cart'.tr,
+                          style: AppStyles.bodyBoldS.copyWith(
+                            color: AppTheme.to.successColor,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: [
+                          RiyalPriceText(
+                            amount: '${product.price}',
+                            currency: product.currency,
+                            style: AppStyles.bodyBoldM.copyWith(
+                              color: AppTheme.to.primaryColor,
+                            ),
+                          ),
+                          if (hasDiscount) ...[
+                            SizedBox(width: 8.w),
+                            RiyalPriceText(
+                              amount: product.originalPrice ?? '',
+                              currency: product.currency,
+                              style: AppStyles.bodyRegularS.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                                color: AppTheme.to.greyColor,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      if (getHasExtrasOrVariantsText(product) != null) ...[
+                        SizedBox(height: 6.h),
+                        Text(
+                          getHasExtrasOrVariantsText(product)!,
                           style: AppStyles.bodyRegularS.copyWith(
-                            decoration: TextDecoration.lineThrough,
                             color: AppTheme.to.greyColor,
                           ),
                         ),
                       ],
                     ],
                   ),
-                  if (getHasExtrasOrVariantsText(product) != null) ...[
-                    SizedBox(height: 6.h),
-                    Text(
-                      getHasExtrasOrVariantsText(product)!,
-                      style: AppStyles.bodyRegularS.copyWith(
-                        color: AppTheme.to.greyColor,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
+                ),
+                SizedBox(width: 8.w),
+                addToCartMobileButton(product),
+              ],
             ),
-            SizedBox(width: 8.w),
-            addToCartMobileButton(product),
-          ],
-        ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _InCartBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: AppTheme.to.successColor,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.to.successColor.withOpacity(0.4),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+      child: Icon(
+        Icons.check_rounded,
+        size: 12.sp,
+        color: Colors.white,
       ),
     );
   }

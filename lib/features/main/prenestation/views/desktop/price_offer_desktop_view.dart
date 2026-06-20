@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/theme/app_styles.dart';
@@ -50,8 +51,7 @@ class PriceOfferDesktopView extends StatelessWidget {
                                   children: [
                                     if (controller.priceOffer?.store.logo !=
                                         null)
-                                      Image.network(
-                                        controller.priceOffer!.store.logo!,
+                                      AppNetworkImage(imageUrl: controller.priceOffer!.store.logo!,
                                         width: 100.w,
                                       )
                                     else

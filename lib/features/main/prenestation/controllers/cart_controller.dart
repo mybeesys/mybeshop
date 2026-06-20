@@ -2,7 +2,6 @@
 
 import 'package:get/get.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
-import 'package:mybeshop/core/utils/helper/app_loaders_helper.dart';
 import 'package:mybeshop/features/global/presentation/global_controller.dart';
 import 'package:mybeshop/features/main/domain/entities/cart_item.dart';
 import 'package:mybeshop/features/main/domain/entities/option.dart';
@@ -23,6 +22,29 @@ class CartController extends GetxController {
   RxBool shopingCartLoading = false.obs;
   ShoppingCart? shoppingCart;
 
+  /// Tracks inline loading for a single cart row (update qty / delete).
+  RxnString cartItemActionId = RxnString();
+  RxBool cartItemActionLoading = false.obs;
+
+  bool isCartItemBusy(String itemId) =>
+      cartItemActionLoading.value && cartItemActionId.value == itemId;
+
+  Future<void> _runCartItemAction(
+    String itemId,
+    Future<void> Function() action,
+  ) async {
+    cartItemActionId.value = itemId;
+    cartItemActionLoading(true);
+    update();
+    try {
+      await action();
+    } finally {
+      cartItemActionLoading(false);
+      cartItemActionId.value = null;
+      update();
+    }
+  }
+
   Future<void> getShoppingCart() async {
     shopingCartLoading(true);
     update();
@@ -30,7 +52,10 @@ class CartController extends GetxController {
         Get.find<GetShoppingCartUseCase>();
 
     final response = await getShoppingCartUseCase();
-    response.fold((failure) {}, (success) {
+    response.fold((failure) {
+      shopingCartLoading(false);
+      update();
+    }, (success) {
       shoppingCart = success;
       shopingCartLoading(false);
       if (Get.isRegistered<MainController>()) {
@@ -100,16 +125,14 @@ class CartController extends GetxController {
   }
 
   RxBool isAddingToCart = false.obs;
-  Future<void> addToCart() async {
-    // AppLoaders.showLoading();
-    // log(selectedProduct!.name);
-    // log(optionsIds.toString());
+  Future<bool> addToCart() async {
     if (extras.isNotEmpty) {
       extraIds = extras.map((e) => e.id).toList();
     }
     final AddToCartUseCase addToCartUseCase = Get.find<AddToCartUseCase>();
     isAddingToCart(true);
     update();
+
     final response = await addToCartUseCase(data: {
       "product_id": "${selectedProduct?.id}",
       "product_type": "${selectedProduct?.type}",
@@ -118,9 +141,10 @@ class CartController extends GetxController {
       "qty": "$qty",
     });
 
+    var added = false;
     response.fold((failure) {
-      // log("HERE IS THE FAILURE  : ${failure.toString()}");
-      Get.back();
+      isAddingToCart(false);
+      update();
       Get.dialog(AppDialogs.customDialog(
         isLottie: true,
         isLooping: false,
@@ -128,61 +152,69 @@ class CartController extends GetxController {
         title: "error".tr,
         message: failure.message,
         showCancelButton: true,
-        onPressed: () {
-          Get.back();
-        },
+        onPressed: Get.back,
       ));
     }, (success) {
       shoppingCart = success;
-      AppLoaders.hideLoading();
       isAddingToCart(false);
+      if (selectedProduct != null) {
+        if (selectedProduct!.type == 'basic') {
+          selectedProduct!.inCart = true;
+        } else {
+          variantDetails?.inCart = true;
+        }
+      }
       if (Get.isRegistered<MainController>()) {
         Get.find<MainController>().update();
       }
       update();
-      Get.back();
+      added = true;
     });
+    return added;
   }
 
   void updateCart(CartItem product, {bool isIncrease = false}) async {
-    AppLoaders.showLoading();
-    final UpdateCartUseCase updateCartUseCase = Get.find();
-    final response = await updateCartUseCase(data: {
-      "id": product.id,
-      "qty": "${product.qty + (isIncrease ? 1 : -1)}",
-    });
-    response.fold((failure) {}, (success) {
-      shoppingCart = success;
-      AppLoaders.hideLoading();
-      update();
+    await _runCartItemAction(product.id, () async {
+      final UpdateCartUseCase updateCartUseCase = Get.find();
+      final response = await updateCartUseCase(data: {
+        "id": product.id,
+        "qty": "${product.qty + (isIncrease ? 1 : -1)}",
+      });
+      response.fold((failure) {}, (success) {
+        shoppingCart = success;
+        if (Get.isRegistered<MainController>()) {
+          Get.find<MainController>().update();
+        }
+      });
     });
   }
 
   void deleteItemFromCart(id, {int? extraId, bool withBack = false}) async {
-    AppLoaders.showLoading(); // log(selectedProduct!.name);
-    // log(optionsIds.toString());
-    // log(extraId.toString());
-    final DeleteItemFromCartUseCase deleteItemFromCartUseCase =
-        Get.find<DeleteItemFromCartUseCase>();
-    final response = await deleteItemFromCartUseCase(data: {
-      "id": id,
-      if (extraId != null) "product_extras_ids_to_remove[]": extraId
-    });
+    final productId = shoppingCart?.items
+        .where((element) => element.id == id)
+        .map((element) => element.productId)
+        .firstOrNull;
 
-    response.fold((failure) {}, (success) {
-      var productId = shoppingCart!.items
-          .firstWhere((element) => element.id == id)
-          .productId;
-      AppLoaders.hideLoading();
-      shoppingCart = success;
-      if (Get.isRegistered<MainController>()) {
-        Get.find<MainController>().setProductInCart(productId);
-        Get.find<MainController>().update();
-      }
-      if (withBack) {
-        Get.back();
-      }
-      update();
+    await _runCartItemAction(id.toString(), () async {
+      final DeleteItemFromCartUseCase deleteItemFromCartUseCase =
+          Get.find<DeleteItemFromCartUseCase>();
+      final response = await deleteItemFromCartUseCase(data: {
+        "id": id,
+        if (extraId != null) "product_extras_ids_to_remove[]": extraId
+      });
+
+      response.fold((failure) {}, (success) {
+        shoppingCart = success;
+        if (Get.isRegistered<MainController>()) {
+          if (productId != null) {
+            Get.find<MainController>().setProductInCart(productId);
+          }
+          Get.find<MainController>().update();
+        }
+        if (withBack) {
+          Get.back();
+        }
+      });
     });
   }
 

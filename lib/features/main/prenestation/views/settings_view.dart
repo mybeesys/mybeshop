@@ -11,7 +11,7 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        foregroundColor: Colors.white,
+        foregroundColor: AppTheme.to.onPrimaryColor,
         backgroundColor: AppTheme.to.primaryColor,
         centerTitle: false,
         title: Text(
