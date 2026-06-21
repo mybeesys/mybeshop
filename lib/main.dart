@@ -8,4 +8,5 @@ Future<void> main() async {
   prepareWebEntryUrl();
   await InjectorContainer.init();
   runApp(const App());
+  //test
 }
