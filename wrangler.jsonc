@@ -1,11 +1,12 @@
 {
   "name": "mybeshop",
-  // SPA + Flutter web. REQUIRED on Cloudflare Workers Builds:
-  //   Build command:  npm run build
-  //   Deploy command: npm run deploy:worker
-  // Or use a single deploy command: npm run cf:deploy
-  // Do NOT use "npx wrangler deploy" alone — build/web must exist first.
+  // SPA + Flutter web. Wrangler runs `npm run build` before deploy (see `build.command`).
+  // Cloudflare Workers Builds can use deploy command: npx wrangler deploy
+  // First CI build may take 5–10 min (Flutter SDK install).
   "compatibility_date": "2025-05-25",
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./build/web",
     "not_found_handling": "single-page-application"

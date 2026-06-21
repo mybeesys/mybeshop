@@ -8,15 +8,7 @@ cd "$ROOT_DIR"
 echo "==> Installing npm dependencies (wrangler)..."
 npm install --no-audit --no-fund
 
-echo "==> Building Flutter web..."
-bash scripts/cloudflare-build.sh
-
-if [ ! -d build/web ] || [ ! -f build/web/index.html ]; then
-  echo "ERROR: build/web is missing. Flutter build did not produce output." >&2
-  exit 1
-fi
-
-echo "==> Deploying to Cloudflare Workers (SPA: all paths serve index.html)..."
+echo "==> Deploying to Cloudflare Workers (build + SPA routing via wrangler.jsonc)..."
 npm run deploy:worker
 
 echo ""
