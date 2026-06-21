@@ -5,7 +5,7 @@
     "build": "bash scripts/cloudflare-build.sh",
     "deploy:worker": "wrangler deploy --config wrangler.jsonc",
     "deploy": "bash scripts/cloudflare-deploy.sh",
-    "cf:deploy": "npm run deploy:worker"
+    "cf:deploy": "npm run build && npm run deploy:worker"
   },
   "engines": {
     "node": ">=18"

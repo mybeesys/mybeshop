@@ -1,8 +1,9 @@
 {
   "name": "mybeshop",
-  // SPA + Flutter web. Wrangler runs `npm run build` before deploy (see `build.command`).
-  // Cloudflare Workers Builds can use deploy command: npx wrangler deploy
-  // First CI build may take 5–10 min (Flutter SDK install).
+  // SPA + Flutter web.
+  // Cloudflare Workers Builds IGNORES build.command below — set in Dashboard → Settings → Builds:
+  //   Option A: Build command = npm run build  |  Deploy command = npx wrangler deploy
+  //   Option B: Build command = (empty)        |  Deploy command = npm run cf:deploy
   "compatibility_date": "2025-05-25",
   "build": {
     "command": "npm run build"
