@@ -1,6 +1,10 @@
 {
   "name": "mybeshop",
-  // SPA navigate fallback for paths like /apple (requires 2025-04-01+).
+  // SPA + Flutter web. REQUIRED on Cloudflare Workers Builds:
+  //   Build command:  npm run build
+  //   Deploy command: npm run deploy:worker
+  // Or use a single deploy command: npm run cf:deploy
+  // Do NOT use "npx wrangler deploy" alone — build/web must exist first.
   "compatibility_date": "2025-05-25",
   "assets": {
     "directory": "./build/web",
