@@ -30,6 +30,7 @@ import 'package:mybeshop/features/main/domain/usecases/get_supply_order_use_case
 import 'package:mybeshop/features/main/domain/usecases/get_variant_product_use_case.dart';
 import 'package:mybeshop/features/main/domain/usecases/update_cart_use_case.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/cart_controller.dart';
+import 'package:mybeshop/features/main/prenestation/controllers/main_controller.dart';
 import 'package:mybeshop/features/main/prenestation/controllers/mobile/view_contorller.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -136,6 +137,7 @@ class MainFeatureInjector {
     // supply-orders/83040855
 
     // Controllers
+    Get.put(MainController(Get.find(), Get.find()), permanent: true);
     Get.put(CartController());
   }
 }

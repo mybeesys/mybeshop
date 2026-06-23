@@ -3,7 +3,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
+import 'package:mybeshop/core/theme/app_styles.dart';
+import 'package:mybeshop/core/theme/app_theme.dart';
+import 'package:mybeshop/core/utils/store_slug_parser.dart';
+import 'package:mybeshop/core/utils/platform/browser_path.dart';
 import 'package:mybeshop/core/utils/helper/app_dialogs.dart';
 import 'package:mybeshop/core/utils/helper/app_loaders_helper.dart';
 import 'package:mybeshop/core/utils/helper/validator.dart';
@@ -242,25 +248,51 @@ class CheckoutController extends GetxController
     }, (success) {
       AppLoaders.hideLoading();
       checkoutCompleted = true;
-      if (!isMobile) {
-        tabController.index++;
-        tabController.animateTo(tabController.index);
-      }
-      if (Get.isRegistered<MainController>()) {
-        Get.find<MainController>().onInit();
-      } else {
-        Get.put(MainController(Get.find(), Get.find()));
-      }
-      if (Get.isRegistered<CartController>()) {
-        CartController.to.onInit();
-      } else {
-        Get.put(CartController());
-      }
-
+      CartController.to.getShoppingCart();
+      Get.find<MainController>().getCategories();
       update();
       if (isMobile) {
         Get.offNamed(AppRoutes.checkoutCompleted);
+      } else {
+        goHomeAfterCheckout();
       }
+    });
+  }
+
+  void goHomeAfterCheckout() {
+    if (Get.isRegistered<CheckoutController>()) {
+      Get.delete<CheckoutController>();
+    }
+    final slug = GlobalController.to.slug;
+    if (kIsWeb && slug != null && slug!.isNotEmpty) {
+      replaceBrowserPath(StoreSlugParser.storePath(slug!));
+    }
+    Get.offAllNamed(AppRoutes.main);
+    _showCheckoutSuccessMessage();
+  }
+
+  void _showCheckoutSuccessMessage() {
+    Future.delayed(const Duration(milliseconds: 350), () {
+      if (Get.isSnackbarOpen) {
+        Get.closeAllSnackbars();
+      }
+      Get.rawSnackbar(
+        backgroundColor: AppTheme.to.successColor,
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+        borderRadius: 12,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+        icon: const Icon(
+          LineAwesomeIcons.check_circle,
+          color: Colors.white,
+          size: 22,
+        ),
+        messageText: Text(
+          'checkout_completed'.tr,
+          style: AppStyles.bodyBoldM.copyWith(color: Colors.white),
+        ),
+        shouldIconPulse: true,
+      );
     });
   }
 

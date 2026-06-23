@@ -6,13 +6,13 @@ import 'package:mybeshop/core/theme/app_theme.dart';
 class AppLoaders {
   static bool _isShowing = false;
 
-  static Future<void> showLoading({String? message}) async {
-    if (_isShowing || Get.isDialogOpen == true) {
+  static void showLoading({String? message}) {
+    if (_isShowing) {
       return;
     }
     _isShowing = true;
 
-    await Get.dialog(
+    Get.dialog(
       PopScope(
         canPop: false,
         child: Center(
@@ -59,14 +59,12 @@ class AppLoaders {
       barrierDismissible: false,
       barrierColor: Colors.black.withOpacity(0.35),
     );
-
-    _isShowing = false;
   }
 
   static void hideLoading() {
+    _isShowing = false;
     if (Get.isDialogOpen == true) {
       Get.back();
     }
-    _isShowing = false;
   }
 }

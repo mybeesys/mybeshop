@@ -555,7 +555,7 @@ class TrackOrderStepWidget extends StatelessWidget {
             Text('checkout_completed'.tr, style: AppStyles.heading4),
             SizedBox(height: 24.h),
             FilledButton(
-              onPressed: Get.back,
+              onPressed: () => CheckoutController.to.goHomeAfterCheckout(),
               style: FilledButton.styleFrom(
                 minimumSize: Size(180.w, 48.h),
                 backgroundColor: AppTheme.to.primaryColor,

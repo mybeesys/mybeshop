@@ -19,7 +19,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MainController>(
-      init: MainController(Get.find(), Get.find()),
       builder: (controller) {
         return Scaffold(
           backgroundColor: AppTheme.to.backgroundColor,

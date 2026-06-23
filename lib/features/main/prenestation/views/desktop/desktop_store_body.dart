@@ -101,7 +101,10 @@ class _ProductsPanel extends StatelessWidget {
         SizedBox(height: 12.h),
         Expanded(
           child: SingleChildScrollView(
-            child: _ProductSection(isGrid: controller.isGrid),
+            child: _ProductSection(
+              isGrid: controller.isGrid,
+              mainController: controller,
+            ),
           ),
         ),
       ],
@@ -110,16 +113,20 @@ class _ProductsPanel extends StatelessWidget {
 }
 
 class _ProductSection extends StatelessWidget {
-  const _ProductSection({required this.isGrid});
+  const _ProductSection({
+    required this.isGrid,
+    required this.mainController,
+  });
 
   final bool isGrid;
+  final MainController mainController;
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CartController>(
-      init: CartController.to,
-      builder: (_) {
-        final main = Get.find<MainController>();
+    return GetBuilder<MainController>(
+      builder: (main) {
+        return GetBuilder<CartController>(
+          builder: (_) {
         if (main.categoriesLoading.value) {
           return isGrid
               ? _ProductGrid(
@@ -166,6 +173,8 @@ class _ProductSection extends StatelessWidget {
           itemCount: products.length,
           itemBuilder: (_, index) =>
               DesktopListProductCard(product: products[index]),
+        );
+          },
         );
       },
     );

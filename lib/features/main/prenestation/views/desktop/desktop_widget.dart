@@ -39,7 +39,6 @@ class DesktopWidget extends StatelessWidget {
               );
             }
             return GetBuilder<MainController>(
-              init: MainController(Get.find(), Get.find()),
               builder: (controller) {
                 return Scaffold(
                   key: _key,
