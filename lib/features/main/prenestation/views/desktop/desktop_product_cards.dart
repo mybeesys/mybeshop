@@ -20,7 +20,7 @@ class DesktopListProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasDiscount = product.hasDiscount == true;
     return Container(
-      height: 120.h,
+      height: 132.h,
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: AppDecorations.card(),
       clipBehavior: Clip.antiAlias,
@@ -28,8 +28,8 @@ class DesktopListProductCard extends StatelessWidget {
         children: [
           _ProductImage(
             url: product.images.isNotEmpty ? product.images.first : _placeholder,
-            width: 120.w,
-            height: 120.h,
+            width: 132.w,
+            height: 132.h,
             borderRadius: BorderRadius.horizontal(
               left: Radius.circular(AppDecorations.radiusL),
             ),

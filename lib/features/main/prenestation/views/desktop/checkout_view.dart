@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mybeshop/core/theme/app_decorations.dart';
 import 'package:mybeshop/core/widgets/app_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -73,346 +74,353 @@ class CheckoutDesktopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ScreenUtilInit(
+      designSize: const Size(1440, 900),
+      minTextAdapt: true,
+      splitScreenMode: false,
+      builder: (_, __) => const _CheckoutDesktopBody(),
+    );
+  }
+}
+
+class _CheckoutDesktopBody extends StatelessWidget {
+  const _CheckoutDesktopBody();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.to.backgroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: AppTheme.to.surfaceColor,
+        foregroundColor: AppTheme.to.textColor,
+        title: Text('checkout'.tr, style: AppStyles.heading5),
+        leading: IconButton(
+          onPressed: Get.back,
+          icon: const Icon(LineAwesomeIcons.arrow_left),
+        ),
+      ),
       body: GetBuilder<CheckoutController>(
-          init: CheckoutController(
-              Get.find(), Get.find(), Get.find(), Get.find(), Get.find()),
-          builder: (controller) {
-            return SafeArea(
+        init: CheckoutController(
+          Get.find(),
+          Get.find(),
+          Get.find(),
+          Get.find(),
+          Get.find(),
+        ),
+        builder: (controller) {
+          final topInset = MediaQuery.paddingOf(context).top + kToolbarHeight;
+          return SizedBox(
+            height: MediaQuery.sizeOf(context).height - topInset,
+            child: Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 1200.w),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(24.w, 16.h, 24.w, 24.h),
                 child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: _CheckoutFormPanel(controller: controller),
+                    ),
+                    SizedBox(width: 24.w),
+                    SizedBox(
+                      width: 360.w,
+                      child: _CheckoutSummaryPanel(controller: controller),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CheckoutFormPanel extends StatelessWidget {
+  const _CheckoutFormPanel({required this.controller});
+
+  final CheckoutController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: AppDecorations.card(),
+      padding: EdgeInsets.all(24.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          IgnorePointer(
+            ignoring: true,
+            child: TabBar(
+              labelStyle: AppStyles.bodyBoldM,
+              unselectedLabelStyle: AppStyles.bodyMediumS,
+              labelColor: AppTheme.to.primaryColor,
+              unselectedLabelColor: AppTheme.to.greyColor,
+              indicatorColor: AppTheme.to.primaryColor,
+              controller: controller.tabController,
+              tabs: [
+                Tab(
+                  icon: Icon(LineAwesomeIcons.user, size: 18.sp),
+                  text: 'personal_information'.tr,
+                ),
+                Tab(
+                  icon: Icon(LineAwesomeIcons.credit_card, size: 18.sp),
+                  text: 'payment_methods'.tr,
+                ),
+                Tab(
+                  icon: Icon(LineAwesomeIcons.truck_moving, size: 18.sp),
+                  text: 'track_order'.tr,
+                ),
+              ],
+              onTap: null,
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Expanded(
+            child: TabBarView(
+              controller: controller.tabController,
+              children: controller.steps,
+            ),
+          ),
+          if (!controller.checkoutCompleted) ...[
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                if (controller.tabController.index > 0)
+                  OutlinedButton(
+                    onPressed: () => controller.onStepChanged(false),
+                    style: OutlinedButton.styleFrom(
+                      minimumSize: Size(120.w, 48.h),
+                      foregroundColor: AppTheme.to.textColor,
+                      side: BorderSide(color: AppTheme.to.borderColor),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppDecorations.radiusM),
+                      ),
+                    ),
+                    child: Text('previus'.tr, style: AppStyles.bodyBoldM),
+                  ),
+                if (controller.tabController.index > 0) SizedBox(width: 12.w),
+                if (controller.tabController.index < 2)
+                  FilledButton(
+                    onPressed: () => controller.onStepChanged(true),
+                    style: FilledButton.styleFrom(
+                      minimumSize: Size(140.w, 48.h),
+                      backgroundColor: AppTheme.to.primaryColor,
+                      foregroundColor: AppTheme.to.onPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppDecorations.radiusM),
+                      ),
+                    ),
+                    child: Text('next'.tr, style: AppStyles.bodyBoldM),
+                  ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _CheckoutSummaryPanel extends StatelessWidget {
+  const _CheckoutSummaryPanel({required this.controller});
+
+  final CheckoutController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final cart = controller.shoppingCart;
+
+    return Container(
+      decoration: AppDecorations.card(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
+            child: Row(
               children: [
                 Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      IgnorePointer(
-                        ignoring: true,
-                        child: TabBar(
-                          labelStyle: AppStyles.bodyBoldXL
-                              .copyWith(fontFamily: "Cairo"),
-                          labelColor: AppTheme.to.primaryColor,
-                          controller: controller.tabController,
-                          tabs: [
-                            Tab(
-                              icon: const Icon(LineAwesomeIcons.user),
-                              text: "personal_information".tr,
-                            ),
-                            Tab(
-                              icon: const Icon(LineAwesomeIcons.credit_card),
-                              text: "payment_methods".tr,
-                            ),
-                            Tab(
-                              icon: const Icon(LineAwesomeIcons.truck_moving),
-                              text: "track_order".tr,
-                            ),
-                          ],
-                          onTap: null,
-                        ),
-                      ),
-                      SizedBox(width: 140.h),
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 40.h),
-                          child: TabBarView(
-                              controller: controller.tabController,
-                              children: controller.steps),
-                        ),
-                      ),
-                      if (!controller.checkoutCompleted)
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 40.h),
-                          child: Row(
-                            children: [
-                              if (controller.tabController.index < 2)
-                                MaterialButton(
-                                  height: 140.h,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  color: AppTheme.to.primaryColor,
-                                  onPressed: () {
-                                    controller.onStepChanged(true);
-                                  },
-                                  child: Text(
-                                    "next".tr,
-                                    style: AppStyles.bodyMediumL
-                                        .copyWith(color: AppTheme.to.onPrimaryColor),
-                                  ),
-                                ),
-                              if (controller.tabController.index > 0) ...[
-                                SizedBox(width: 20.w),
-                                MaterialButton(
-                                  height: 140.h,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  color: AppTheme.to.primaryColor,
-                                  onPressed: () {
-                                    controller.onStepChanged(false);
-                                  },
-                                  child: Text(
-                                    "previus".tr,
-                                    style: AppStyles.bodyMediumL
-                                        .copyWith(color: AppTheme.to.onPrimaryColor),
-                                  ),
-                                ),
-                              ]
-                            ],
-                          ),
-                        )
-                    ],
-                  ),
+                  child: Text('order_summery'.tr, style: AppStyles.heading5),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Colors.grey.shade50,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 30.h, horizontal: 20.w),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "order_summery".tr,
-                                        style: AppStyles.bodyBoldXL,
-                                      ),
-                                      Text(
-                                        intl.DateFormat("EEE, M/d/y")
-                                            .format(DateTime.now()),
-                                        style: AppStyles.bodyBoldXL,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ListView.builder(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 20.w),
-                                  itemBuilder: (context, index) {
-                                    var item =
-                                        controller.shoppingCart?.items[index];
-                                    return Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 15.h),
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            height: 70.w,
-                                            width: 70.w,
-                                            padding: EdgeInsets.all(3.w),
-                                            decoration: BoxDecoration(
-                                                color: AppTheme.to.greyColor
-                                                    .withOpacity(0.4)),
-                                            child: AppNetworkImage(imageUrl: item?.image ??
-                                                "https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png"),
-                                          ),
-                                          SizedBox(width: 10.w),
-                                          Expanded(
-                                              child: Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10.w,
-                                                vertical: 15.h),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        "${item?.name}",
-                                                        style:
-                                                            AppStyles.bodyBoldL,
-                                                      ),
-                                                      SizedBox(
-                                                        height: 15.h,
-                                                      ),
-                                                      Text.rich(
-                                                        TextSpan(children: [
-                                                          TextSpan(
-                                                              text:
-                                                                  "${"type".tr}: "),
-                                                          TextSpan(
-                                                            text:
-                                                                "${item?.type}",
-                                                          ),
-                                                        ]),
-                                                        style: AppStyles
-                                                            .bodyMediumL
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .grey),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(width: 10.w),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    RiyalPriceText(
-                                                      amount:
-                                                          item?.priceFormatted ??
-                                                              '',
-                                                      formatted: true,
-                                                      style: AppStyles.bodyBoldL,
-                                                    ),
-                                                    SizedBox(
-                                                      height: 15.h,
-                                                    ),
-                                                    Text.rich(
-                                                      TextSpan(children: [
-                                                        TextSpan(
-                                                            text:
-                                                                "${"qty".tr}: "),
-                                                        TextSpan(
-                                                          text: "${item?.qty}",
-                                                        ),
-                                                      ]),
-                                                      style: AppStyles
-                                                          .bodyMediumL
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.grey),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ))
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      controller.shoppingCart?.items.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                ),
-                                // for (var item in controller.shoppingCart!.items)
-                                //   Text(item.name),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20.h, horizontal: 20.h),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Form(
-                                  key: controller.couponFormKey,
-                                  child: TextFormField(
-                                    controller: controller.couponInput,
-                                    style: AppStyles.bodyBoldXL,
-                                    decoration: InputDecoration(
-                                      hintText: "coupon".tr,
-                                      prefixIcon: const Icon(
-                                          LineAwesomeIcons.percentage),
-                                    ),
-                                    validator: (v) {
-                                      return Validator.validateRequired(
-                                          v, "coupon".tr);
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              MaterialButton(
-                                height: 140.h,
-                                minWidth: 120.w,
-                                onPressed: () => controller.applyCoupon(),
-                                color: AppTheme.to.primaryColor,
-                                child: Text(
-                                  "apply".tr,
-                                  style: AppStyles.bodyMediumL
-                                      .copyWith(color: AppTheme.to.onPrimaryColor),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 80.h, horizontal: 20.h),
-                          child: Column(
-                            children: [
-                              OrderSummeryItemWidget(
-                                name: "sub_total",
-                                value:
-                                    "${controller.shoppingCart?.subTotalFormattedAfterDiscount}",
-                              ),
-                              if (controller.shoppingCart != null &&
-                                  controller.shoppingCart!.coupon.valid) ...[
-                                SizedBox(height: 10.h),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "after_discount_applied".tr,
-                                      style: AppStyles.bodyMediumS
-                                          .copyWith(color: Colors.green),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                              SizedBox(height: 10.h),
-                              const Divider(),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              OrderSummeryItemWidget(
-                                name: "tax",
-                                value:
-                                    "${controller.shoppingCart?.taxFormatted}",
-                              ),
-                              // coupon
-
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              OrderSummeryItemWidget(
-                                name: "delivery",
-                                value:
-                                    "${controller.shoppingCart?.deliveryFees}",
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                Text(
+                  intl.DateFormat('EEE, M/d/y').format(DateTime.now()),
+                  style: AppStyles.bodyRegularS.copyWith(
+                    color: AppTheme.to.greyColor,
                   ),
                 ),
               ],
-            ));
-          }),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: cart?.items.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final item = cart!.items[index];
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 12.h),
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                          color: AppTheme.to.backgroundColor,
+                          borderRadius:
+                              BorderRadius.circular(AppDecorations.radiusM),
+                          border: Border.all(color: AppTheme.to.borderColor),
+                        ),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: SizedBox(
+                                width: 56.w,
+                                height: 56.w,
+                                child: AppNetworkImage(
+                                  imageUrl: item.image ??
+                                      'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-15.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.name,
+                                    style: AppStyles.bodyBoldM,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '${'qty'.tr}: ${item.qty}',
+                                    style: AppStyles.bodyRegularS.copyWith(
+                                      color: AppTheme.to.greyColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            RiyalPriceText(
+                              amount: item.priceFormatted,
+                              formatted: true,
+                              style: AppStyles.bodyBoldM.copyWith(
+                                color: AppTheme.to.primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 12.h),
+                  Form(
+                    key: controller.couponFormKey,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: controller.couponInput,
+                            style: AppStyles.bodyMediumM,
+                            decoration: InputDecoration(
+                              hintText: 'coupon'.tr,
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 14.w,
+                                vertical: 14.h,
+                              ),
+                              prefixIcon: Icon(
+                                LineAwesomeIcons.percentage,
+                                size: 18.sp,
+                                color: AppTheme.to.greyColor,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppDecorations.radiusM,
+                                ),
+                              ),
+                            ),
+                            validator: (v) =>
+                                Validator.validateRequired(v, 'coupon'.tr),
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        SizedBox(
+                          height: 48.h,
+                          child: FilledButton(
+                            onPressed: controller.applyCoupon,
+                            style: FilledButton.styleFrom(
+                              backgroundColor: AppTheme.to.primaryColor,
+                              foregroundColor: AppTheme.to.onPrimaryColor,
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppDecorations.radiusM,
+                                ),
+                              ),
+                            ),
+                            child: Text('apply'.tr, style: AppStyles.bodyBoldM),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 20.h),
+            child: Column(
+              children: [
+                const Divider(),
+                SizedBox(height: 12.h),
+                OrderSummeryItemWidget(
+                  name: 'sub_total',
+                  value: cart?.subTotalFormattedAfterDiscount ?? '',
+                ),
+                if (cart != null && cart.coupon.valid) ...[
+                  SizedBox(height: 8.h),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: Text(
+                      'after_discount_applied'.tr,
+                      style: AppStyles.bodyRegularS.copyWith(
+                        color: AppTheme.to.successColor,
+                      ),
+                    ),
+                  ),
+                ],
+                SizedBox(height: 8.h),
+                OrderSummeryItemWidget(
+                  name: 'tax',
+                  value: cart?.taxFormatted ?? '',
+                ),
+                SizedBox(height: 8.h),
+                OrderSummeryItemWidget(
+                  name: 'delivery',
+                  value: cart?.deliveryFees ?? '',
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -430,15 +438,17 @@ class OrderSummeryItemWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          name.tr,
-          style: AppStyles.bodyBoldL,
+        Text(name.tr, style: AppStyles.bodyMediumM),
+        Flexible(
+          child: RiyalPriceText(
+            amount: value,
+            formatted: true,
+            textAlign: TextAlign.end,
+            style: AppStyles.bodyMediumM.copyWith(
+              color: AppTheme.to.greyColor,
+            ),
+          ),
         ),
-        RiyalPriceText(
-          amount: value,
-          formatted: true,
-          style: AppStyles.bodyMediumL.copyWith(color: Colors.grey),
-        )
       ],
     );
   }
@@ -454,13 +464,11 @@ class PaymentMethodsStepWidget extends StatelessWidget {
         builder: (controller) {
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 300.w),
-              child: Column(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      PaymentMethodTypeWidget(
+                  PaymentMethodTypeWidget(
                         isSelected:
                             controller.paymentMethod == "cash_on_delivery",
                         onPressed: () {
@@ -469,16 +477,6 @@ class PaymentMethodsStepWidget extends StatelessWidget {
                         icon: "assets/images/cod.png",
                         name: "cash_on_delivery".tr,
                       ),
-                      // PaymentMethodTypeWidget(
-                      //   isSelected: controller.paymentMethod == "credit_card",
-                      //   onPressed: () {
-                      //     controller.onPaymentMethodChanged("credit_card");
-                      //   },
-                      //   icon: "assets/images/credit.png",
-                      //   name: "credit_card".tr,
-                      // ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -505,8 +503,8 @@ class PaymentMethodTypeWidget extends StatelessWidget {
       color: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(
-        height: 190.w,
-        width: 190.w,
+        height: 140.w,
+        width: 140.w,
         decoration: BoxDecoration(
             color: isSelected ? AppTheme.to.primaryColor : Colors.grey.shade200,
             borderRadius: BorderRadius.circular(8)),
@@ -516,8 +514,8 @@ class PaymentMethodTypeWidget extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 110.w,
-                width: 110.w,
+                height: 72.w,
+                width: 72.w,
                 child: Image.asset(icon),
               ),
               SizedBox(height: 10.h),
@@ -544,29 +542,30 @@ class TrackOrderStepWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 80.h),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Lottie.asset("assets/lotties/checkout_completed.json",
-                height: 700.h),
-            SizedBox(height: 100.h),
-            Text("checkout_completed".tr, style: AppStyles.heading3),
-            SizedBox(height: 70.h),
-            MaterialButton(
-              color: AppTheme.to.primaryColor,
-              onPressed: () {
-                Get.back();
-              },
-              child: Text(
-                "back_to_home".tr,
-                style: AppStyles.bodyBoldXL.copyWith(
-                  color: AppTheme.to.onPrimaryColor,
-                ),
-                textAlign: TextAlign.center,
+            Lottie.asset(
+              'assets/lotties/checkout_completed.json',
+              height: 220.h,
+            ),
+            SizedBox(height: 24.h),
+            Text('checkout_completed'.tr, style: AppStyles.heading4),
+            SizedBox(height: 24.h),
+            FilledButton(
+              onPressed: Get.back,
+              style: FilledButton.styleFrom(
+                minimumSize: Size(180.w, 48.h),
+                backgroundColor: AppTheme.to.primaryColor,
+                foregroundColor: AppTheme.to.onPrimaryColor,
               ),
-            )
+              child: Text(
+                'back_to_home'.tr,
+                style: AppStyles.bodyBoldM,
+              ),
+            ),
           ],
         ),
       ),
@@ -585,149 +584,130 @@ class PersonalInformationStepWidget extends StatelessWidget {
         init: Get.find<CheckoutController>(),
         builder: (controller) {
           return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 100.h),
-                Form(
-                    key: controller.checkoutForm,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFormFieldWidget(
-                                controller: CheckoutController.to.nameInput,
-                                label: "name".tr,
-                                icon: LineAwesomeIcons.user,
-                                validator: (v) {
-                                  var message =
-                                      Validator.validateRequired(v, "name".tr);
-                                  if (message == null) {
-                                    return Validator
-                                        .networkValidatorErrorViewer(
-                                            CheckoutController.to.errors,
-                                            "name");
-                                  }
-                                  return message;
-                                },
+            child: Form(
+              key: controller.checkoutForm,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextFormFieldWidget(
+                          controller: CheckoutController.to.nameInput,
+                          label: 'name'.tr,
+                          icon: LineAwesomeIcons.user,
+                          validator: (v) {
+                            var message =
+                                Validator.validateRequired(v, 'name'.tr);
+                            if (message == null) {
+                              return Validator.networkValidatorErrorViewer(
+                                CheckoutController.to.errors,
+                                'name',
+                              );
+                            }
+                            return message;
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: CustomTextFormFieldWidget(
+                          controller: CheckoutController.to.phoneInput,
+                          label: 'phone'.tr,
+                          icon: LineAwesomeIcons.phone,
+                          hint: 'EXP: 966557013119',
+                          validator: (v) {
+                            var message =
+                                Validator.validateRequired(v, 'phone'.tr);
+                            if (message == null) {
+                              return Validator.networkValidatorErrorViewer(
+                                CheckoutController.to.errors,
+                                'phone',
+                              );
+                            }
+                            return message;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Text(
+                    'address_info'.tr,
+                    style: AppStyles.heading6,
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CheckoutController.to.stateLoading.value
+                            ? const LinearProgressIndicator()
+                            : CustomSearchableSelectWidget(
+                                enabled: controller.states.isNotEmpty,
+                                items: controller.states,
+                                leadingIcon:
+                                    const Icon(LineAwesomeIcons.map),
+                                name: 'state'.tr,
+                                selectedItem: controller.selectedState,
+                                itemAsString: (v) => v.name,
+                                onSelected: (state) =>
+                                    controller.onStateSelected(state),
                               ),
-                            ),
-                            SizedBox(width: 40.w),
-                            Expanded(
-                              child: CustomTextFormFieldWidget(
-                                controller: CheckoutController.to.phoneInput,
-                                label: "phone".tr,
-                                icon: LineAwesomeIcons.phone,
-                                hint: "EXP: 966557013119",
-                                validator: (v) {
-                                  var message =
-                                      Validator.validateRequired(v, "phone".tr);
-                                  if (message == null) {
-                                    return Validator
-                                        .networkValidatorErrorViewer(
-                                            CheckoutController.to.errors,
-                                            "phone");
-                                  }
-                                  return message;
-                                },
+                      ),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: CheckoutController.to.citiesLoading.value
+                            ? const LinearProgressIndicator()
+                            : CustomSearchableSelectWidget<City>(
+                                enabled: controller.cities.isNotEmpty,
+                                items: controller.cities,
+                                leadingIcon: const Icon(
+                                    LineAwesomeIcons.map_signs),
+                                name: 'city'.tr,
+                                selectedItem: controller.selectedCity,
+                                itemAsString: (v) => v.name,
+                                onSelected: (city) =>
+                                    controller.onCitySelected(city),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 100.h,
-                        ),
-                        Text(
-                          "address_info".tr,
-                          style: AppStyles.heading4
-                              .copyWith(fontWeight: FontWeight.normal),
-                        ),
-                        SizedBox(
-                          height: 80.h,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CheckoutController.to.stateLoading.value
-                                  ? const LinearProgressIndicator()
-                                  : CustomSearchableSelectWidget(
-                                      enabled: controller.states.isNotEmpty,
-                                      items: controller.states,
-                                      leadingIcon:
-                                          const Icon(LineAwesomeIcons.map),
-                                      name: "state".tr,
-                                      selectedItem: controller.selectedState,
-                                      itemAsString: (v) => v.name,
-                                      onSelected: (state) =>
-                                          controller.onStateSelected(state),
-                                    ),
-                            ),
-                            SizedBox(width: 40.w),
-                            Expanded(
-                              child: CheckoutController.to.citiesLoading.value
-                                  ? const LinearProgressIndicator()
-                                  : CustomSearchableSelectWidget<City>(
-                                      enabled: controller.cities.isNotEmpty,
-                                      items: controller.cities,
-                                      leadingIcon: const Icon(
-                                          LineAwesomeIcons.map_signs),
-                                      name: "city".tr,
-                                      selectedItem: controller.selectedCity,
-                                      itemAsString: (v) => v.name,
-                                      onSelected: (city) =>
-                                          controller.onCitySelected(city),
-                                    ),
-                            ),
-                            SizedBox(width: 40.w),
-                            Expanded(
-                              child: CheckoutController.to.areasLoading.value
-                                  ? const LinearProgressIndicator()
-                                  : CustomSearchableSelectWidget<Area>(
-                                      enabled: controller.areas.isNotEmpty,
-                                      items: controller.areas,
-                                      leadingIcon: const Icon(
-                                          LineAwesomeIcons.map_marked),
-                                      name: "area".tr,
-                                      selectedItem: controller.selectedArea,
-                                      itemAsString: (v) => v.name,
-                                      onSelected: (area) =>
-                                          controller.onAreaSelected(area),
-                                    ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 80.h,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFormFieldWidget(
-                                controller:
-                                    CheckoutController.to.deliveryAddressInput,
-                                maxLines: 4,
-                                label: "delivery_address".tr,
-                                icon: LineAwesomeIcons.map_marked,
-                                validator: (v) {
-                                  var message = Validator.validateRequired(
-                                      v, "delivery_address".tr);
-                                  if (message == null) {
-                                    return Validator
-                                        .networkValidatorErrorViewer(
-                                            CheckoutController.to.errors,
-                                            "delivery_address");
-                                  }
-                                  return message;
-                                },
+                      ),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: CheckoutController.to.areasLoading.value
+                            ? const LinearProgressIndicator()
+                            : CustomSearchableSelectWidget<Area>(
+                                enabled: controller.areas.isNotEmpty,
+                                items: controller.areas,
+                                leadingIcon: const Icon(
+                                    LineAwesomeIcons.map_marked),
+                                name: 'area'.tr,
+                                selectedItem: controller.selectedArea,
+                                itemAsString: (v) => v.name,
+                                onSelected: (area) =>
+                                    controller.onAreaSelected(area),
                               ),
-                            )
-                          ],
-                        )
-                      ],
-                    ))
-              ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16.h),
+                  CustomTextFormFieldWidget(
+                    controller: CheckoutController.to.deliveryAddressInput,
+                    maxLines: 3,
+                    label: 'delivery_address'.tr,
+                    icon: LineAwesomeIcons.map_marked,
+                    validator: (v) {
+                      var message = Validator.validateRequired(
+                          v, 'delivery_address'.tr);
+                      if (message == null) {
+                        return Validator.networkValidatorErrorViewer(
+                          CheckoutController.to.errors,
+                          'delivery_address',
+                        );
+                      }
+                      return message;
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         });

@@ -12,7 +12,21 @@ import 'package:mybeshop/features/main/prenestation/widgets/cart/cart_empty_stat
 import 'package:mybeshop/features/main/prenestation/widgets/cart/cart_item_card.dart';
 
 class CartWidget extends StatelessWidget {
-  const CartWidget({super.key});
+  const CartWidget({
+    super.key,
+    this.compact = true,
+    this.sidebar = false,
+  });
+
+  /// Mobile / full-width cart layout.
+  final bool compact;
+
+  /// Narrow desktop sidebar — compact item rows, full checkout bar.
+  final bool sidebar;
+
+  bool get _itemCompact => compact || sidebar;
+
+  bool get _checkoutCompact => compact && !sidebar;
 
   @override
   Widget build(BuildContext context) {
@@ -24,43 +38,56 @@ class CartWidget extends StatelessWidget {
         final itemCount = cart?.items.length ?? 0;
 
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: sidebar ? 14.w : 20.w,
+            vertical: 10.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
-                mainAxisAlignment: hasItems
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('shopping_cart'.tr, style: AppStyles.heading5),
-                      if (hasItems)
-                        Text(
-                          'cart_items_count'.trParams({'count': '$itemCount'}),
-                          style: AppStyles.bodyRegularS.copyWith(
-                            color: AppTheme.to.greyColor,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('shopping_cart'.tr, style: AppStyles.heading5),
+                        if (hasItems)
+                          Text(
+                            'cart_items_count'
+                                .trParams({'count': '$itemCount'}),
+                            style: AppStyles.bodyRegularS.copyWith(
+                              color: AppTheme.to.greyColor,
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                   if (hasItems)
-                    TextButton.icon(
-                      onPressed: controller.clearShoppingCart,
-                      icon: Icon(
-                        LineAwesomeIcons.trash,
-                        size: 16.sp,
-                        color: AppTheme.to.saleColor,
-                      ),
-                      label: Text(
-                        'clear_shopping_cart'.tr,
-                        style: AppStyles.bodyMediumS.copyWith(
-                          color: AppTheme.to.saleColor,
-                        ),
-                      ),
-                    ),
+                    sidebar
+                        ? IconButton(
+                            tooltip: 'clear_shopping_cart'.tr,
+                            onPressed: controller.clearShoppingCart,
+                            icon: Icon(
+                              LineAwesomeIcons.trash,
+                              size: 18.sp,
+                              color: AppTheme.to.saleColor,
+                            ),
+                          )
+                        : TextButton.icon(
+                            onPressed: controller.clearShoppingCart,
+                            icon: Icon(
+                              LineAwesomeIcons.trash,
+                              size: 16.sp,
+                              color: AppTheme.to.saleColor,
+                            ),
+                            label: Text(
+                              'clear_shopping_cart'.tr,
+                              style: AppStyles.bodyMediumS.copyWith(
+                                color: AppTheme.to.saleColor,
+                              ),
+                            ),
+                          ),
                 ],
               ),
               SizedBox(height: 16.h),
@@ -77,10 +104,7 @@ class CartWidget extends StatelessWidget {
                   ),
                 )
               else if (!hasItems)
-                SizedBox(
-                  height: 320.h,
-                  child: const CartEmptyState(),
-                )
+                CartEmptyState(dense: sidebar || !compact)
               else
                 ListView.builder(
                   shrinkWrap: true,
@@ -91,13 +115,13 @@ class CartWidget extends StatelessWidget {
                     return CartItemCard(
                       item: item,
                       busy: controller.isCartItemBusy(item.id),
-                      compact: true,
+                      compact: _itemCompact,
                     );
                   },
                 ),
               if (!controller.shopingCartLoading.value && hasItems) ...[
                 SizedBox(height: 8.h),
-                CartCheckoutBar(cart: cart, compact: true),
+                CartCheckoutBar(cart: cart, compact: _checkoutCompact),
               ],
             ],
           ),

@@ -24,60 +24,66 @@ class DesktopStoreHeader extends StatelessWidget {
         border: Border(bottom: BorderSide(color: AppTheme.to.borderColor)),
         boxShadow: AppDecorations.cardShadow,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-      child: Row(
-        children: [
-          _Logo(store?.logo),
-          SizedBox(width: 14.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  store?.name ?? '',
-                  style: AppStyles.bodyBoldL,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                if (store?.heroTitle.isNotEmpty == true &&
-                    store!.heroTitle != store.name)
-                  Text(
-                    store.heroTitle,
-                    style: AppStyles.bodyRegularS.copyWith(
-                      color: AppTheme.to.greyColor,
+      padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 1280.w),
+          child: Row(
+            children: [
+              _Logo(store?.logo),
+              SizedBox(width: 14.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      store?.name ?? '',
+                      style: AppStyles.bodyBoldL,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-              ],
-            ),
-          ),
-          if (store?.phone.isNotEmpty == true)
-            _HeaderAction(
-              icon: LineAwesomeIcons.phone,
-              label: store!.phone,
-              onTap: () => launchUrlString('tel:${store.phone}'),
-            ),
-          if (store?.ordersTrackingEnabled == true) ...[
-            SizedBox(width: 8.w),
-            FilledButton.icon(
-              onPressed: () => Get.toNamed(AppRoutes.trackOrders),
-              icon: Icon(Icons.local_shipping_outlined, size: 18.sp),
-              label: Text('track_orders'.tr),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppTheme.to.primaryColor,
-                foregroundColor: AppTheme.to.textColor,
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    if (store?.heroTitle.isNotEmpty == true &&
+                        store!.heroTitle != store.name)
+                      Text(
+                        store.heroTitle,
+                        style: AppStyles.bodyRegularS.copyWith(
+                          color: AppTheme.to.greyColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
-          SizedBox(width: 8.w),
-          OutlinedButton(
-            onPressed: () =>
-                GlobalController.to.changeCurrentLanguage(locale == 'ar' ? 'en' : 'ar'),
-            child: Text(locale == 'ar' ? 'english'.tr : 'arabic'.tr),
+              if (store?.phone.isNotEmpty == true)
+                _HeaderAction(
+                  icon: LineAwesomeIcons.phone,
+                  label: store!.phone,
+                  onTap: () => launchUrlString('tel:${store.phone}'),
+                ),
+              if (store?.ordersTrackingEnabled == true) ...[
+                SizedBox(width: 8.w),
+                FilledButton.icon(
+                  onPressed: () => Get.toNamed(AppRoutes.trackOrders),
+                  icon: Icon(Icons.local_shipping_outlined, size: 18.sp),
+                  label: Text('track_orders'.tr),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppTheme.to.primaryColor,
+                    foregroundColor: AppTheme.to.textColor,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  ),
+                ),
+              ],
+              SizedBox(width: 8.w),
+              OutlinedButton(
+                onPressed: () => GlobalController.to
+                    .changeCurrentLanguage(locale == 'ar' ? 'en' : 'ar'),
+                child: Text(locale == 'ar' ? 'english'.tr : 'arabic'.tr),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

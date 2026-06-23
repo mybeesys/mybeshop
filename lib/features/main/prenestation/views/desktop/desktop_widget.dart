@@ -18,9 +18,9 @@ class DesktopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(1920, 2720),
+      designSize: const Size(1440, 900),
       minTextAdapt: true,
-      splitScreenMode: true,
+      splitScreenMode: false,
       builder: (context, child) {
         return GetBuilder<GlobalController>(
           init: Get.find<GlobalController>(),

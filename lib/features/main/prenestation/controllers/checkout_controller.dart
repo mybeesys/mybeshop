@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mybeshop/core/config/app_routes.dart';
@@ -202,16 +205,18 @@ class CheckoutController extends GetxController
   Future<void> checkout({bool isMobile = false}) async {
     errors.clear();
     AppLoaders.showLoading();
+    final checkoutData = {
+      "name": nameInput.text,
+      "phone": phoneInput.text,
+      "state_id": "${selectedState?.id}",
+      "city_id": "${selectedCity?.id}",
+      "area_id": "${selectedArea?.id}",
+      "delivery_address": deliveryAddressInput.text,
+      "payment_method": paymentMethod,
+    };
+    log('Checkout request → v1/store/checkout\n${const JsonEncoder.withIndent('  ').convert(checkoutData)}');
     final response = await _checkoutUseCase(
-      data: {
-        "name": nameInput.text,
-        "phone": phoneInput.text,
-        "state_id": "${selectedState?.id}",
-        "city_id": "${selectedCity?.id}",
-        "area_id": "${selectedArea?.id}",
-        "delivery_address": deliveryAddressInput.text,
-        "payment_method": paymentMethod,
-      },
+      data: checkoutData,
     );
 
     response.fold((failure) {

@@ -85,36 +85,70 @@ class CartItemCard extends StatelessWidget {
                         _ExtrasRow(item: item, enabled: !busy),
                       ],
                       SizedBox(height: 10.h),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          RiyalPriceText(
-                            amount: item.priceFormatted,
-                            formatted: true,
-                            style: AppStyles.bodyBoldM.copyWith(
-                              color: AppTheme.to.primaryColor,
+                      if (compact)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: RiyalPriceText(
+                                amount: item.priceFormatted,
+                                formatted: true,
+                                style: AppStyles.bodyBoldM.copyWith(
+                                  color: AppTheme.to.primaryColor,
+                                ),
+                              ),
                             ),
-                          ),
-                          const Spacer(),
-                          CartQuantityStepper(
-                            qty: item.qty,
-                            compact: compact,
-                            enabled: !busy,
-                            onDecrease: item.qty > 1
-                                ? () => CartController.to.updateCart(
-                                      item,
-                                      isIncrease: false,
-                                    )
-                                : () => CartController.to.deleteItemFromCart(
-                                      item.id,
-                                    ),
-                            onIncrease: () => CartController.to.updateCart(
-                              item,
-                              isIncrease: true,
+                            SizedBox(width: 8.w),
+                            CartQuantityStepper(
+                              qty: item.qty,
+                              compact: compact,
+                              enabled: !busy,
+                              onDecrease: item.qty > 1
+                                  ? () => CartController.to.updateCart(
+                                        item,
+                                        isIncrease: false,
+                                      )
+                                  : () => CartController.to.deleteItemFromCart(
+                                        item.id,
+                                      ),
+                              onIncrease: () => CartController.to.updateCart(
+                                item,
+                                isIncrease: true,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        )
+                      else
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            RiyalPriceText(
+                              amount: item.priceFormatted,
+                              formatted: true,
+                              style: AppStyles.bodyBoldM.copyWith(
+                                color: AppTheme.to.primaryColor,
+                              ),
+                            ),
+                            const Spacer(),
+                            CartQuantityStepper(
+                              qty: item.qty,
+                              compact: compact,
+                              enabled: !busy,
+                              onDecrease: item.qty > 1
+                                  ? () => CartController.to.updateCart(
+                                        item,
+                                        isIncrease: false,
+                                      )
+                                  : () => CartController.to.deleteItemFromCart(
+                                        item.id,
+                                      ),
+                              onIncrease: () => CartController.to.updateCart(
+                                item,
+                                isIncrease: true,
+                              ),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ),
