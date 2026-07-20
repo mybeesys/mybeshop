@@ -12,7 +12,8 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       this.textStyle,
       this.keyboardType,
       this.hint,
-      this.validator});
+      this.validator,
+      this.onSubmitted});
   final IconData icon;
   final String label;
   final TextEditingController? controller;
@@ -22,6 +23,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final String? hint;
+  final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class CustomTextFormFieldWidget extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
+      onFieldSubmitted: onSubmitted,
       decoration: InputDecoration(
         hintText: hint,
         label: Text(

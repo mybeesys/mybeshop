@@ -213,7 +213,7 @@ class CheckoutController extends GetxController
     AppLoaders.showLoading();
     final checkoutData = {
       "name": nameInput.text,
-      "phone": phoneInput.text,
+      "phone": Validator.normalizeSaudiPhone(phoneInput.text),
       "state_id": "${selectedState?.id}",
       "city_id": "${selectedCity?.id}",
       "area_id": "${selectedArea?.id}",

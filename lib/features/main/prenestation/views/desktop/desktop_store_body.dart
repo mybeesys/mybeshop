@@ -24,11 +24,11 @@ class DesktopStoreBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const DesktopStoreHeader(),
-        Expanded(
-          child: Align(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const DesktopStoreHeader(),
+          Align(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: _maxContentWidth.w),
@@ -39,39 +39,35 @@ class DesktopStoreBody extends StatelessWidget {
                   children: [
                     const DesktopStoreHeroBanner(),
                     SizedBox(height: 24.h),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 240.w,
-                            child:
-                                DesktopCategorySidebar(controller: controller),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 240.w,
+                          child:
+                              DesktopCategorySidebar(controller: controller),
+                        ),
+                        SizedBox(width: 20.w),
+                        Expanded(
+                          child: _ProductsPanel(controller: controller),
+                        ),
+                        SizedBox(width: 20.w),
+                        SizedBox(
+                          width: 320.w,
+                          child: Container(
+                            decoration: AppDecorations.card(),
+                            child: const CartWidget(sidebar: true),
                           ),
-                          SizedBox(width: 20.w),
-                          Expanded(
-                            child: _ProductsPanel(controller: controller),
-                          ),
-                          SizedBox(width: 20.w),
-                          SizedBox(
-                            width: 320.w,
-                            child: SingleChildScrollView(
-                              child: Container(
-                                decoration: AppDecorations.card(),
-                                child: const CartWidget(sidebar: true),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -110,13 +106,9 @@ class _ProductsPanel extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        Expanded(
-          child: SingleChildScrollView(
-            child: _ProductSection(
-              isGrid: controller.isGrid,
-              mainController: controller,
-            ),
-          ),
+        _ProductSection(
+          isGrid: controller.isGrid,
+          mainController: controller,
         ),
       ],
     );

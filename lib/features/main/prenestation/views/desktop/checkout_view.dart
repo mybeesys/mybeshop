@@ -615,10 +615,10 @@ class PersonalInformationStepWidget extends StatelessWidget {
                           controller: CheckoutController.to.phoneInput,
                           label: 'phone'.tr,
                           icon: LineAwesomeIcons.phone,
-                          hint: 'EXP: 966557013119',
+                          hint: '05xxxxxxxx',
                           validator: (v) {
                             var message =
-                                Validator.validateRequired(v, 'phone'.tr);
+                                Validator.validateSaudiPhone(v, 'phone'.tr);
                             if (message == null) {
                               return Validator.networkValidatorErrorViewer(
                                 CheckoutController.to.errors,

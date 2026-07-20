@@ -81,12 +81,13 @@ class CheckoutMobileView extends StatelessWidget {
                                     SizedBox(height: 12.h),
                                     _CheckoutTextField(
                                       controller: controller.phoneInput,
-                                      hint: 'EXP: 966557013119',
+                                      hint: '05xxxxxxxx',
                                       icon: LineAwesomeIcons.phone,
                                       keyboardType: TextInputType.phone,
                                       validator: (v) {
-                                        final message = Validator.validateRequired(
-                                            v, 'phone'.tr);
+                                        final message =
+                                            Validator.validateSaudiPhone(
+                                                v, 'phone'.tr);
                                         if (message == null) {
                                           return Validator
                                               .networkValidatorErrorViewer(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mybeshop/core/utils/helper/validator.dart';
 import 'package:mybeshop/features/main/domain/entities/order.dart';
 import 'package:mybeshop/features/main/domain/usecases/get_orders_use_case.dart';
 
@@ -10,16 +11,21 @@ class TrackOrdersController extends GetxController
   TrackOrdersController(this._getOrdersUseCase);
 
   RxBool ordersLoading = false.obs;
+  bool hasSearched = false;
   List<Order> orders = [];
 
   Future<void> getOrders() async {
     ordersLoading(true);
+    hasSearched = true;
     update();
     final response = await _getOrdersUseCase(filters: {
-      "phone": searchInput.text,
+      "phone": Validator.normalizeSaudiPhoneIfValid(searchInput.text),
     });
 
-    response.fold((failure) {}, (success) {
+    response.fold((failure) {
+      ordersLoading(false);
+      update();
+    }, (success) {
       orders = success;
       ordersLoading(false);
       update();
