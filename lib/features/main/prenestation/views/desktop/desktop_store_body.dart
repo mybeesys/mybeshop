@@ -13,6 +13,7 @@ import 'package:mybeshop/features/main/prenestation/widgets/cart_widget.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/empty_widget.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/store/desktop_category_sidebar.dart';
 import 'package:mybeshop/features/main/prenestation/widgets/store/desktop_store_header.dart';
+import 'package:mybeshop/features/main/prenestation/widgets/store/desktop_store_hero_banner.dart';
 
 class DesktopStoreBody extends StatelessWidget {
   const DesktopStoreBody({super.key, required this.controller});
@@ -33,25 +34,35 @@ class DesktopStoreBody extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: _maxContentWidth.w),
               child: Padding(
                 padding: EdgeInsets.fromLTRB(24.w, 20.h, 24.w, 24.h),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width: 240.w,
-                      child: DesktopCategorySidebar(controller: controller),
-                    ),
-                    SizedBox(width: 20.w),
+                    const DesktopStoreHeroBanner(),
+                    SizedBox(height: 24.h),
                     Expanded(
-                      child: _ProductsPanel(controller: controller),
-                    ),
-                    SizedBox(width: 20.w),
-                    SizedBox(
-                      width: 320.w,
-                      child: SingleChildScrollView(
-                        child: Container(
-                          decoration: AppDecorations.card(),
-                          child: const CartWidget(sidebar: true),
-                        ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 240.w,
+                            child:
+                                DesktopCategorySidebar(controller: controller),
+                          ),
+                          SizedBox(width: 20.w),
+                          Expanded(
+                            child: _ProductsPanel(controller: controller),
+                          ),
+                          SizedBox(width: 20.w),
+                          SizedBox(
+                            width: 320.w,
+                            child: SingleChildScrollView(
+                              child: Container(
+                                decoration: AppDecorations.card(),
+                                child: const CartWidget(sidebar: true),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
